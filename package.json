@@ -1,0 +1,42 @@
+{
+  "name": "b2exclusive",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@tiptap/extension-image": "^2.3.0",
+    "@tiptap/extension-underline": "^2.3.0",
+    "@tiptap/pm": "^2.3.0",
+    "@tiptap/react": "^2.3.0",
+    "@tiptap/starter-kit": "^2.3.0",
+    "axios": "^1.6.8",
+    "framer-motion": "^11.0.24",
+    "jose": "^5.9.3",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.372.0",
+    "next": "14.1.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.0.1",
+    "react-query": "^3.39.3",
+    "react-quill": "^2.0.0",
+    "react-slick": "^0.30.2",
+    "react-toastify": "^10.0.5",
+    "recharts": "^2.12.4",
+    "slick-carousel": "^1.8.1",
+    "swr": "^2.2.5"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0"
+  }
+}
