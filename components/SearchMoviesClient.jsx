@@ -216,61 +216,8 @@ export default function SearchMoviesClient({ movies, series }) {
           ))}
         </section>
       ) : (
-        // Render default movies and series
+      
         <>
-          {/* <section className="mb-10">
-            <h2 className="text-2xl font-semibold mb-4">Movies</h2>
-            <div className="grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-4">
-              {movies.map((movie) => (
-                <div key={movie.id} className="border rounded-md overflow-hidden">
-                  <div className="h-48 bg-gray-200">
-                    <img
-                      src={
-                        movie.seasons?.[0]?.episodes?.[0]?.posterUrl?.url ||
-                        movie.key ||
-                        "/placeholder.png"
-                      }
-                      alt={movie.title}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div className="px-2 py-3">
-                    <h3 className="text-center font-medium">{movie.title}</h3>
-                    <p className="text-sm text-gray-600 truncate">
-                      {movie.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">Series</h2>
-            <div className="grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-4">
-              {series.map((serie) => (
-                <div key={serie.id} className="border rounded-md overflow-hidden">
-                  <div className="h-48 bg-gray-200">
-                    <img
-                      src={
-                        serie.seasons?.[0]?.episodes?.[0]?.posterUrl?.url ||
-                        serie.key ||
-                        "/placeholder.png"
-                      }
-                      alt={serie.title}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div className="px-2 py-3">
-                    <h3 className="text-center font-medium">{serie.title}</h3>
-                    <p className="text-sm text-gray-600 truncate">
-                      {serie.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section> */}
 
 <AllMoviesHome movies={movies} /> 
 <AllSeriesHome series={series} /> 

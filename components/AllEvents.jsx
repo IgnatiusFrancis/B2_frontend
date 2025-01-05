@@ -30,7 +30,14 @@ function AllEvent({ allEvents }) {
     <div>
       <div className="flex flex-col gap-4">
         {currentPosts?.map((event) => (
-          <EventTicket key={event.id} {...event} />
+          <EventTicket  
+          key={event.id}
+          id={event.id}
+          title={event.title}
+          image={event.image}
+          location={event.location}
+          date={event.date}
+          /> 
         ))}
       </div>
       <div className="flex justify-center mt-4">

@@ -239,9 +239,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full p-4 md:w-5/6 mx-auto md:grid grid-cols-3 md:gap-4">
+      {/* <section className="w-full p-4 md:w-5/6 mx-auto md:grid grid-cols-3 md:gap-4">
         <div className="bg-white p-4">
-          <CategoriesHeading title={"Music Soul"} />
+          <CategoriesHeading title={"Music Soul"} /> 
 
           <div className={` mt-4 flex flex-col gap-4`}>
             <div className="h-[200px] relative">
@@ -317,7 +317,7 @@ export default function Home() {
             <RecentPost />
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

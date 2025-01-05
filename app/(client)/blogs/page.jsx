@@ -12,9 +12,12 @@ import {
 } from "react-icons/fa";
 import AllBlogPosts from "@/components/AllBlogPosts";
 import HomeRecentPost from "@/components/HomeRecentPost";
+import { getPosts } from "@/lib/api";
+import SearchClient from "@/hooks/useSearch";
 
-function Blogs() {
-  return (
+async function Blogs() {
+    const posts = await getPosts(); 
+  return ( 
     <>
       <SectionHeader
         title={"Trending Stories"}
@@ -25,7 +28,7 @@ function Blogs() {
 
       <section className="w-full md:w-5/6 mx-auto p-4">
         <div className="flex gap-4 w-full">
-          <div className="md:w-4/6 rounded-full flex items-center z-10 border">
+          {/* <div className="md:w-4/6 rounded-full flex items-center z-10 border">
             <input
               type="text"
               placeholder="Search here"
@@ -34,9 +37,12 @@ function Blogs() {
             <button className="rounded-full text-white bg-primarycolor flex items-center md:text-base text-[12px] py-2 gap-1 px-4 mr-2">
               <FaSearch /> Search
             </button>
-          </div>
+          </div> */}
 
-          <div className="w-2/6 p-4 bg-transparent outline-none border rounded-lg">
+             {/* Client-side search */}
+      <SearchClient posts={posts} />
+
+          {/* <div className="w-2/6 p-4 bg-transparent outline-none border rounded-lg">
             <select
               name=""
               id=""
@@ -46,21 +52,21 @@ function Blogs() {
               <option value="">Realesed Date</option>
               <option value="">Artist</option>
             </select>
-          </div>
+          </div> */}
         </div>
       </section>
 
       <section className=" md:w-5/6 md:p-8 mx-auto md:flex md:gap-4">
         <div className="w-full md:w-full">
           <div>
-            <AllBlogPosts />
+            <AllBlogPosts posts={posts}/>
           </div>
         </div>
         <div className=" p-4 md:w-2/5">
           <CategoriesHeading title={"Top Playlists"} />
 
           <div className="grid grid-cols-2 md:flex md:flex-col gap-2">
-            <TopPlaylist />
+            <TopPlaylist /> 
             <TopPlaylist />
             <TopPlaylist />
             <TopPlaylist />
@@ -81,13 +87,13 @@ function Blogs() {
 
           <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
 
-          <CategoriesHeading title={"Recent Posts"} />
+          {/* <CategoriesHeading title={"Recent Posts"} /> */}
 
-          <div className=" flex flex-col gap-1 pt-4 ">
+          {/* <div className=" flex flex-col gap-1 pt-4 ">
             <div>
               <HomeRecentPost />
             </div>{" "}
-          </div>
+          </div> */}
         </div>
       </section>
     </>
@@ -95,3 +101,4 @@ function Blogs() {
 }
 
 export default Blogs;
+
