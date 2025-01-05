@@ -1,5 +1,4 @@
 
-
 // Parent Component (UpcomingEvent)
 import SectionHeader from "@/components/SectionHeader";
 import { FaSearch } from "react-icons/fa";
@@ -12,7 +11,7 @@ export default async function UpcomingEvent() {
   return (
     <>
       <SectionHeader
-        title={"Events Listings"}
+        title={"Events Listings"} 
         desc={"Find the latest events that suit your interest"}
       />
 

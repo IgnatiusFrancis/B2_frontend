@@ -1,93 +1,68 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArtistAlbum from "./ArtistAlbum";
-import { usePostData } from "@/hooks/usePostData";
-function AllMusic() {
-  const [currentPage, setCurrentPage] = useState(1);
 
-  const url = `https://b2xclusive.onrender.com/api/v1/track/audios?page=${currentPage}`;
-  const postsPerPage = 8;
-  const { isLoading, isError, data } = usePostData("all-music", url);
-
-  if (isError)
+function AllMusic({ data: audios }) {
+  if (!audios || audios.length === 0) {
     return (
       <div>
-        <p className="text-red-500 font-bold">Error Fetching Posts</p>
+        <p className="text-gray-500 font-bold">No Audio Music Available</p>
       </div>
     );
-  if (isLoading)
-    return (
-      <div className="w-full md:w-5/6 mx-auto grid grid-cols-4 gap-4 py-4">
-        <div className="h-80 w-full bg-gray-300 animate-pulse rounded-lg "></div>
-
-        <div className="h-80 w-full bg-gray-300 animate-pulse rounded-lg "></div>
-        <div className="h-80 w-full bg-gray-300 animate-pulse rounded-lg "></div>
-        <div className="h-80 w-full bg-gray-300 animate-pulse rounded-lg "></div>
-      </div>
-    );
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = data?.data?.data?.slice(
-    indexOfFirstPost,
-    indexOfLastPost
-  );
-
-  // Calculate total number of pages
-  const totalPages = Math.ceil(data?.data?.data?.length / postsPerPage);
-
-  // Generate an array of page numbers
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
   }
+  const audiosPerPage = 8;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentAudio, setCurrentAudio] = useState(audios);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  useEffect(() => {
+    const indexOfLastAudio = currentPage * audiosPerPage;
+    const indexOfFirstAudio = indexOfLastAudio - audiosPerPage;
+    const newAudio = audios.slice(indexOfFirstAudio, indexOfLastAudio);
+    setCurrentAudio(newAudio);
+  }, [currentPage, audios]);
+
+  const totalPages = Math.ceil(audios.length / audiosPerPage);
 
   return (
     <>
       <div>
         <section className="w-full p-2 md:w-5/6 md:mx-auto md:flex flex-col gap-2">
-          {currentPosts?.map((music) => (
+          {currentAudio?.map((music) => (
             <ArtistAlbum key={music.id} {...music} />
           ))}
         </section>
+
         <div className="flex justify-center py-8">
-          {/* Previous button */}
           <button
-            onClick={handlePrevPage}
+            onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="border text-[10px] md:text-base border-gray-500 text-gray-500 px-2 md:px-4 md:py-2 rounded-md mr-2"
+            className="border border-gray-500 text-gray-500 px-4 py-2 rounded-md mr-2"
           >
             Previous
           </button>
-          {/* Page number buttons */}
-          {pageNumbers.map((number) => (
+          {Array.from({ length: totalPages }).map((_, index) => (
             <button
-              key={number}
-              onClick={() => setCurrentPage(number)}
-              className={`border border-gray-500 text-primarycolor md:text-base text-[10px] px-4 py-2 rounded-md mx-1 ${
-                currentPage === number ? "bg-black" : ""
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`border border-gray-500 text-gray-500 px-4 py-2 rounded-md mr-2 ${
+                currentPage === index + 1 ? "bg-gray-100" : ""
               }`}
             >
-              {number}
+              {index + 1}
             </button>
           ))}
-          {/* Next button */}
           <button
-            onClick={handleNextPage}
+            onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="bg-primarycolor text-white px-4 py-2 md:text-base text-[10px] rounded-md ml-2"
+            className="bg-primarycolor text-white px-4 py-2 rounded-md ml-2"
           >
             Next
-          </button>{" "}
+          </button>
         </div>
       </div>
     </>

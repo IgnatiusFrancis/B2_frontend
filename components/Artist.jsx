@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
@@ -5,6 +6,7 @@ import pld from "@/public/pld.jpeg";
 import { useState } from "react";
 
 function Artist({ id, name, image, bio }) {
+
   const [showDetails, setShowdetails] = useState(false);
   return (
     <>

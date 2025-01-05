@@ -1,56 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Artist from "./Artist";
 
-import { usePostData } from "@/hooks/usePostData";
-function AllArtists() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 8;
-
-  const url = `https://b2xclusive.onrender.com/api/v1/artist/artists?page=${currentPage}`;
-  const { isLoading, isError, data } = usePostData("artistss", url);
-
-  if (isError)
+function AllArtists({data:artists}) { 
+  if (!artists || artists.length === 0) {
     return (
       <div>
-        <p className="text-red-500 font-bold">Error Fetching Posts</p>
+        <p className="text-gray-500 font-bold">No artists Available</p>
       </div>
     );
-  if (isLoading)
-    return (
-      <div className="w-full md:w-5/6 mx-auto grid grid-cols-4 gap-4 py-4">
-        <div className="h-80 w-full bg-gray-300 animate-pulse rounded-lg "></div>
-
-        <div className="h-80 w-full bg-gray-300 animate-pulse rounded-lg "></div>
-        <div className="h-80 w-full bg-gray-300 animate-pulse rounded-lg "></div>
-        <div className="h-80 w-full bg-gray-300 animate-pulse rounded-lg "></div>
-      </div>
-    );
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = data?.data?.data?.slice(
-    indexOfFirstPost,
-    indexOfLastPost,
-  );
-
-  // Calculate total number of pages
-  const totalPages = Math.ceil(data?.data?.data?.length / postsPerPage);
-
-  // Generate an array of page numbers
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
   }
+
+    const artistsPerPage = 8;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [currentArtists, setCurrentArtists] = useState(artists);
+  
+    // Handle page change and filter posts based on the current page
+    const handlePageChange = (newPage) => {
+      setCurrentPage(newPage);
+    };
+  
+    // Update the current posts based on the selected page
+    useEffect(() => {
+      const indexOfLastArtist = currentPage * artistsPerPage;
+      const indexOfFirstArtist = indexOfLastArtist - artistsPerPage;
+      const newArtist = artists.slice( indexOfFirstArtist, indexOfLastArtist);
+      setCurrentArtists(newArtist); 
+    }, [currentPage, artists]);
+
+
+  const totalPages = Math.ceil(artists.length / artistsPerPage);
+
 
   return (
     <>
@@ -58,41 +39,47 @@ function AllArtists() {
         <section
           className={` md:w-5/6 p-8 mx-auto  grid grid-cols-2 md:grid-cols-4 gap-4`}
         >
-          {currentPosts?.map((data) => (
-            <Artist key={data.id} {...data} />
+          {currentArtists?.map((data) => (
+            <Artist 
+            key={data.id}
+            id={data.id}
+            name={data.name}
+            image={data.image}
+            bio={data.bio}
+            />
           ))}
         </section>
 
         <div className="flex justify-center py-8">
-          {/* Previous button */}
+          
           <button
-            onClick={handlePrevPage}
+            onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
             className="border border-gray-500 text-gray-500 px-4 py-2 rounded-md mr-2"
           >
             Previous
           </button>
-          {/* Page number buttons */}
-          {pageNumbers.map((number) => (
+          {Array.from({ length: totalPages }).map((_, index) => (
             <button
-              key={number}
-              onClick={() => setCurrentPage(number)}
-              className={`border border-gray-500 text-primarycolor px-4 py-2 rounded-md mx-1 ${
-                currentPage === number ? "bg-gray-100" : ""
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`border border-gray-500 text-gray-500 px-4 py-2 rounded-md mr-2 ${
+                currentPage === index + 1 ? "bg-gray-100" : ""
               }`}
             >
-              {number}
+              {index + 1}
             </button>
           ))}
-          {/* Next button */}
           <button
-            onClick={handleNextPage}
+            onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
             className="bg-primarycolor text-white px-4 py-2 rounded-md ml-2"
           >
             Next
-          </button>{" "}
+          </button>
         </div>
+
+
       </div>
     </>
   );
