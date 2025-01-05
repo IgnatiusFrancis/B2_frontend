@@ -1,11 +1,8 @@
 "use client";
-
-import { getPosts } from "@/lib/api";
 import RecentPost from "./RecentPost";
 
 
-async function HomePost() {
-  const posts = await getPosts();
+async function HomePost({posts}) { 
     if (!posts || posts.length === 0) {
       return (
         <div>
@@ -19,7 +16,8 @@ async function HomePost() {
     <>
       <div className="grid md:grid-cols-2 gap-4 py-4 w-full">
         {posts.slice(0, 6).map((post) => (
-          <RecentPost  key={post.id}
+          <RecentPost  
+          key={post.id}
           id={post.id}
           title={post.title}
           image={post.image}

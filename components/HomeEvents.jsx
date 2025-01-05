@@ -1,10 +1,9 @@
+"use client";
 import Event from "./Event";
 import CategoriesHeading from "./CategoriesHeading";
 import Link from "next/link";
-import { getEvents } from "@/lib/api";
 
-async function HomeEvents() {
-  const events = await getEvents();
+async function HomeEvents({events}) {
   if (!events || events.length === 0) {
     return (
       <div>
