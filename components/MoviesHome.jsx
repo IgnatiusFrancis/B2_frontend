@@ -1,7 +1,4 @@
 
-// export default AllMoviesHome;
-
-
 // app/components/movieshome.jsx
 import Link from "next/link";
 

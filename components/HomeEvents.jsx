@@ -2,16 +2,24 @@
 import { usePostData } from "@/hooks/usePostData";
 import Event from "./Event";
 import CategoriesHeading from "./CategoriesHeading";
-import Link from "next/link"; // Ensure Link is imported
+import Link from "next/link"; 
 
-function HomeEvents() {
+function HomeEvents({events}) {
+  if (!events || events.length === 0) {
+    return (
+      <div>
+        <p className="text-gray-500 font-bold">No Events Available</p>
+      </div> 
+    );
+  }
+console.log("EVENTSSSSSSSSSS", events)
   const url = "https://b2xclusive.onrender.com/api/v1/event/events";
   const { isLoading, isError, data } = usePostData("homeevents", url);
   if (isError)
     return (
       <div>
         <p className="text-red-500 font-bold">Error Fetching Posts</p>
-      </div>
+      </div> 
     );
 
   if (isLoading)

@@ -6,6 +6,8 @@ function EventTicket({ id, title, image, location, date }) {
   return (
     <>
       <Link
+      prefetch={true}
+      key={id}
         href={`upcomingevents/${id}`}
         className={`hover:bg-gray-200 hover:font-bold hover:text-primarycolor transition-all duration-500 bg-white rounded-xl p-4 md:p-0 md:flex gap-6 justify-between items-center  cursor-pointer`}
       >
