@@ -29,10 +29,10 @@ import { getEvents, getPosts } from "@/lib/api";
 import HeroSection from "@/components/HeroSection";
 
 
-export default async function Home() { 
+export default async function Home() {  
     const [posts, events] = await Promise.all([
-      getPosts(),
-      getEvents()
+      getPosts(6),
+      getEvents(6)
     ])
 
   return (

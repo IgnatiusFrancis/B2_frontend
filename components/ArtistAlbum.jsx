@@ -3,7 +3,7 @@
 import { ThemeContext } from "@/context/ThemeContext";
 import Image from "next/image";
 import { useContext, useState } from "react";
-import { FaDownload, FaHamburger, FaPlay, FaPlus } from "react-icons/fa";
+import { FaDownload, FaFileDownload, FaHamburger, FaPlay, FaPlus } from "react-icons/fa";
 import ArtistSong from "./ArtistSong";
 import Link from "next/link";
 import pld from "@/public/pld.jpeg";
@@ -19,6 +19,43 @@ function ArtistAlbum({
   artist,
 }) {
   const [showPlayer, setShowPlayer] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    try {
+      setIsDownloading(true);
+
+      // Determine if the video is hosted on AWS or Cloudinary
+      const isAWS = audioUrl.includes("b2xclusive-bucket.s3");
+      const isCloudinary = audioUrl.includes("res.cloudinary.com");
+
+      let downloadUrl;
+
+      if (isAWS) {
+        // Construct AWS-specific download URL
+        downloadUrl = `https://b2xclusive.onrender.com/api/v1/track/download?type=audio&key=${publicId}&id=${id}`;
+      } else if (isCloudinary) {
+        return;
+        // Construct Cloudinary-specific download URL
+        downloadUrl = `https://b2xclusive.onrender.com/api/v1/track/download?type=video&publicId=${publicId}&id=${id}`;
+      } else {
+        console.error("Unknown video source. Cannot download.");
+        return;
+      }
+
+      // Trigger the download
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.setAttribute("download", video?.customFilename || video?.title);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Download failed:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <>
@@ -49,12 +86,23 @@ function ArtistAlbum({
                 className="text-lg cursor-pointer md:block "
               />
               <a
+                // onClick={handleDownload}
                 target="_blank"
                 download={audioUrl}
-                href={`https://b2xclusive.onrender.com/api/v1/track/download?type=audio&publicId=${publicId}&id=${id}`}
+                href={`https://b2xclusive.onrender.com/api/v1/track/download?type=audio&key=${publicId}&id=${id}`}
               >
                 <FaDownload className="text-lg cursor-pointer  md:block " />
               </a>
+              <button
+                className={`md:w-[40%] w-full py-5 ${
+                  isDownloading ? "bg-green-400" : "bg-green-600"
+                } text-white flex justify-center items-center gap-2 rounded-2xl border-none transition-colors`}
+                onClick={handleDownload}
+                disabled={isDownloading}
+              >
+                <FaFileDownload />
+                {isDownloading ? "Initiating Download..." : "Download"}
+              </button>
             </div>
           </div>
         </section>

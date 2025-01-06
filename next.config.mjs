@@ -1,25 +1,30 @@
-// /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   images: {
-    domains: ["cdn.dummyjson.com", "res.cloudinary.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'b2xclusive-bucket.s3.eu-north-1.amazonaws.com',
+        // pathname: '/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.dummyjson.com',
+        
+      },
+      {
+        protocol: 'http',
+        hostname: 'res.cloudinary.com',
+        
+      },
+      {
+         protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        
+      },
+    ],
   },
 };
 
+
 export default nextConfig;
-
-
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   images: {
-//     domains: ["cdn.dummyjson.com", "res.cloudinary.com"],
-//   },
-//   // Add these lines
-//   reactStrictMode: true,
-//   staticPageGenerationTimeout: 0,
-//   // Disable page transitions
-//   experimental: {
-//     scrollRestoration: false
-//   }
-// };
-
-// export default nextConfig;

@@ -14,15 +14,25 @@ import AllBlogPosts from "@/components/AllBlogPosts";
 import CategoriesHeading from "@/components/CategoriesHeading";
 import TopPlaylist from "@/components/TopPlaylist";
 
-export default function SearchClient({ posts }) {
+export default function SearchClient({ data, ContentContainer, searchFields }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredData, setFilteredData] = useState(posts);
+  const [filteredData, setFilteredData] = useState(data);
+
+  // const handleSearch = (query) => {
+  //   setSearchTerm(query);
+  //   const filtered = posts.filter((post) =>
+  //     ["title", "author"].some((field) =>
+  //       post[field]?.toString().toLowerCase().includes(query.toLowerCase())
+  //     )
+  //   );
+  //   setFilteredData(filtered);
+  // };
 
   const handleSearch = (query) => {
     setSearchTerm(query);
-    const filtered = posts.filter((post) =>
-      ["title", "author"].some((field) =>
-        post[field]?.toString().toLowerCase().includes(query.toLowerCase())
+    const filtered = data.filter((item) =>
+      searchFields.some((field) =>
+        item[field]?.toString().toLowerCase().includes(query.toLowerCase())
       )
     );
     setFilteredData(filtered);
@@ -51,7 +61,9 @@ export default function SearchClient({ posts }) {
         <section className="flex flex-col md:flex-row gap-4">
           {/* Main Content */}
           <div className="w-full md:w-4/6">
-            <AllBlogPosts posts={filteredData.length > 0 ? filteredData : posts} />
+       
+            {/* Render Content */}
+      {ContentContainer && <ContentContainer data={filteredData} />}
           </div>
 
           {/* Sidebar */}

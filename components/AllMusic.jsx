@@ -33,7 +33,17 @@ function AllMusic({ data: audios }) {
       <div>
         <section className="w-full p-2 md:w-5/6 md:mx-auto md:flex flex-col gap-2">
           {currentAudio?.map((music) => (
-            <ArtistAlbum key={music.id} {...music} />
+            <ArtistAlbum 
+            key={music.id}
+          id={music.id}
+          title={music.title}
+          image={music.image}
+          artist={music.artist}
+          subtitle={music.subtitle}
+          audioUrl={music.audioUrl}
+          publicId={music.publicId}
+          createdAt={music.createdAt}
+            /> 
           ))}
         </section>
 

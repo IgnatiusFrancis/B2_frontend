@@ -10,7 +10,7 @@ const SingleMovie = ({ movie }) => {
     return (
       <div className="flex items-center justify-center h-64">
         <p className="text-gray-500 font-bold text-xl">No Movie Found</p>
-      </div>
+      </div> 
     );
   }
 
@@ -38,7 +38,7 @@ const SingleMovie = ({ movie }) => {
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error("Download failed:", error);
+      console.error("Download failed:", error); 
     } finally {
       setIsDownloading(false);
     }

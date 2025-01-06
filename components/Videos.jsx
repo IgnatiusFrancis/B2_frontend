@@ -4,9 +4,11 @@ import Link from "next/link";
 import { FaPlay, FaPlayCircle, FaPlus } from "react-icons/fa";
 import pld from "@/public/pld.jpeg";
 function Videos({ id, title, artist, subtitle, createdAt, thumbnail }) {
+
   return (
     <>
       <Link
+      prefetch={true}
         href={`/videoshome/${id}`}
         className="md:flex md:items-center  bg-white w-full"
       >

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import BlogPost from "./BlogPost";
 
-function AllBlogPosts({posts}) {
+function AllBlogPosts({ data: posts }) {
   const postsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPosts, setCurrentPosts] = useState(posts);
