@@ -25,28 +25,30 @@ import {
 import HomePost from "@/components/HomePosts";
 import HomeEvents from "@/components/HomeEvents";
 import HomeRecentPost from "@/components/HomeRecentPost";
-import { getEvents, getPosts } from "@/lib/api";
+import { getAlbums, getEvents, getPosts } from "@/lib/api";
 import HeroSection from "@/components/HeroSection";
 
+export default async function Home() {
+  const [posts, events, albums] = await Promise.all([
+    getPosts(6),
+    getEvents(6),
+    getAlbums(3),
+  ]);
 
-export default async function Home() {  
-    const [posts, events] = await Promise.all([
-      getPosts(6),
-      getEvents(6)
-    ])
+   
 
   return (
     <main>
-    <HeroSection />
+      <HeroSection />
       <section className="w-full md:w-9/12 mx-auto md:flex mt-8 gap-6">
         <div className="w-full md:w-3/4">
           {/* NEW ALBUM SECTION */}
           <CategoriesHeading title={"New Album releases"} />
 
           <div className="grid gap-4 grid-cols-2 md:py-4 md:flex md:gap-4">
-            <AlbumCover />
-            <AlbumCover />
-            <AlbumCover />
+            {albums.map((album) => (
+              <AlbumCover key={album.id} album={album} />
+            ))}
           </div>
 
           <div className="flex items-end justify-between mb-10">
@@ -58,7 +60,7 @@ export default async function Home() {
           </div>
 
           {/* UPCOMING EVENTS SECTION*/}
-          <HomeEvents events={events}/>
+          <HomeEvents events={events} />
 
           <div className="flex items-end justify-between mb-10">
             <div className="w-[80%] h-[3px] bg-primarycolor"></div>
@@ -71,7 +73,7 @@ export default async function Home() {
           {/* RECENT POST SECTION */}
           <CategoriesHeading title={"Recent Posts"} />
           <div className="w-full flex flex-col">
-            <HomePost posts={posts}/>
+            <HomePost posts={posts} />
             <Link
               href={"/blogs"}
               className="text-primarycolor font-bold text-center cursor-pointer"
@@ -106,18 +108,18 @@ export default async function Home() {
           <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
 
           {/* TOP PLAYLIST SECTION */}
-          <CategoriesHeading title={"Top Playlists"} />
+          {/* <CategoriesHeading title={"Top Playlists"} /> */}
 
-          <div className="grid grid-cols-2 md:flex md:flex-col gap-2 py-2">
+          {/* <div className="grid grid-cols-2 md:flex md:flex-col gap-2 py-2">
             <TopPlaylist />
             <TopPlaylist />
             <TopPlaylist />
             <TopPlaylist />
             <TopPlaylist />
             <TopPlaylist />
-          </div>
+          </div> */}
 
-          <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
+         
 
           {/* GET CONNECTED */}
           <CategoriesHeading title={"Get Connected"} />
@@ -137,14 +139,12 @@ export default async function Home() {
           <div className="hidden md:block">
             <CategoriesHeading title={"Recent Post"} />
             <div className="w-full">
-              <HomeRecentPost posts={posts}/>
+              <HomeRecentPost posts={posts} />
             </div>
             <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
           </div>
         </div>
       </section>
-
-
     </main>
   );
 }

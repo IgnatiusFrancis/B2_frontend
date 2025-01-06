@@ -4,7 +4,8 @@ import SearchComponent from "@/hooks/useSearchArtist";
 import { getAudios } from "@/lib/api";
 
 async function Musics() {
-  const audios = await getAudios();
+  const audios = await getAudios(); 
+
   return (
     <>
       <SectionHeader
