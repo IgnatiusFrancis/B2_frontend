@@ -75,7 +75,7 @@ export default async function Home() {
           <div className="w-full flex flex-col">
             <HomePost videos={videos} />
             <Link
-              href={"/blogs"}
+              href={"/movies"}
               className="text-primarycolor font-bold text-center cursor-pointer"
             >
               Read More
@@ -83,7 +83,7 @@ export default async function Home() {
           </div>
 
           {/* TOP 40 section */}
-          <CategoriesHeading title={"Trending Songs"} />
+          <CategoriesHeading title={"Top Trending Artist Songs"} />
 
           <div className="py-4 grid grid-cols-2 md:flex md:flex-col gap-4 ">
             <TopList topArtists={topArtists}/>

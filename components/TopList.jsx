@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -13,31 +12,37 @@ const TopList = ({ topArtists }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const { theme } = useContext(ThemeContext);
   const [audio, setAudio] = useState(null);
-
+  const [currentTrack, setCurrentTrack] = useState(null);
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
-
-
   const handlePlayPause = (audioUrl) => {
-    if (!audio) {
+    if (audio && audio.src !== audioUrl.replace("http://", "https://")) {
+      audio.pause(); // Pause the current audio
+      setAudio(null); // Clear the current audio
+      setIsPlaying(false); // Reset the playing state
+    }
+
+    if (!audio || audio.src !== audioUrl.replace("http://", "https://")) {
       const newAudio = new Audio(audioUrl.replace("http://", "https://"));
       setAudio(newAudio);
 
       newAudio.addEventListener("ended", () => setIsPlaying(false));
       newAudio.play();
-    } else if (isPlaying) {
-      audio.pause();
+      setIsPlaying(true);
     } else {
-      audio.play();
+      if (isPlaying) {
+        audio.pause();
+        setIsPlaying(false);
+      } else {
+        audio.play();
+        setIsPlaying(true);
+      }
     }
-
-    setIsPlaying(!isPlaying);
   };
 
   const SongCard = ({ artist }) => (
-   
     <div className="border-b transition-transform duration-300 hover:shadow-md mb-1">
       {/* Main Artist Row */}
       <div
@@ -56,9 +61,7 @@ const TopList = ({ topArtists }) => {
           </div>
           {/* Artist Info */}
           <div>
-            <h1 className={`font-bold text-xl ${theme}-text`}>
-              {artist.name}
-            </h1>
+            <h1 className={`font-bold text-xl ${theme}-text`}>{artist.name}</h1>
             <p className="text-xs text-gray-500">{artist.bio}</p>
           </div>
         </div>
@@ -74,6 +77,7 @@ const TopList = ({ topArtists }) => {
         </div>
       </div>
 
+    
       {/* Dropdown Menu */}
       <div
         className={`overflow-hidden transition-all duration-500 ${
@@ -82,31 +86,37 @@ const TopList = ({ topArtists }) => {
       >
         <div className="bg-gray-50 px-6 py-3">
           {artist.track && artist.track.length > 0 ? (
-            artist.track.map((track, index) => (
-              <div
-                key={index}
-                className="py-2 flex justify-between items-center gap-4 text-sm text-gray-700 border-b last:border-b-0 hover:bg-gray-100 transition-colors duration-300"
-              >
-                <div className="flex items-center gap-3">
-                  {/* Play/Pause Button */}
-                  <button
-                    onClick={handlePlayPause(track.audioUrl)}
-                    className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-all duration-300"
-                  >
-                   {isPlaying ? <FaPause /> : <FaPlay />}
-                  </button>
-                  <span>{track.title}</span>
-                </div>
-                {/* Download Button */}
-                <a
-                  download={track.audioUrl}
-                   href={`https://b2xclusive.onrender.com/api/v1/track/download?type=audio&key=${track.key}&id=${track.id}`}
-                  className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-all duration-300"
+            <div className="max-h-60 overflow-y-auto scrollbar-thin">
+              {artist.track.map((track, index) => (
+                <div
+                  key={index}
+                  className="py-2 flex justify-between items-center gap-4 text-sm text-gray-700 border-b last:border-b-0 hover:bg-gray-100 transition-colors duration-300"
                 >
-                  <FaDownload />
-                </a>
-              </div>
-            ))
+                  <div className="flex items-center gap-3">
+                    {/* Play/Pause Button */}
+                    <button
+                      onClick={() => handlePlayPause(track.audioUrl)}
+                      className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-all duration-300"
+                    >
+                      {isPlaying && currentTrack === track.audioUrl ? (
+                        <FaPause />
+                      ) : (
+                        <FaPlay />
+                      )}
+                    </button>
+                    <span>{track.title}</span>
+                  </div>
+                  {/* Download Button */}
+                  <a
+                    download={track.audioUrl}
+                    href={`https://b2xclusive.onrender.com/api/v1/track/download?type=audio&key=${track.key}&id=${track.id}`}
+                    className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-all duration-300"
+                  >
+                    <FaDownload />
+                  </a>
+                </div>
+              ))}
+            </div>
           ) : (
             <p className="text-gray-500">No tracks available</p>
           )}
