@@ -1,4 +1,5 @@
 
+"use client";
 import SectionHeader from "@/components/SectionHeader";
 import { fetchMovie } from "@/lib/api";
 import SingleMovie from "@/components/SingleMovie";

@@ -1,4 +1,5 @@
 
+"use client";
 import SectionHeader from "@/components/SectionHeader";
 
 import AllVideos from "@/components/AllVideos";

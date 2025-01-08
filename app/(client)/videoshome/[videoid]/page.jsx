@@ -1,3 +1,4 @@
+"use client";
 import { fetchVideo, fetchVideoByArtist } from "@/lib/api";
 import SingleVideo from "@/components/SingleVideo";
 

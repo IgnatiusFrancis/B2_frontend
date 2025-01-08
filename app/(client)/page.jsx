@@ -24,7 +24,13 @@ import {
 import HomePost from "@/components/HomePosts";
 import HomeEvents from "@/components/HomeEvents";
 import HomeRecentPost from "@/components/HomeRecentPost";
-import { getAlbums, getEvents, getPosts, getTopArtists, getTrendingVideos } from "@/lib/api";
+import {
+  getAlbums,
+  getEvents,
+  getPosts,
+  getTopArtists,
+  getTrendingVideos,
+} from "@/lib/api";
 import HeroSection from "@/components/HeroSection";
 import TopList from "@/components/TopList";
 
@@ -36,7 +42,7 @@ export default async function Home() {
     getTopArtists(),
     getTrendingVideos(),
   ]);
-// console.log(topArtists)
+  // console.log(topArtists)
   return (
     <main>
       <HeroSection />
@@ -86,34 +92,20 @@ export default async function Home() {
           <CategoriesHeading title={"Top Trending Artist Songs"} />
 
           <div className="py-4 grid grid-cols-2 md:flex md:flex-col gap-4 ">
-            <TopList topArtists={topArtists}/>
+            <TopList topArtists={topArtists} />
           </div>
         </div>
 
-        <div className="w-full md:w-4/12"> 
+        <div className="w-full md:w-4/12">
           {/* TOP ARTIST SECTION */}
           <CategoriesHeading title={"Top 5 Artists"} />
 
           <div className="grid grid-cols-3 md:flex md:flex-col gap-2 py-2">
-      {topArtists.map((artist, index) => (
-        <TopMusic key={artist.id} topArtists={artist} index={index} />
-      ))}
-    </div>
+            {topArtists.map((artist, index) => (
+              <TopMusic key={artist.id} topArtists={artist} index={index} />
+            ))}
+          </div>
           <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
-
-          {/* TOP PLAYLIST SECTION */}
-          {/* <CategoriesHeading title={"Top Playlists"} /> */}
-
-          {/* <div className="grid grid-cols-2 md:flex md:flex-col gap-2 py-2">
-            <TopPlaylist />
-            <TopPlaylist />
-            <TopPlaylist />
-            <TopPlaylist />
-            <TopPlaylist />
-            <TopPlaylist />
-          </div> */}
-
-         
 
           {/* GET CONNECTED */}
           <CategoriesHeading title={"Get Connected"} />

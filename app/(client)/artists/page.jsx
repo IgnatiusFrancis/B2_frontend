@@ -1,3 +1,4 @@
+"use client";
 import AllArtists from "@/components/AllArtists";
 import SectionHeader from "@/components/SectionHeader";
 import SearchComponent from "@/hooks/useSearchArtist";

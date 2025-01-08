@@ -25,7 +25,7 @@
 
 // export default SingleSeasonPageSeries;
 
-
+"use client";
 import AllSeriesPage from "@/components/AllSeriesPage";
 import SectionHeader from "@/components/SectionHeader";
 

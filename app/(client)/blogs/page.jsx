@@ -1,4 +1,4 @@
-
+"use client";
 import SectionHeader from "@/components/SectionHeader";
 
 import { getPosts } from "@/lib/api";

@@ -1,3 +1,4 @@
+"use client";
 import CategoriesHeading from "@/components/CategoriesHeading";
 import SectionHeader from "@/components/SectionHeader";
 import TopMusic from "@/components/TopMusic";

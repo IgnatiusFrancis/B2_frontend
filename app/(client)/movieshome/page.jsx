@@ -1,5 +1,5 @@
 // app/(client)/movieshome/page.jsx
-
+"use client";
 import SectionHeader from "@/components/SectionHeader";
 import AllMoviesHome from "@/components/MoviesHome";
 import AllSeriesHome from "@/components/SeriesHome";

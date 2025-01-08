@@ -1,4 +1,5 @@
 
+"use client";
 // Parent Component (UpcomingEvent)
 import SectionHeader from "@/components/SectionHeader";
 import { FaSearch } from "react-icons/fa";

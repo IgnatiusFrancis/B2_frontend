@@ -1,5 +1,6 @@
 
 
+"use client";
 import { SingleSeasonsPage } from "@/components/SingleSeasonsPage";
 import SectionHeader from "@/components/SectionHeader";
 import { fetchSeriesData } from "@/lib/api";

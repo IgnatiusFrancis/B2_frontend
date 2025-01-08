@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={roboto.className}>
         <ProgressBar />
-        <QueryProvider>
+        {/* <QueryProvider> */}
         <ThemeContextProvider>
         <ThemeProvider>
         <section className="w-full mx-auto">
@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
         </section>
         </ThemeProvider>
         </ThemeContextProvider>
-        </QueryProvider>
+        {/* </QueryProvider> */}
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+"use client";
 import AllMusic from "@/components/AllMusic";
 import SectionHeader from "@/components/SectionHeader";
 import SearchComponent from "@/hooks/useSearchArtist";
