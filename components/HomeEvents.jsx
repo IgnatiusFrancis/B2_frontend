@@ -4,6 +4,7 @@ import CategoriesHeading from "./CategoriesHeading";
 import Link from "next/link";
 
 async function HomeEvents({events}) {
+
   if (!events || events.length === 0) {
     return (
       <div>
@@ -19,11 +20,12 @@ async function HomeEvents({events}) {
         <div className="w-full flex justify-center flex-col">
           <div className="flex w-full flex-col gap-4 my-4">
             {events.slice(0, 3).map((event) => (
+            
               <Event
                 key={event.id}
                 id={event.id}
                 title={event.title}
-                image={event.image}
+                url={event.url}
                 location={event.location}
                 date={event.date}
               />

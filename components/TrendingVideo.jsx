@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import pld from "@/public/pld.jpeg";
-function RecentPost({ id, title, updatedAt, url }) {
+function TrendingVideos({ id, title, date, url, artist }) {
   const imageUrl = url ? url : pld; 
 
   return (
@@ -24,7 +24,7 @@ function RecentPost({ id, title, updatedAt, url }) {
             {title?.split(" ").slice(0, 3).join(" ") || "Test Title"}
           </p>
           <p className={` text-[14px] text-gray-500`}>
-            {updatedAt?.split("T")[0] || "test date"}
+            {date?.split("T")[0] || "test date"}
           </p>
         </div>
       </div>
@@ -32,4 +32,4 @@ function RecentPost({ id, title, updatedAt, url }) {
   );
 }
 
-export default RecentPost;
+export default TrendingVideos;

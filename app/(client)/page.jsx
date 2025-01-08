@@ -1,7 +1,6 @@
 import AlbumCover from "@/components/AlbumCover";
 import CategoriesHeading from "@/components/CategoriesHeading";
 import RecentPost from "@/components/RecentPost";
-import Top40 from "@/components/Top40";
 import TopMusic from "@/components/TopMusic";
 import TopPlaylist from "@/components/TopPlaylist";
 import Image from "next/image";
@@ -25,18 +24,19 @@ import {
 import HomePost from "@/components/HomePosts";
 import HomeEvents from "@/components/HomeEvents";
 import HomeRecentPost from "@/components/HomeRecentPost";
-import { getAlbums, getEvents, getPosts } from "@/lib/api";
+import { getAlbums, getEvents, getPosts, getTopArtists, getTrendingVideos } from "@/lib/api";
 import HeroSection from "@/components/HeroSection";
+import TopList from "@/components/TopList";
 
 export default async function Home() {
-  const [posts, events, albums] = await Promise.all([
+  const [posts, events, albums, topArtists, videos] = await Promise.all([
     getPosts(6),
     getEvents(6),
     getAlbums(3),
+    getTopArtists(),
+    getTrendingVideos(),
   ]);
-
-   
-
+// console.log(topArtists)
   return (
     <main>
       <HeroSection />
@@ -71,9 +71,9 @@ export default async function Home() {
           </div>
 
           {/* RECENT POST SECTION */}
-          <CategoriesHeading title={"Recent Posts"} />
+          <CategoriesHeading title={"Trending Videos"} />
           <div className="w-full flex flex-col">
-            <HomePost posts={posts} />
+            <HomePost videos={videos} />
             <Link
               href={"/blogs"}
               className="text-primarycolor font-bold text-center cursor-pointer"
@@ -83,28 +83,22 @@ export default async function Home() {
           </div>
 
           {/* TOP 40 section */}
-          <CategoriesHeading title={"Top 40"} />
+          <CategoriesHeading title={"Trending Songs"} />
 
           <div className="py-4 grid grid-cols-2 md:flex md:flex-col gap-4 ">
-            <Top40 />
-            <Top40 />
-            <Top40 />
-            <Top40 />
+            <TopList topArtists={topArtists}/>
           </div>
         </div>
 
-        <div className="w-full md:w-4/12">
+        <div className="w-full md:w-4/12"> 
           {/* TOP ARTIST SECTION */}
-          <CategoriesHeading title={"Top 6 Artists"} />
+          <CategoriesHeading title={"Top 5 Artists"} />
 
           <div className="grid grid-cols-3 md:flex md:flex-col gap-2 py-2">
-            <TopMusic />
-            <TopMusic />
-            <TopMusic />
-            <TopMusic />
-            <TopMusic />
-            <TopMusic />
-          </div>
+      {topArtists.map((artist, index) => (
+        <TopMusic key={artist.id} topArtists={artist} index={index} />
+      ))}
+    </div>
           <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
 
           {/* TOP PLAYLIST SECTION */}

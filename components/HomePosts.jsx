@@ -1,9 +1,10 @@
 "use client";
 import RecentPost from "./RecentPost";
+import TrendingVideos from "./TrendingVideo";
 
 
-async function HomePost({posts}) { 
-    if (!posts || posts.length === 0) {
+async function HomePost({videos}) { 
+    if (!videos || videos.length === 0) {
       return (
         <div>
           <p className="text-gray-500 font-bold">No Posts Available</p>
@@ -15,14 +16,14 @@ async function HomePost({posts}) {
   return (
     <>
       <div className="grid md:grid-cols-2 gap-4 py-4 w-full">
-        {posts.slice(0, 6).map((post) => (
-          <RecentPost  
-          key={post.id}
-          id={post.id}
-          title={post.title}
-          image={post.image}
-          location={post.location}
-          date={post.date}
+        {videos.slice(0, 4).map((video) => (
+          <TrendingVideos  
+          key={video.id}
+          id={video.id}
+          title={video.title}
+          url={video.url}
+          artist={video.artist}
+          date={video.updatedAt} 
         />
         ))}
       </div>

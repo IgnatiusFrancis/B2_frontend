@@ -15,12 +15,12 @@ function HomeRecentPost({posts}) {
       <div className=" flex flex-col gap-1 pt-4 ">
         {posts &&
           posts
-            ?.slice(0, 3)
+            ?.slice(0, 5)
             .map((post) => <RecentPost 
             key={post.id}
           id={post.id}
           title={post.title}
-          image={post.image}
+          url={post.url}
           updatedAt={post.updatedAt}
           date={post.date}
             />)}

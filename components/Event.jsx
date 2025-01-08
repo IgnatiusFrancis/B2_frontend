@@ -3,7 +3,8 @@ import Image from "next/image";
 import Button from "./Button";
 import pld from "@/public/pld.jpeg";
 import Link from "next/link";
-function Event({ id, title, image, location, date }) {
+function Event({ id, title, url, location, date }) {
+
   return (
     <>
       <div
@@ -11,7 +12,7 @@ function Event({ id, title, image, location, date }) {
       >
         <div className="h-[100px] w-2/12 hidden md:block">
           <Image
-            src={image[0].url || pld}
+            src={url || pld}
             width={1000}
             height={1000}
             alt="alb"
