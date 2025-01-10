@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa";
 import pld from "@/public/pld.jpeg";
 import { useState } from "react";
 
-function Artist({ id, name, image, bio }) {
+function Artist({ id, name, url, bio }) {
 
   const [showDetails, setShowdetails] = useState(false);
   return (
@@ -19,7 +19,7 @@ function Artist({ id, name, image, bio }) {
           className=" h-[170px] md:h-[300px] relative"
         >
           <Image
-            src={image ? image?.url : pld}
+            src={url ? url : pld}
             width={1000}
             height={1000}
             alt="artist"

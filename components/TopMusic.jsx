@@ -1,50 +1,3 @@
-// "use client";
-
-// import { ThemeContext } from "@/context/ThemeContext";
-// import Image from "next/image";
-// import { useContext } from "react";
-
-// function TopMusic({ topArtists, index }) {
-//   const { theme } = useContext(ThemeContext);
-//   const { name, url, track } = topArtists;
-
-//   return (
-//     <>
-//       <div
-//         className={`${theme}-bgg p-2 md:p-4 md:flex md:gap-4 md:items-center bg-white`}
-//       >
-
-//        <p className="font-bold text-xl">{index + 1}</p>
-//         <div className="md:w-[50px] md:h-[50px]">
-//           <Image
-//             src={url || "/albumcover.jpeg"}
-//             width={1000}
-//             height={1000}
-//             alt={name}
-//             className="w-full h-full object-cover rounded-lg"
-//           />
-//         </div>
-
-//         <div>
-//           <h1 className={`font-bold text-[12px] md:text-base ${theme}-text`}>
-//             {name}
-//           </h1>
-//           <div className={`text-[11px] ${theme}-text`}>
-//             {track.map((trackItem, index) => (
-//               <p key={trackItem.id}>
-//                 {trackItem.title}
-//                 {index < track.length - 1 && ", "}
-//               </p>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default TopMusic;
-
 "use client";
 
 import { ThemeContext } from "@/context/ThemeContext";
@@ -52,8 +5,11 @@ import Image from "next/image";
 import { useContext } from "react";
 
 function TopMusic({ topArtists, index }) {
+  
   const { theme } = useContext(ThemeContext);
-  const { name, url, track } = topArtists;
+  const { name, url, track } = topArtists || {};
+
+
 
   return (
     <div

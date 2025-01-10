@@ -28,7 +28,7 @@ async function Artists() {
         </div>
       </section>
 
-      <SearchComponent
+      <SearchComponent 
         data={artists}
         ContentContainer={AllArtists}
         searchFields={["bio", "name"]}
