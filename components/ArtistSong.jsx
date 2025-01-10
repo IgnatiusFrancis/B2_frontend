@@ -7,7 +7,7 @@ import { useState } from "react";
 
 import { LuLoader2 } from "react-icons/lu";
 import { VscLoading } from "react-icons/vsc";
-function ArtistSong({ title, image, artist, createdAt, audioUrl, duration }) {
+function ArtistSong({ title, url, artist, createdAt, audioUrl, duration }) {
   const [showPlayer, setShowPlayer] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const handleDownload = async () => {
@@ -40,7 +40,7 @@ function ArtistSong({ title, image, artist, createdAt, audioUrl, duration }) {
           <div className={`bg-gray-50 md:block hidden p-3`}>
             <div className="w-[50px] h-[50px] rounded-full">
               <Image
-                src={image?.url || pld}
+                src={url || pld}
                 width={1000}
                 height={1000}
                 alt="alb"
