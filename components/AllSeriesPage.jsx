@@ -1,13 +1,13 @@
 // app/components/allseries.jsx
 // "use client";
 
-// import { usePostData } from "@/hooks/usePostData"; 
+// import { usePostData } from "@/hooks/usePostData";
 // import Link from "next/link";
 // import { useEffect } from "react";
 
 // const AllSeriesPage = ({ id }) => {
 //   console.log("ALLSERIESPAGE:", id)
-//   const url = `https://b2xclusive.onrender.com/api/v1/track/movie/${id}`; 
+//   const url = `https://b2xclusive.onrender.com/api/v1/track/movie/${id}`;
 
 //   const { isLoading, isError, data } = usePostData("series", url);
 
@@ -104,6 +104,7 @@
 
 // export default AllSeriesPage;
 
+import Image from "next/image";
 import Link from "next/link";
 
 const AllSeriesPage = ({ movie }) => {
@@ -136,7 +137,8 @@ const AllSeriesPage = ({ movie }) => {
           ></iframe>
         </div>
         <p className="text-center mt-4 text-lg text-gray-500">
-          Watch the official trailer of <span className="font-bold">{movie.title}</span>
+          Watch the official trailer of{" "}
+          <span className="font-bold">{movie.title}</span>
         </p>
       </div>
 
@@ -161,9 +163,11 @@ const AllSeriesPage = ({ movie }) => {
             return (
               <Link href={`/season-menu/${season.id}`} key={season.id}>
                 <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
-                  <img
+                  <Image
                     src={posterUrl}
                     alt={season.seasonTitle || "Season Image"}
+                    height={100}
+                    width={100}
                     className="w-full h-64 object-cover"
                   />
                   <div className="p-4">
@@ -185,8 +189,6 @@ const AllSeriesPage = ({ movie }) => {
 };
 
 export default AllSeriesPage;
-
-
 
 // import Link from "next/link";
 

@@ -1,11 +1,10 @@
-"use client";
 import AllMusic from "@/components/AllMusic";
 import SectionHeader from "@/components/SectionHeader";
 import SearchComponent from "@/hooks/useSearchArtist";
 import { getAudios } from "@/lib/api";
 
 async function Musics() {
-  const audios = await getAudios(); 
+  const audios = await getAudios();
 
   return (
     <>
@@ -28,7 +27,7 @@ async function Musics() {
           </p>
         </div>
       </section>
-     
+
       <SearchComponent
         data={audios}
         ContentContainer={AllMusic}

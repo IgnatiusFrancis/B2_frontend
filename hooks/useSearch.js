@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import {
   FaFacebook,
@@ -61,9 +60,8 @@ export default function SearchClient({ data, ContentContainer, searchFields }) {
         <section className="flex flex-col md:flex-row gap-4">
           {/* Main Content */}
           <div className="w-full md:w-4/6">
-       
             {/* Render Content */}
-      {ContentContainer && <ContentContainer data={filteredData} />}
+            {ContentContainer && <ContentContainer data={filteredData} />}
           </div>
 
           {/* Sidebar */}

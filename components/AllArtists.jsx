@@ -3,7 +3,26 @@
 import { useEffect, useState } from "react";
 import Artist from "./Artist";
 
-function AllArtists({data:artists}) { 
+function AllArtists({ data: artists }) {
+  const artistsPerPage = 8;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentArtists, setCurrentArtists] = useState(artists);
+
+  // Handle page change and filter posts based on the current page
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  // Update the current posts based on the selected page
+  useEffect(() => {
+    const indexOfLastArtist = currentPage * artistsPerPage;
+    const indexOfFirstArtist = indexOfLastArtist - artistsPerPage;
+    const newArtist = artists.slice(indexOfFirstArtist, indexOfLastArtist);
+    setCurrentArtists(newArtist);
+  }, [currentPage, artists]);
+
+  const totalPages = Math.ceil(artists.length / artistsPerPage);
+
   if (!artists || artists.length === 0) {
     return (
       <div>
@@ -12,27 +31,6 @@ function AllArtists({data:artists}) {
     );
   }
 
-    const artistsPerPage = 8;
-    const [currentPage, setCurrentPage] = useState(1);
-    const [currentArtists, setCurrentArtists] = useState(artists);
-  
-    // Handle page change and filter posts based on the current page
-    const handlePageChange = (newPage) => {
-      setCurrentPage(newPage);
-    };
-  
-    // Update the current posts based on the selected page
-    useEffect(() => {
-      const indexOfLastArtist = currentPage * artistsPerPage;
-      const indexOfFirstArtist = indexOfLastArtist - artistsPerPage;
-      const newArtist = artists.slice( indexOfFirstArtist, indexOfLastArtist);
-      setCurrentArtists(newArtist); 
-    }, [currentPage, artists]);
-
-
-  const totalPages = Math.ceil(artists.length / artistsPerPage);
-
-
   return (
     <>
       <div>
@@ -40,18 +38,17 @@ function AllArtists({data:artists}) {
           className={` md:w-5/6 p-8 mx-auto  grid grid-cols-2 md:grid-cols-4 gap-4`}
         >
           {currentArtists?.map((data) => (
-            <Artist 
-            key={data.id}
-            id={data.id}
-            name={data.name}
-            image={data.image}
-            bio={data.bio}
+            <Artist
+              key={data.id}
+              id={data.id}
+              name={data.name}
+              image={data.image}
+              bio={data.bio}
             />
           ))}
         </section>
 
         <div className="flex justify-center py-8">
-          
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -78,8 +75,6 @@ function AllArtists({data:artists}) {
             Next
           </button>
         </div>
-
-
       </div>
     </>
   );

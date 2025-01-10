@@ -1,18 +1,16 @@
-
-"use client";
 // Parent Component (UpcomingEvent)
 import SectionHeader from "@/components/SectionHeader";
 import { FaSearch } from "react-icons/fa";
 import AllEvent from "@/components/AllEvents";
-import { getEvents } from "@/lib/api"; 
+import { getEvents } from "@/lib/api";
 
 export default async function UpcomingEvent() {
-  const allEvents = await getEvents(); 
+  const allEvents = await getEvents();
 
   return (
     <>
       <SectionHeader
-        title={"Events Listings"} 
+        title={"Events Listings"}
         desc={"Find the latest events that suit your interest"}
       />
 
@@ -32,7 +30,6 @@ export default async function UpcomingEvent() {
       </section>
 
       <section className="p-4 md:w-5/6 md:p-20 mx-auto flex flex-col md:gap-10 gap-4">
-       
         <AllEvent allEvents={allEvents} />
       </section>
     </>

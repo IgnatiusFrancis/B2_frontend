@@ -15,6 +15,7 @@ import {
 import AllVideos from "@/components/AllVideos";
 import HomeRecentPost from "@/components/HomeRecentPost";
 import Link from "next/link";
+import Image from "next/image";
 
 const MovieTiles = [
   { id: 1, title: "Creed", img: "/creed.jpeg" },
@@ -67,9 +68,11 @@ function FullMoviesPage() {
               <div>
                 <Link href={`/movies-menu/${tile.title}/`}>
                   <div className="h-[400px] bg-gray-200">
-                    <img
+                    <Image
                       src={tile.img}
                       alt={tile.title}
+                      width={100}
+                      height={100}
                       className="w-full h-full object-contain"
                     />
                   </div>

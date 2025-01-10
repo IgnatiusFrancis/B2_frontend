@@ -1,14 +1,12 @@
-"use client";
 import SectionHeader from "@/components/SectionHeader";
-
 import { getPosts } from "@/lib/api";
 import SearchClient from "@/hooks/useSearch";
 import AllBlogPosts from "@/components/AllBlogPosts";
 
 async function Blogs() {
-    const posts = await getPosts(); 
+  const posts = await getPosts();
 
-  return ( 
+  return (
     <>
       <SectionHeader
         title={"Trending Stories"}
@@ -17,15 +15,13 @@ async function Blogs() {
         }
       />
 
-    
       <SearchClient
         data={posts}
         ContentContainer={AllBlogPosts}
         searchFields={["title", "author"]}
-      /> 
+      />
     </>
   );
 }
 
 export default Blogs;
-

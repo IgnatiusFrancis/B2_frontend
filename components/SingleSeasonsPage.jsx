@@ -1,9 +1,9 @@
-
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import { FaFileDownload } from "react-icons/fa";
+import Image from "next/image";
 
 export const SingleSeasonsPage = ({ series }) => {
   const [downloadingEpisodeId, setDownloadingEpisodeId] = useState(null);
@@ -58,9 +58,11 @@ export const SingleSeasonsPage = ({ series }) => {
       {/* Trailer Poster */}
       <div className="w-[90%] md:w-5/6 mx-auto my-10">
         <div className="relative group">
-          <img
+          <Image
             src={trailerPosterUrl}
             alt={season.movie?.title || "Season Poster"}
+            height={100}
+            width={100}
             className="w-full rounded-lg shadow-lg object-cover max-h-[600px] transition-transform transform group-hover:scale-105 duration-500"
           />
           <div className="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -95,9 +97,11 @@ export const SingleSeasonsPage = ({ series }) => {
             >
               <Link href={`/season-menu/${season.id}/${episode.id}`}>
                 <div className="relative">
-                  <img
+                  <Image
                     src={episode.posterUrl?.url || "/default-placeholder.png"}
                     alt={episode.episodeTitle || "Episode Image"}
+                    height={100}
+                    width={100}
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent text-white p-3 opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -134,5 +138,3 @@ export const SingleSeasonsPage = ({ series }) => {
     </div>
   );
 };
-
-

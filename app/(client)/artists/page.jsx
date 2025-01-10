@@ -1,12 +1,11 @@
-"use client";
 import AllArtists from "@/components/AllArtists";
 import SectionHeader from "@/components/SectionHeader";
 import SearchComponent from "@/hooks/useSearchArtist";
 import { getArtists } from "@/lib/api";
 
 async function Artists() {
-    const artists = await getArtists(); 
-    
+  const artists = await getArtists();
+
   return (
     <>
       <SectionHeader
@@ -23,21 +22,19 @@ async function Artists() {
           >
             Find the most recent music release
           </h1>
-          <p className={` text-center md:text-left`}> 
+          <p className={` text-center md:text-left`}>
             Discover the rhythm that moves you{" "}
           </p>
         </div>
       </section>
-   
-      <SearchComponent
-  data={artists}
-  ContentContainer={AllArtists}
-  searchFields={['bio', 'name',]} 
-/>
 
+      <SearchComponent
+        data={artists}
+        ContentContainer={AllArtists}
+        searchFields={["bio", "name"]}
+      />
     </>
   );
 }
 
 export default Artists;
- 

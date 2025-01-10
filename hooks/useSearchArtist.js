@@ -1,11 +1,12 @@
-
-
 "use client";
-
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-export default function SearchComponent({ data, ContentContainer, searchFields }) {
+export default function SearchComponent({
+  data,
+  ContentContainer,
+  searchFields,
+}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState(data);
 
@@ -42,4 +43,3 @@ export default function SearchComponent({ data, ContentContainer, searchFields }
     </section>
   );
 }
-

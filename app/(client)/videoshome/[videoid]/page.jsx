@@ -1,4 +1,3 @@
-"use client";
 import { fetchVideo, fetchVideoByArtist } from "@/lib/api";
 import SingleVideo from "@/components/SingleVideo";
 
@@ -9,7 +8,7 @@ async function VideoId({ params }) {
     const artistVideos = await fetchVideoByArtist(video?.artist?.id, 3);
 
     return (
-      <>  
+      <>
         <SingleVideo video={video} artistVideos={artistVideos} />
       </>
     );

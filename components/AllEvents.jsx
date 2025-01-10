@@ -1,6 +1,3 @@
-
-
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -21,23 +18,23 @@ function AllEvent({ allEvents }) {
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const newPosts = allEvents.slice(indexOfFirstPost, indexOfLastPost);
-    setCurrentPosts(newPosts); 
+    setCurrentPosts(newPosts);
   }, [currentPage, allEvents]); // Recalculate posts whenever currentPage or allEvents change
 
-  const totalPages = Math.ceil(allEvents.length / postsPerPage);
+  const totalPages = Math.ceil(allEvents?.length / postsPerPage);
 
   return (
     <div>
       <div className="flex flex-col gap-4">
         {currentPosts?.map((event) => (
-          <EventTicket  
-          key={event.id}
-          id={event.id}
-          title={event.title}
-          image={event.image}
-          location={event.location}
-          date={event.date}
-          /> 
+          <EventTicket
+            key={event?.id}
+            id={event?.id}
+            title={event?.title}
+            image={event?.image}
+            location={event?.location}
+            date={event?.date}
+          />
         ))}
       </div>
       <div className="flex justify-center mt-4">

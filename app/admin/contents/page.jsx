@@ -1,11 +1,11 @@
 import { FaBlog, FaComment, FaEye, FaUser } from "react-icons/fa";
 import AllArtistOverview from "@/components/AllArtistOverview";
-import AllMusicOverview from "@/components/AllMusicOverview";
 import AllVideosOverview from "@/components/AllVideosOverview";
 import AllEventOverview from "@/components/AllEventOverview";
 import AllOverviewPost from "@/components/AllOverviewPosts";
 import { CiMusicNote1, CiVideoOn } from "react-icons/ci";
 import { MdOutlineEmojiEvents } from "react-icons/md";
+import AllMusicOverview from "@/components/AllMusicOverview";
 function Contents() {
   return (
     <>
@@ -93,7 +93,7 @@ function Contents() {
               </div>
             </div>
 
-            <AllOverviewPost />
+            {/* <AllOverviewPost /> */}
           </div>
         </div>
 
@@ -109,7 +109,7 @@ function Contents() {
                 <h1 className={` w-2/12 text-xs`}>Action</h1>
               </div>
             </div>
-            <AllMusicOverview />
+            {/* <AllMusicOverview /> */}
           </div>
 
           <div>
@@ -123,7 +123,7 @@ function Contents() {
                 <h1 className={` w-2/12 text-xs`}>Action</h1>
               </div>
             </div>
-            <AllVideosOverview />
+            {/* <AllVideosOverview /> */}
           </div>
         </div>
       </section>

@@ -79,6 +79,7 @@
 // app/components/seriesHome.jsx 
 
 
+import Image from "next/image";
 import Link from "next/link";
 
 const AllSeriesHome = ({ series: movieSeries }) => {
@@ -174,9 +175,11 @@ const AllSeriesHome = ({ series: movieSeries }) => {
           >
             <Link href={`/series-menu/${movie.id}/`}>
               <div className="relative group cursor-pointer">
-                <img
+                <Image
                   src={movie.seasons[0]?.episodes[0]?.posterUrl?.url || "/placeholder.png"}
-                  alt={movie.title}
+          alt={movie.title}
+          height={100}
+          width={100}
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity flex items-center justify-center">
