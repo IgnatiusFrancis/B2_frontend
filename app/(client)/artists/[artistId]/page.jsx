@@ -61,11 +61,8 @@ export default async function SingleMusics({ params, searchParams }) {
             />
           </div>
           <div>
-            <p className="text-white text-md">Artist. View Profile</p>
+            <p className="text-white text-md">Artist Profile View</p>
             <h1 className="text-white text-3xl font-bold">{artist.name}</h1>
-            <button className="bg-red-500 text-white px-4 py-2 text-sm rounded-full flex gap-1 items-center">
-              <FaPlay /> Play All
-            </button>
           </div>
         </div>
         <TabContainer activeTab={activeTab} artistId={artistId} />

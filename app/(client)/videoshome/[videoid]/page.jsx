@@ -1,15 +1,18 @@
-import { fetchVideo, fetchVideoByArtist } from "@/lib/api";
+import { fetchVideo, fetchVideoByArtist, getTopArtists } from "@/lib/api";
 import SingleVideo from "@/components/SingleVideo";
 
 async function VideoId({ params }) {
   try {
-    const video = await fetchVideo(params.videoid);
+      const [video, topArtists] = await Promise.all([  
+        fetchVideo(params.videoid),
+        getTopArtists(),
+      ]);
 
-    const artistVideos = await fetchVideoByArtist(video?.artist?.id, 3);
+    const artistVideos = await fetchVideoByArtist(video?.artist?.id, 3); 
 
     return (
       <>
-        <SingleVideo video={video} artistVideos={artistVideos} />
+        <SingleVideo video={video} artistVideos={artistVideos} topArtists={topArtists}/>
       </>
     );
   } catch (error) {

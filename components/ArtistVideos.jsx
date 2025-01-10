@@ -4,13 +4,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import pld from "@/public/pld.jpeg";
+import NoContentAvailable from "./NoAvailableContent";
 
 export default function ArtistVideos({ videos }) {
-  if (!videos || videos.length === 0) {
+
+  if (!videos || videos.length === 0) { 
     return (
-      <div className="py-8 text-center">
-        <p className="text-gray-500">No videos available for this artist.</p>  
-      </div>
+      <NoContentAvailable
+        title="No Videos Found"
+        message="It seems there are no viedos available at the moment. Please check back later."
+      />
     );
   }
 
@@ -18,7 +21,7 @@ export default function ArtistVideos({ videos }) {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-4">
       {videos.map((video) => (
         <div key={video.id} className="relative group cursor-pointer">
-          <Link href={`/video/${video.id}`}>
+          <Link href={`/videoshome/${video.id}`}>
             <div className="relative h-48 w-full">
               <Image
                 src={video.url || pld}
