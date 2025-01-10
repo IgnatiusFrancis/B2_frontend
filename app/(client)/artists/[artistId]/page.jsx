@@ -4,14 +4,22 @@ import { getArtist, getTopArtists } from "@/lib/api";
 import CategoriesHeading from "@/components/CategoriesHeading";
 import TopMusic from "@/components/TopMusic";
 import { VscLoading } from "react-icons/vsc";
-import { FaPlay } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaPinterest,
+  FaPlay,
+  FaTwitter,
+  FaYoutube,
+} from "react-icons/fa";
 import ArtistVideos from "@/components/ArtistVideos";
 import ArtistSongs from "@/components/ArtistSongs";
 import TabContainer from "@/components/TabContainer";
 
 export default async function SingleMusics({ params, searchParams }) {
   const { artistId } = params;
-  const activeTab = searchParams.tab || 'songs'; 
+  const activeTab = searchParams.tab || "songs";
 
   const [artist, topArtists] = await Promise.all([
     getArtist(artistId),
@@ -66,7 +74,7 @@ export default async function SingleMusics({ params, searchParams }) {
       {/* Main Content */}
       <section className="w-full md:w-5/6 md:mx-auto flex flex-col md:flex-row gap-2 py-8">
         <div className="w-4/6">
-          {activeTab === 'songs' && (
+          {activeTab === "songs" && (
             <>
               <CategoriesHeading title="Artist Songs" />
               <div className="py-4">
@@ -74,15 +82,15 @@ export default async function SingleMusics({ params, searchParams }) {
               </div>
             </>
           )}
-          
-          {activeTab === 'videos' && (
+
+          {activeTab === "videos" && (
             <>
               <CategoriesHeading title="Artist Videos" />
               <ArtistVideos videos={artist?.videos} />
             </>
           )}
-          
-          {activeTab === 'bio' && (
+
+          {activeTab === "bio" && (
             <>
               <CategoriesHeading title="Biography" />
               <div className="py-4">
@@ -100,6 +108,20 @@ export default async function SingleMusics({ params, searchParams }) {
               <TopMusic key={artist.id} topArtists={artist} index={index} />
             ))}
           </div>
+          {/* GET CONNECTED */}
+          <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
+          <CategoriesHeading title={"Get Connected"} />
+
+          <div className="flex justify-between p-4">
+            <FaFacebook className={`text-3xl `} />
+            <FaTwitter className={`text-3xl `} />
+            <FaLinkedin className={`text-3xl `} />
+            <FaYoutube className={`text-3xl `} />
+            <FaInstagram className={`text-3xl `} />
+            <FaPinterest className={`text-3xl `} />
+          </div>
+
+          <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
         </div>
       </section>
     </>

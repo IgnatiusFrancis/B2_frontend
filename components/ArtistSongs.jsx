@@ -2,6 +2,7 @@
 import ArtistSong from "./ArtistSong";
 
 export default function ArtistSongs({ tracks }) {
+  
   return (
     <div className="flex flex-col gap-2">
       {tracks?.map((track) => (
@@ -14,6 +15,7 @@ export default function ArtistSongs({ tracks }) {
           createdAt={track.createdAt} 
           audioUrl={track.audioUrl} 
           duration={track.duration} 
+          publicId={track.publicId}
         />
       ))}
     </div>

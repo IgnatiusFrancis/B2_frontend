@@ -31,7 +31,7 @@ function AllArtists({ data: artists = [] }) {
         {currentArtists.map((artist) => (
           <Artist
             key={artist.id} 
-            id={artist.id}
+            id={artist.id} 
             name={artist.name}
             url={artist.url}
             bio={artist.bio}
