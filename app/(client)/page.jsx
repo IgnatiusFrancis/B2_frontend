@@ -1,9 +1,6 @@
 import AlbumCover from "@/components/AlbumCover";
 import CategoriesHeading from "@/components/CategoriesHeading";
-import RecentPost from "@/components/RecentPost";
 import TopMusic from "@/components/TopMusic";
-import TopPlaylist from "@/components/TopPlaylist";
-import Image from "next/image";
 
 import Link from "next/link";
 import {
@@ -42,7 +39,7 @@ export default async function Home() {
     getTopArtists(),
     getTrendingVideos(),
   ]);
-  // console.log(topArtists)
+
   return (
     <main>
       <HeroSection />
@@ -81,7 +78,7 @@ export default async function Home() {
           <div className="w-full flex flex-col">
             <HomePost videos={videos} />
             <Link
-              href={"/movies"}
+              href={"/videoshome"}
               className="text-primarycolor font-bold text-center cursor-pointer"
             >
               Read More

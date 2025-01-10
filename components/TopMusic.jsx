@@ -19,7 +19,7 @@ function TopMusic({ topArtists, index }) {
       <p className="font-bold text-2xl text-gray-800">{index + 1}</p>
 
       {/* Clickable image */}
-      <a href={`#Trending-Songs`} className="md:w-[60px] md:h-[60px]">
+      <a href={`#Trending-Songs`} className="md:w-[60px] md:h-[60px]"> 
         <Image
           src={url || "/albumcover.jpeg"}
           width={1000}
@@ -33,6 +33,7 @@ function TopMusic({ topArtists, index }) {
         {/* Clickable artist name */}
         <a
           href={`#Trending-Songs`}
+          // href={`/videoshome/${id}`}
           className={`font-bold text-[16px] md:text-lg text-gray-900 ${theme}-text hover:text-blue-500 transition-colors duration-300`}
         >
           {name}

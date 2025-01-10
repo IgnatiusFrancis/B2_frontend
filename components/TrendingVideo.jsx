@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
 import pld from "@/public/pld.jpeg";
+import Link from "next/link";
 
 function TrendingVideos({ id, title, date, url, artist }) {
   const imageUrl = url ? url : pld;
 
   return (
+ <Link    href={`/videoshome/${id}`}>
     <div className="group relative bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
       {/* Artist Label/Badge */}
       {artist.isTopArtist && (
@@ -42,6 +44,7 @@ function TrendingVideos({ id, title, date, url, artist }) {
         {artist.bio?.split(" ").slice(0, 20).join(" ") || "No bio available"}...
       </div>
     </div>
+ </Link>
   );
 }
 
