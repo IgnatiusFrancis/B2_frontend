@@ -19,7 +19,7 @@ function AllEvent({ allEvents }) {
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const newPosts = allEvents.slice(indexOfFirstPost, indexOfLastPost);
     setCurrentPosts(newPosts);
-  }, [currentPage, allEvents]); // Recalculate posts whenever currentPage or allEvents change
+  }, [currentPage, allEvents]); 
 
   const totalPages = Math.ceil(allEvents?.length / postsPerPage);
 
@@ -31,7 +31,7 @@ function AllEvent({ allEvents }) {
             key={event?.id}
             id={event?.id}
             title={event?.title}
-            image={event?.image}
+            url={event?.url}
             location={event?.location}
             date={event?.date}
           />

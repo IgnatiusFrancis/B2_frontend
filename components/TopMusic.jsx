@@ -7,7 +7,7 @@ import { useContext } from "react";
 function TopMusic({ topArtists, index }) {
   
   const { theme } = useContext(ThemeContext);
-  const { name, url, track } = topArtists || {};
+  const { name, url, track, id } = topArtists || {};
 
 
 
@@ -32,8 +32,8 @@ function TopMusic({ topArtists, index }) {
       <div>
         {/* Clickable artist name */}
         <a
-          href={`#Trending-Songs`}
-          // href={`/videoshome/${id}`}
+          // href={`#Trending-Songs`}
+          href={`/artists/${id}`}
           className={`font-bold text-[16px] md:text-lg text-gray-900 ${theme}-text hover:text-blue-500 transition-colors duration-300`}
         >
           {name}

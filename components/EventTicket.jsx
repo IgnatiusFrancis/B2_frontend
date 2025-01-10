@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import pld from "@/public/pld.jpeg";
-function EventTicket({ id, title, image, location, date }) {
+function EventTicket({ id, title, url, location, date }) {
+ 
   return (
     <>
       <Link
@@ -13,8 +13,8 @@ function EventTicket({ id, title, image, location, date }) {
       >
         <div className="flex gap-6 items-center">
           <div className="w-[250px] h-[120px] hidden md:block">
-            <Image
-              src={image?.length > 0 ? image[0]?.url : pld}
+            <url
+              src={url ? url : pld}
               width={1000}
               height={1000}
               alt="alb"
