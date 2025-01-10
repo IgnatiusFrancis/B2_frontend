@@ -16,7 +16,7 @@ function Events() {
             <h1 className={` w-2/12 text-xs`}>Action</h1>
           </div>
 
-          <AllArtistOverview />
+          {/* <AllArtistOverview /> */}
         </div>
 
         <div>
@@ -29,7 +29,7 @@ function Events() {
               <h1 className={` w-2/12 text-xs`}>Action</h1>
             </div>
           </div>
-          <AllEventOverview />
+          {/* <AllEventOverview /> */}
         </div>
       </div>
     </>

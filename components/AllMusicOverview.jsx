@@ -40,7 +40,7 @@ function AllMusicOverview() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = data?.data?.data?.slice(
     indexOfFirstPost,
-    indexOfLastPost,
+    indexOfLastPost
   );
 
   // Calculate total number of pages
@@ -57,7 +57,7 @@ function AllMusicOverview() {
       <div className="w-full">
         <div className="w-full">
           {currentPosts?.map((music) => (
-            <MusicOverview key={music.id} {...music} />
+            <MusicOverview key={music?.id} {...music} />
           ))}
         </div>
 

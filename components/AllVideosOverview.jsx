@@ -57,7 +57,7 @@ function AllVideosOverview() {
     <>
       <div>
         {currentPosts?.map((video) => (
-          <VideoOverview key={video.id} {...video} />
+          <VideoOverview key={video?.id} {...video} />
         ))}{" "}
         <div className="flex justify-center mt-4 gap-2">
           {/* Previous button */}

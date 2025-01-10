@@ -102,7 +102,7 @@ export default async function Home() {
 
           <div className="grid grid-cols-3 md:flex md:flex-col gap-2 py-2">
             {topArtists.map((artist, index) => (
-              <TopMusic key={artist.id} topArtists={artist} index={index} />
+              <TopMusic key={artist?.id} topArtists={artist} index={index} />
             ))}
           </div>
           <div className="my-8 w-full h-[3px] bg-primarycolor"></div>

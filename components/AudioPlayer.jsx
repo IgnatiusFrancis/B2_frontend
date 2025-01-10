@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Controls from "./Controls";
 import DisplayTrack from "./DisplayTrack";
 import ProgressBar from "./ProgressBar";
@@ -9,7 +10,9 @@ const AudioPlayer = ({ currentTrack }) => {
         <div className="inner">
           <DisplayTrack currentTrack {...currentTrack} />
           <Controls />
-          <ProgressBar />
+          <Suspense fallback={<div>Loading...</div>}>
+            <ProgressBar />
+          </Suspense>
         </div>
       </div>
     </>

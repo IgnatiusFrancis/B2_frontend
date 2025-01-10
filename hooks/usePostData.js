@@ -1,9 +1,9 @@
 // app/hooks/usePostDate.js
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import axios from "axios";
 
-export const usePostData = (key, url) => { 
+export const usePostData = (key, url) => {
   return useQuery(
     key,
     async () => {

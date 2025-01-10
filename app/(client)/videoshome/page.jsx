@@ -1,5 +1,3 @@
-
-"use client";
 import SectionHeader from "@/components/SectionHeader";
 
 import AllVideos from "@/components/AllVideos";
@@ -7,8 +5,8 @@ import { getVideos } from "@/lib/api";
 import SearchClient from "@/hooks/useSearch";
 
 async function VideosHome() {
-   const videos = await getVideos();
-  
+  const videos = await getVideos();
+
   return (
     <>
       <SectionHeader title={"All videos"} desc={"some"} />
@@ -29,8 +27,7 @@ async function VideosHome() {
         data={videos}
         ContentContainer={AllVideos}
         searchFields={["title", "description", "subTitle"]}
-      /> 
-  
+      />
     </>
   );
 }

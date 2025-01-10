@@ -47,8 +47,6 @@
 // //   );
 // // }
 
-
-
 // "use client";
 
 // import { useState } from "react";
@@ -98,7 +96,7 @@
 //       </div>
 
 //       {/* Conditional Rendering */}
-      
+
 //       {searchResults ? (
 //         // Render search results
 //         <section className="grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-4">
@@ -131,23 +129,23 @@
 //           ))}
 //         </section>
 //       ) : (
-//         // Render default movies and series 
-//         <>       
-//        <AllMoviesHome movies={movies} /> 
-//       <AllSeriesHome series={series} /> 
+//         // Render default movies and series
+//         <>
+//        <AllMoviesHome movies={movies} />
+//       <AllSeriesHome series={series} />
 //         </>
 //       )}
-    
+
 //     </div>
 //   );
 // }
-
 
 "use client";
 
 import { useState } from "react";
 import AllMoviesHome from "./MoviesHome";
 import AllSeriesHome from "./SeriesHome";
+import Image from "next/image";
 
 export default function SearchMoviesClient({ movies, series }) {
   const [searchResults, setSearchResults] = useState(null);
@@ -190,13 +188,15 @@ export default function SearchMoviesClient({ movies, series }) {
           {searchResults.map((item) => (
             <div key={item.id} className="border rounded-md overflow-hidden">
               <div className="h-48 bg-gray-200">
-                <img
+                <Image
                   src={
                     item.seasons?.[0]?.episodes?.[0]?.posterUrl?.url ||
                     item.key ||
                     "/placeholder.png"
                   }
                   alt={item.title}
+                  height={100}
+                  width={100}
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -216,11 +216,9 @@ export default function SearchMoviesClient({ movies, series }) {
           ))}
         </section>
       ) : (
-      
         <>
-
-<AllMoviesHome movies={movies} /> 
-<AllSeriesHome series={series} /> 
+          <AllMoviesHome movies={movies} />
+          <AllSeriesHome series={series} />
         </>
       )}
     </div>

@@ -41,7 +41,7 @@ function AllOverviewPost() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = data?.data?.data?.slice(
     indexOfFirstPost,
-    indexOfLastPost,
+    indexOfLastPost
   );
 
   // Calculate total number of pages
@@ -57,7 +57,7 @@ function AllOverviewPost() {
     <>
       <div>
         {currentPosts?.map((post) => (
-          <PostContent key={post.id} {...post} />
+          <PostContent key={post?.id} {...post} />
         ))}
 
         <div className="flex justify-center mt-4 gap-2">

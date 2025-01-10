@@ -15,7 +15,7 @@ function PostContent({
   createdAt,
   subtitle,
 }) {
-  const imageUrl = image && image.length > 0 ? image[0]?.url : pld;
+  const imageUrl = image && image?.length > 0 ? image[0]?.url : pld;
 
   const [showActions, setShowActions] = useState(false);
   const [token, setToken] = useState(""); // State to hold the token
@@ -45,7 +45,7 @@ function PostContent({
 
       const response = await axios.delete(
         `https://b2xclusive.onrender.com/api/v1/post/delete/${id}`,
-        config,
+        config
       );
       toast.dismiss();
 
@@ -87,7 +87,7 @@ function PostContent({
           </div>
         </div>
         <div className="w-6/12 flex items-center gap-2">
-          <h1 className={`w-1/4 text-xs `}>{views.length}</h1>
+          <h1 className={`w-1/4 text-xs `}>{views?.length}</h1>
 
           <div className="flex items-center gap-2 w-1/4">
             <FaComment className={` text-xs`} />

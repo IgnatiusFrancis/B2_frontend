@@ -5,13 +5,13 @@ import pld from "@/public/pld.jpeg";
 import Link from "next/link";
 
 function BlogPost({ id, title, subtitle, image, updatedAt, author }) {
-  const imageUrl = image && image.length > 0 ? image[0]?.url : pld;
+  const imageUrl = image && image?.length > 0 ? image[0]?.url : pld;
 
   return (
     <>
       <Link
         href={`blogs/${id}`}
-        className={` bg-white hover:text-primarycolor transition transition-all duration-500 `}
+        className={` bg-white hover:text-primarycolor transition-all duration-500 `}
       >
         <div className="hidden md:block w-full h-[150px] md:h-[300px]">
           <Image

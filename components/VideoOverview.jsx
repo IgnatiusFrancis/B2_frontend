@@ -42,7 +42,7 @@ function VideoOverview({
 
       const response = await axios.delete(
         `https://b2xclusive.onrender.com/api/v1/track/video/delete/${id}`,
-        config,
+        config
       );
       toast.dismiss();
 
@@ -84,7 +84,7 @@ function VideoOverview({
           </div>
         </div>
         <p className="w-2/12 text-xs">{duration ? duration : "00:00"}</p>
-        <p className="w-3/12 text-xs">{createdAt.split("T")[0]}</p>
+        <p className="w-3/12 text-xs">{createdAt?.split("T")[0]}</p>
         <div
           className="w-2/12 relative text-xs cursor-pointer "
           onClick={() => setShowActions(!showActions)}

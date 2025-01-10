@@ -13,7 +13,7 @@
 //       <div
 //         className={`${theme}-bgg p-2 md:p-4 md:flex md:gap-4 md:items-center bg-white`}
 //       >
-       
+
 //        <p className="font-bold text-xl">{index + 1}</p>
 //         <div className="md:w-[50px] md:h-[50px]">
 //           <Image
@@ -44,7 +44,6 @@
 // }
 
 // export default TopMusic;
-
 
 "use client";
 
@@ -85,9 +84,9 @@ function TopMusic({ topArtists, index }) {
 
         <div className={`text-[14px] md:text-sm text-gray-600 ${theme}-text`}>
           {track.map((trackItem, index) => (
-            <p key={trackItem.id}>
-              {trackItem.title}
-              {index < track.length - 1 && ", "}
+            <p key={trackItem?.id}>
+              {trackItem?.title}
+              {index < track?.length - 1 && ", "}
             </p>
           ))}
         </div>

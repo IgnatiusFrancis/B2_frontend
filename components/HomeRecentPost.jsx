@@ -1,8 +1,8 @@
 "use client";
 import RecentPost from "./RecentPost";
 
-function HomeRecentPost({posts}) {
-  if (!posts || posts.length === 0) {
+function HomeRecentPost({ posts }) {
+  if (!posts || posts?.length === 0) {
     return (
       <div>
         <p className="text-gray-500 font-bold">No Posts Available</p>
@@ -16,14 +16,16 @@ function HomeRecentPost({posts}) {
         {posts &&
           posts
             ?.slice(0, 5)
-            .map((post) => <RecentPost 
-            key={post.id}
-          id={post.id}
-          title={post.title}
-          url={post.url}
-          updatedAt={post.updatedAt}
-          date={post.date}
-            />)}
+            .map((post) => (
+              <RecentPost
+                key={post?.id}
+                id={post?.id}
+                title={post?.title}
+                url={post?.url}
+                updatedAt={post?.updatedAt}
+                date={post?.date}
+              />
+            ))}
       </div>
     </>
   );

@@ -6,15 +6,15 @@ function EventTicket({ id, title, image, location, date }) {
   return (
     <>
       <Link
-      prefetch={true}
-      key={id}
+        prefetch={true}
+        key={id}
         href={`upcomingevents/${id}`}
         className={`hover:bg-gray-200 hover:font-bold hover:text-primarycolor transition-all duration-500 bg-white rounded-xl p-4 md:p-0 md:flex gap-6 justify-between items-center  cursor-pointer`}
       >
         <div className="flex gap-6 items-center">
           <div className="w-[250px] h-[120px] hidden md:block">
             <Image
-              src={image.length > 0 ? image[0]?.url : pld}
+              src={image?.length > 0 ? image[0]?.url : pld}
               width={1000}
               height={1000}
               alt="alb"
