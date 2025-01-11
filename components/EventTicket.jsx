@@ -3,7 +3,6 @@ import Link from "next/link";
 import pld from "@/public/pld.jpeg";
 import Image from "next/image";
 function EventTicket({ id, title, url, location, date }) {
- 
   return (
     <>
       <Link
@@ -14,13 +13,13 @@ function EventTicket({ id, title, url, location, date }) {
       >
         <div className="flex gap-6 items-center">
           <div className="w-[250px] h-[120px] hidden md:block">
-              <Image
-                        src={url ? url : pld} 
-                        width={1000}
-                        height={1000}
-                        alt={title}
-                        className="w-full h-full object-cover rounded-tl-xl rounded-bl-xl border-r-4 border-primarycolor "
-                      />
+            <Image
+              src={url ? url : pld}
+              width={1000}
+              height={1000}
+              alt={title}
+              className="w-full h-full object-cover rounded-tl-xl rounded-bl-xl border-r-4 border-primarycolor "
+            />
           </div>
 
           <div className="p-4 md:py-4 ">
