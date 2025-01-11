@@ -126,6 +126,15 @@ export default async function Home() {
             </div>
             <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
           </div>
+
+           {/*Animated section */}
+          <div className="hidden md:block">
+            <CategoriesHeading title={"Recent Post"} />
+            <div className="w-full">
+              <HomeRecentPost posts={posts} />
+            </div>
+            <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
+          </div>
         </div>
       </section>
     </main>

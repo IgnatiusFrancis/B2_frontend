@@ -61,7 +61,7 @@
 import { ThemeContext } from "@/context/ThemeContext";
 import Image from "next/image";
 import { useContext } from "react";
-import Link from "next/link"; // Import the Link component
+import Link from "next/link"; 
 
 function TopMusic({ topArtists, index }) {
   const { theme } = useContext(ThemeContext);

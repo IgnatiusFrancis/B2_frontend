@@ -27,7 +27,13 @@ function Event({ id, title, url, location, date }) {
           </div>
 
           <div className="hidden md:block">
-            <p className="font-bold ">{date?.split("T")[0]}</p>
+            {/* <p className="font-bold ">{date?.split("T")[0]}</p> */}
+            {new Date(date).toLocaleDateString("en-US", {
+                      weekday: "long", // Example: Monday
+                      year: "numeric",
+                      month: "long", // Example: January
+                      day: "numeric",
+                    })}
           </div>
           <Link
             href={`/upcomingevents/${id}`}

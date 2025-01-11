@@ -1,12 +1,12 @@
 import Image from "next/image";
 import pld from "@/public/pld.jpeg";
 
-function RelatedArticles({ title, image, subtitle }) {
+function RelatedArticles({ title, url, subtitle }) {
   return (
     <>
       <div className="w-full h-[150px] md:h-[300px] relative">
         <Image
-          src={image[0]?.url || pld}
+          src={url || pld}
           width={1000}
           height={1000}
           alt="blogd"

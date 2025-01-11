@@ -4,8 +4,8 @@ import Image from "next/image";
 import pld from "@/public/pld.jpeg";
 import Link from "next/link";
 
-function BlogPost({ id, title, subtitle, image, updatedAt, author }) {
-  const imageUrl = image && image?.length > 0 ? image[0]?.url : pld;
+function BlogPost({ id, title, subtitle, url, updatedAt, author }) {
+  const imageUrl = url ?url: pld; 
 
   return (
     <>

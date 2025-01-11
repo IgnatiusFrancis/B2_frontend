@@ -1,8 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import BlogPost from "./BlogPost";
+import NoContentAvailable from "./NoAvailableContent";
 
 function AllBlogPosts({ data: posts }) {
+
+  if (!posts || posts.length === 0) {
+    return (
+      <NoContentAvailable
+        title="No Posts Found"
+        message="It seems there are no posts available at the moment. Please check back later."
+      />
+    );
+  }
+
   const postsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPosts, setCurrentPosts] = useState(posts);
@@ -31,7 +42,7 @@ function AllBlogPosts({ data: posts }) {
           key={post.id}
           id={post.id}
           title={post.title}
-          image={post.image}
+          url={post.url}
           location={post.location}
           date={post.date}
           /> 

@@ -1,4 +1,3 @@
-
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,20 +8,20 @@ function RecentPost({ id, title, updatedAt, url }) {
 
   return (
     <Link
-      href={`/blogs/${id}`} 
+      href={`/blogs/${id}`}
       prefetch={true}
       className="relative group flex items-center gap-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
     >
       {/* Image Section */}
       <div className="relative w-[80px] h-[80px] rounded-full overflow-hidden border-4 border-gray-200 group-hover:border-primarycolor transition-all duration-300">
-                <Image
-                  src={imageUrl}
-                  width={1000}
-                  height={1000}
-                  alt={title || "Blog Post"}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
+        <Image
+          src={imageUrl}
+          width={1000}
+          height={1000}
+          alt={title || "Blog Post"}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+        />
+      </div>
 
       {/* Text Content */}
       <div className="flex flex-col justify-between flex-1">
@@ -37,9 +36,13 @@ function RecentPost({ id, title, updatedAt, url }) {
       {/* Date Label */}
       {updatedAt && (
         <div className="absolute bottom-2 right-2 bg-primarycolor text-white text-xs px-3 py-1 rounded-full shadow-md">
-          {updatedAt.split("T")[0]}
+          {new Date(updatedAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
         </div>
-      )}
+      )} 
     </Link>
   );
 }
