@@ -1,69 +1,101 @@
+
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import EventTicket from "./EventTicket";
+import NoContentAvailable from "./NoAvailableContent";
 
-function AllEvent({ allEvents }) {
-  const postsPerPage = 10;
+function AllEvent({ data: allEvents = [] }) {
+  const eventsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPosts, setCurrentPosts] = useState(allEvents);
 
-  // Handle page change and filter posts based on the current page
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+  const totalPages = Math.ceil(allEvents.length / eventsPerPage);
+
+  const currentEvents = useMemo(() => {
+    const indexOfLastEvent = currentPage * eventsPerPage;
+    const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
+    return allEvents.slice(indexOfFirstEvent, indexOfLastEvent);
+  }, [currentPage, allEvents]);
+
+  if (!allEvents || allEvents.length === 0) {
+    return (
+      <NoContentAvailable
+        title="No Events Found"
+        message="There are no events available at the moment. Please check back later."
+      />
+    );
+  }
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(Math.min(Math.max(1, pageNumber), totalPages));
   };
 
-  // Update the current posts based on the selected page
-  useEffect(() => {
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const newPosts = allEvents.slice(indexOfFirstPost, indexOfLastPost);
-    setCurrentPosts(newPosts);
-  }, [currentPage, allEvents]); 
-
-  const totalPages = Math.ceil(allEvents?.length / postsPerPage);
-
   return (
-    <div>
-      <div className="flex flex-col gap-4">
-        {currentPosts?.map((event) => (
+    <div className="w-full pb-6">
+      <div className="w-full p-2 md:w-5/6 md:mx-auto flex flex-col gap-2">
+        {currentEvents.map((event) => (
           <EventTicket
-            key={event?.id}
-            id={event?.id}
-            title={event?.title}
-            url={event?.url}
-            location={event?.location}
-            date={event?.date}
+            key={event.id}
+            id={event.id}
+            title={event.title}
+            url={event.url}
+            location={event.location}
+            date={event.date}
           />
         ))}
       </div>
-      <div className="flex justify-center mt-4">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="border text-[10px] md:text-base border-gray-500 text-gray-500 px-2 md:px-4 md:py-2 rounded-md mr-2"
-        >
-          Previous
-        </button>
-        {Array.from({ length: totalPages }).map((_, index) => (
+
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-4 px-4">
           <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            className={`border border-gray-500 text-primarycolor md:text-base text-[10px] px-4 py-2 rounded-md mx-1 ${
-              currentPage === index + 1 ? "bg-gray-100" : ""
-            }`}
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="border text-[10px] md:text-base border-gray-500 text-gray-500 px-2 md:px-4 md:py-2 rounded-md 
+              hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {index + 1}
+            Previous
           </button>
-        ))}
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="bg-primarycolor text-white px-4 py-2 md:text-base text-[10px] rounded-md ml-2"
-        >
-          Next
-        </button>
-      </div>
+
+          <div className="flex gap-1">
+            {Array.from({ length: totalPages }).map((_, index) => { 
+              const pageNumber = index + 1;
+              // Show first page, last page, current page, and one page before and after current
+              const shouldShow =
+                pageNumber === 1 ||
+                pageNumber === totalPages ||
+                Math.abs(pageNumber - currentPage) <= 1;
+
+              if (!shouldShow) {
+                if (pageNumber === currentPage - 2 || pageNumber === currentPage + 2) {
+                  return <span key={index} className="px-2">...</span>;
+                }
+                return null;
+              }
+
+              return (
+                <button
+                  key={index}
+                  onClick={() => handlePageChange(pageNumber)}
+                  className={`border border-gray-500 text-[10px] md:text-base px-3 md:px-4 md:py-2 rounded-md
+                    hover:bg-gray-50 transition-colors
+                    ${currentPage === pageNumber ? "bg-gray-100 font-medium" : "text-gray-500"}`}
+                >
+                  {pageNumber}
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="bg-primarycolor text-white text-[10px] md:text-base px-2 md:px-4 md:py-2 rounded-md
+              hover:bg-primarycolor/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

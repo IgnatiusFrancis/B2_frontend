@@ -4,7 +4,7 @@ import Comments from "@/components/Comments";
 import RecentPost from "@/components/RecentPost";
 import TicketOrder from "@/components/TicketOrder";
 import TopMusic from "@/components/TopMusic";
-import TopPlaylist from "@/components/TopPlaylist";
+import TopPlaylist from "@/components/TopPlaylist"; 
 
 import axios from "axios";
 import Image from "next/image";
@@ -412,14 +412,14 @@ function SingleEventPage({ params }) {
           {/* TOP ARTIST SECTION */}
           <CategoriesHeading title={"Top 10 Artists"} />
 
-          <div className="grid grid-cols-3 md:flex md:flex-col gap-2">
+          {/* <div className="grid grid-cols-3 md:flex md:flex-col gap-2">
             <TopMusic />
             <TopMusic />
             <TopMusic />
             <TopMusic />
             <TopMusic />
             <TopMusic />
-          </div>
+          </div> */}
 
           <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
 
