@@ -3,16 +3,9 @@ import { useEffect, useState } from "react";
 import BlogPost from "./BlogPost";
 import NoContentAvailable from "./NoAvailableContent";
 
-function AllBlogPosts({ data: posts }) {
+function AllBlogPosts({ data: posts }) { 
 
-  if (!posts || posts.length === 0) {
-    return (
-      <NoContentAvailable
-        title="No Posts Found"
-        message="It seems there are no posts available at the moment. Please check back later."
-      />
-    );
-  }
+
 
   const postsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,7 +25,14 @@ function AllBlogPosts({ data: posts }) {
   }, [currentPage, posts]); // Recalculate posts whenever currentPage or posts change
 
   const totalPages = Math.ceil(posts.length / postsPerPage);
-
+  if (!posts || posts.length === 0) {
+    return (
+      <NoContentAvailable
+        title="No Posts Found"
+        message="It seems there are no posts available at the moment. Please check back later."
+      />
+    );
+  }
   return (
     <>
       <div>
