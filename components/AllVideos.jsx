@@ -84,80 +84,81 @@
 "use client";
 import { useEffect, useState } from "react";
 import Videos from "./Videos";
+import NoContentAvailable from "./NoAvailableContent";
 
 function AllVideos({ data: videos }) {
-  const videosPerPage = 8;
+  const videosPerPage = 9; // Changed to 9 for 3x3 grid
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentVideo, setCurrentVideo] = useState([]);
+  const [currentVideos, setCurrentVideos] = useState([]);
 
   useEffect(() => {
-    if (videos && videos.length > 0) {
-      const indexOfLastVideo = currentPage * videosPerPage;
-      const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
-      const newVideo = videos.slice(indexOfFirstVideo, indexOfLastVideo);
-      setCurrentVideo(newVideo);
-    } else {
-      setCurrentVideo([]);
-    }
+    const indexOfLastVideo = currentPage * videosPerPage;
+    const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
+    const newVideos = videos.slice(indexOfFirstVideo, indexOfLastVideo);
+    setCurrentVideos(newVideos);
   }, [currentPage, videos]);
 
-  const totalPages = videos ? Math.ceil(videos.length / videosPerPage) : 0;
+  const totalPages = Math.ceil(videos.length / videosPerPage);
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+
+  if (!videos || videos.length === 0) {
+    return (
+      <NoContentAvailable
+        title="No videos Found"
+        message="It seems there are no videos available at the moment. Please check back later."
+      />
+    );
+  }
 
   return (
-    <div>
-      {currentVideo.length === 0 ? (
-        <div>
-          <p className="text-gray-500 font-bold">No videos Available</p>
-        </div>
-      ) : (
-        <div className="w-full p-4 md:w-full flex flex-col gap-8">
-          {currentVideo.map((video) => (
+    <div className="max-w-7xl mx-auto px-4 py-8">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {currentVideos.map((video) => (
+            
             <Videos
               key={video.id}
               id={video.id}
               title={video.title}
-              thumbnail={video.thumbnail}
+              url={video.url}
               artist={video.artist}
               subtitle={video.subtitle}
               createdAt={video.createdAt}
             />
           ))}
         </div>
-      )}
 
-      {totalPages > 1 && (
-        <div className="flex justify-center py-8">
+        <div className="flex justify-center mt-12 gap-2">
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        
+        {Array.from({ length: totalPages }).map((_, index) => (
           <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="border border-gray-500 text-gray-500 px-4 py-2 rounded-md mr-2"
-          >
-            Previous
-          </button>
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handlePageChange(index + 1)}
-              className={`border border-gray-500 text-gray-500 px-4 py-2 rounded-md mr-2 ${
-                currentPage === index + 1 ? "bg-gray-100" : ""
+            key={index}
+            onClick={() => setCurrentPage(index + 1)}
+            className={`px-4 py-2 rounded-md text-sm font-medium
+              ${currentPage === index + 1
+                ? 'bg-primarycolor text-white'
+                : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
               }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="bg-primarycolor text-white px-4 py-2 rounded-md ml-2"
           >
-            Next
+            {index + 1}
           </button>
-        </div>
-      )}
+        ))}
+        
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 rounded-md bg-primarycolor text-white text-sm font-medium hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

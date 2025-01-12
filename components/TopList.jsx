@@ -339,7 +339,7 @@ const Waveform = ({ isPlaying }) => {
   const bars = 200; 
   
   return (
-    <div className="flex items-center gap-[2px] h-4 mx-2">
+    <div className="flex items-center gap-[2px] h-4 mx-2"> 
       {[...Array(bars)].map((_, i) => (
         <div
           key={i}
