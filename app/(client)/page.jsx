@@ -30,6 +30,7 @@ import {
 } from "@/lib/api";
 import HeroSection from "@/components/HeroSection";
 import TopList from "@/components/TopList";
+import NoContentDesign from "@/components/NoContent";
 
 export default async function Home() {
   const [posts, events, albums, topArtists, videos] = await Promise.all([
@@ -54,24 +55,18 @@ export default async function Home() {
             ))}
           </div>
 
-          <div className="flex items-end justify-between mb-10">
+          {/* <div className="flex items-end justify-between mb-10">
             <div className="w-[80%] h-[2px] bg-primarycolor"></div>
             <div className="flex gap-4">
               <FaBackward className={`border w-5 h-5 p-1  `} />
               <FaForward className={`border w-5 h-5 p-1 `} />
             </div>
-          </div>
+          </div> */}
 
           {/* UPCOMING EVENTS SECTION*/}
           <HomeEvents events={events} />
 
-          <div className="flex items-end justify-between mb-10">
-            <div className="w-[80%] h-[3px] bg-primarycolor"></div>
-            <div className="flex gap-4">
-              <FaBackward className={`border w-5 h-5 p-1  `} />
-              <FaForward className={`border w-5 h-5 p-1 `} />
-            </div>
-          </div>
+       
 
           {/* RECENT POST SECTION */}
           <CategoriesHeading title={"Trending Videos"} />
@@ -102,7 +97,7 @@ export default async function Home() {
               <TopMusic key={artist?.id} topArtists={artist} index={index} />
             ))}
           </div>
-          <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
+          {/* <div className="my-8 w-full h-[3px] bg-primarycolor"></div> */}
 
           {/* GET CONNECTED */}
           <CategoriesHeading title={"Get Connected"} />
@@ -116,7 +111,7 @@ export default async function Home() {
             <FaPinterest className={`  text-3xl `} />
           </div>
 
-          <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
+          {/* <div className="my-8 w-full h-[3px] bg-primarycolor"></div> */}
 
           {/* Recent post section */}
           <div className="hidden md:block">
@@ -124,17 +119,20 @@ export default async function Home() {
             <div className="w-full">
               <HomeRecentPost posts={posts} />
             </div>
-            <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
+            {/* <div className="my-8 w-full h-[3px] bg-primarycolor"></div> */}
           </div>
-
+          {/* <NoContentDesign  /> */}
            {/*Animated section */}
           <div className="hidden md:block">
-            <CategoriesHeading title={"Recent Post"} />
+            <CategoriesHeading title={"Feel The Beat"} />
             <div className="w-full">
-              <HomeRecentPost posts={posts} />
-            </div>
-            <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
+            <NoContentDesign  />
+            </div>  
           </div>
+          {/* <NoContentDesign  /> */}
+          <div className="w-48">
+  
+      </div>
         </div>
       </section>
     </main>
