@@ -2,6 +2,7 @@
 import CategoriesHeading from "@/components/CategoriesHeading";
 import SectionHeader from "@/components/SectionHeader";
 import TopMusic from "@/components/TopMusic";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import {
   FaComment,
@@ -17,8 +18,9 @@ import {
   FaEye,
 } from "react-icons/fa";
 import { useState } from "react";
+import NoContentDesign from "@/components/NoContent";
 
-function SingleVideo({ video, artistVideos, topArtists }) {
+function SingleVideo({ video, artistVideos, topArtists }) { 
   const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownload = async () => {
@@ -53,10 +55,34 @@ function SingleVideo({ video, artistVideos, topArtists }) {
 
   return (
     <>
-      <SectionHeader
+      {/* <SectionHeader
         title={video?.title}
         desc={video?.subtitle || "A little about the album goes here"}
-      />
+      /> */}
+
+            {/* Hero Section */}
+            <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative h-[60vh] overflow-hidden"
+      >
+        <Image
+          src={video?.url || imgPlaceholder}
+          alt={video?.title}
+          fill
+          className="object-cover brightness-50 transform hover:scale-105 transition-transform duration-700"
+        />
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-6xl font-bold text-center mb-6 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text"
+          >
+            {video?.title}
+          </motion.h1>
+        </div>
+      </motion.section>
 
       <section className="md:w-5/6 md:p-8 p-4 mx-auto md:flex md:gap-8">
         <div className="w-full p-4 md:w-4/6 flex flex-col gap-8">
@@ -126,7 +152,9 @@ function SingleVideo({ video, artistVideos, topArtists }) {
             </div> */}
           </div>
         </div>
-        <div className="md:w-2/6 p-4">
+
+
+        {/* <div className="md:w-2/6 p-4">
           <CategoriesHeading title="Top 10 Artists" />
           <div className="flex flex-col gap-4">
             {topArtists?.map((artist, index) => (
@@ -144,7 +172,35 @@ function SingleVideo({ video, artistVideos, topArtists }) {
             <FaInstagram className="text-3xl" />
             <FaPinterest className="text-3xl" />
           </div>
-        </div>
+        </div> */}
+
+  {/*Animated section */} 
+  {/* <div className="hidden md:block">
+          <CategoriesHeading title={"Feel The Beat"} />         
+            <div className="w-full">
+              <NoContentDesign />
+            </div>
+          </div> */}
+
+
+           {/* Sidebar */}
+         <aside className="md:w-1/3 space-y-10 sticky top-16 h-full">
+          {/* Top Artists */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <CategoriesHeading title="Top 5 Artists" />
+            <div className="grid grid-cols-2 md:grid-cols-1 gap-4 mt-6">
+              {topArtists?.map((artist, index) => (
+                <TopMusic key={artist.id} topArtists={artist} index={index} />  
+              ))}
+            </div>
+          </div>
+          {/* <div className="hidden md:block">
+            <CategoriesHeading title={"Feel The Beat"} />
+            <div className="w-full">
+            <NoContentDesign  />
+            </div>  
+          </div> */}
+        </aside>
       </section>
     </>
   );

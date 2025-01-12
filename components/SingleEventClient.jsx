@@ -22,6 +22,7 @@ import CategoriesHeading from "./CategoriesHeading";
 import TopMusic from "./TopMusic";
 import AddToCalendar from "./AddToCalender";
 import AnimatedVenue from "./EventAnimation";
+import NoContentDesign from "@/components/NoContent";
 
 const SingleEventClient = ({ event, topArtists }) => {
   const [countdown, setCountdown] = useState({
@@ -59,7 +60,7 @@ const SingleEventClient = ({ event, topArtists }) => {
     { Icon: FaLinkedin, color: "#0A66C2" },
     { Icon: FaYoutube, color: "#FF0000" },
   ];
-  console.log(event);
+ 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
@@ -177,7 +178,7 @@ const SingleEventClient = ({ event, topArtists }) => {
 
           {/* Sidebar */}
           {/* Sidebar */}
-          <aside className="space-y-8">
+          {/* <aside className="space-y-8">
             <div className="">
               <CategoriesHeading title="Top 10 Artists" />
               <div className="flex flex-col gap-4">
@@ -197,7 +198,15 @@ const SingleEventClient = ({ event, topArtists }) => {
                 <FaPinterest className="text-3xl" />
               </div>
             </div>
-          </aside>
+          </aside> */}
+
+             {/*Animated section */}
+             <div className="hidden md:block">
+          <CategoriesHeading title={"Feel The Beat"} />         
+            <div className="w-full">
+              <NoContentDesign />
+            </div>
+          </div>
         </div>
       </div>
     </div>
