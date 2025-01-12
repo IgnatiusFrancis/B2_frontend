@@ -1,10 +1,13 @@
 import SectionHeader from "@/components/SectionHeader";
-import { getPosts } from "@/lib/api";
+import { getPosts, getTopArtists } from "@/lib/api";
 import SearchClient from "@/hooks/useSearch";
 import AllBlogPosts from "@/components/AllBlogPosts";
 
 async function Blogs() {
-  const posts = await getPosts();
+    const [posts, topArtists] = await Promise.all([
+      getPosts(),
+      getTopArtists(),
+    ]);
 
   return (
     <>
@@ -15,10 +18,11 @@ async function Blogs() {
         }
       />
 
-      <SearchClient
+      <SearchClient 
         data={posts}
         ContentContainer={AllBlogPosts}
         searchFields={["title", "author"]}
+        topArtists={topArtists} 
       />
     </>
   );

@@ -1,11 +1,14 @@
 import SectionHeader from "@/components/SectionHeader";
 
 import AllVideos from "@/components/AllVideos";
-import { getVideos } from "@/lib/api";
+import { getTopArtists, getVideos } from "@/lib/api";
 import SearchClient from "@/hooks/useSearch";
 
 async function VideosHome() {
-  const videos = await getVideos();
+      const [videos, topArtists] = await Promise.all([
+        getVideos(),
+        getTopArtists(),
+      ]);
 
   return (
     <>
@@ -27,6 +30,7 @@ async function VideosHome() {
         data={videos}
         ContentContainer={AllVideos}
         searchFields={["title", "description", "subTitle"]}
+        topArtists={topArtists} 
       />
     </>
   );

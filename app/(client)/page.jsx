@@ -34,8 +34,8 @@ import NoContentDesign from "@/components/NoContent";
 
 export default async function Home() {
   const [posts, events, albums, topArtists, videos] = await Promise.all([
-    getPosts(6),
-    getEvents(6),
+    getPosts(3),
+    getEvents(2),
     getAlbums(3),
     getTopArtists(),
     getTrendingVideos(),
@@ -66,8 +66,6 @@ export default async function Home() {
           {/* UPCOMING EVENTS SECTION*/}
           <HomeEvents events={events} />
 
-       
-
           {/* RECENT POST SECTION */}
           <CategoriesHeading title={"Trending Videos"} />
           <div className="w-full flex flex-col">
@@ -89,50 +87,47 @@ export default async function Home() {
         </div>
 
         <div className="w-full md:w-4/12">
-          {/* TOP ARTIST SECTION */}
-          <CategoriesHeading title={"Top 5 Artists"} />
+          {/* Sidebar */}
+          <aside className="grid grid-cols-3 md:flex md:flex-col gap-2 py-2">
+            {/* Top Artists */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <CategoriesHeading title="Top 5 Artists" />
+              <div className="grid grid-cols-2 md:grid-cols-1 gap-4 mt-6">
+                {topArtists?.map((artist, index) => (
+                  <TopMusic key={artist.id} topArtists={artist} index={index} />
+                ))}
+              </div>
+            </div>
 
-          <div className="grid grid-cols-3 md:flex md:flex-col gap-2 py-2">
-            {topArtists.map((artist, index) => (
-              <TopMusic key={artist?.id} topArtists={artist} index={index} />
-            ))}
-          </div>
-          {/* <div className="my-8 w-full h-[3px] bg-primarycolor"></div> */}
-
-          {/* GET CONNECTED */}
-          <CategoriesHeading title={"Get Connected"} />
-
-          <div className="flex justify-between p-4">
-            <FaFacebook className={`  text-3xl `} />
-            <FaTwitter className={` text-3xl `} />
-            <FaLinkedin className={`  text-3xl `} />
-            <FaYoutube className={` text-3xl `} />
-            <FaInstagram className={` text-3xl `} />
-            <FaPinterest className={`  text-3xl `} />
-          </div>
-
-          {/* <div className="my-8 w-full h-[3px] bg-primarycolor"></div> */}
+            {/* Get Connected */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <CategoriesHeading title="Get Connected" />
+              <div className="flex justify-between mt-4 text-gray-700">
+                <FaFacebook className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+                <FaTwitter className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+                <FaLinkedin className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+                <FaYoutube className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+                <FaInstagram className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+                <FaPinterest className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+              </div>
+            </div>
+          </aside>
 
           {/* Recent post section */}
           <div className="hidden md:block">
-            <CategoriesHeading title={"Recent Post"} />
+            <CategoriesHeading title={"Recent Posts"} />
             <div className="w-full">
               <HomeRecentPost posts={posts} />
             </div>
-            {/* <div className="my-8 w-full h-[3px] bg-primarycolor"></div> */}
           </div>
-          {/* <NoContentDesign  /> */}
-           {/*Animated section */}
+         
+          {/*Animated section */}
           <div className="hidden md:block">
-            <CategoriesHeading title={"Feel The Beat"} />
+          <CategoriesHeading title={"Feel The Beat"} />         
             <div className="w-full">
-            <NoContentDesign  />
-            </div>  
+              <NoContentDesign />
+            </div>
           </div>
-          {/* <NoContentDesign  /> */}
-          <div className="w-48">
-  
-      </div>
         </div>
       </section>
     </main>

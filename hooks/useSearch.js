@@ -12,20 +12,12 @@ import {
 import AllBlogPosts from "@/components/AllBlogPosts";
 import CategoriesHeading from "@/components/CategoriesHeading";
 import TopPlaylist from "@/components/TopPlaylist";
+import TopMusic from "@/components/TopMusic";
+import NoContentDesign from "@/components/NoContent";
 
-export default function SearchClient({ data, ContentContainer, searchFields }) {
+export default function SearchClient({ data, ContentContainer, searchFields, topArtists }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState(data);
-
-  // const handleSearch = (query) => {
-  //   setSearchTerm(query);
-  //   const filtered = posts.filter((post) =>
-  //     ["title", "author"].some((field) =>
-  //       post[field]?.toString().toLowerCase().includes(query.toLowerCase())
-  //     )
-  //   );
-  //   setFilteredData(filtered);
-  // };
 
   const handleSearch = (query) => {
     setSearchTerm(query);
@@ -64,30 +56,37 @@ export default function SearchClient({ data, ContentContainer, searchFields }) {
             {ContentContainer && <ContentContainer data={filteredData} />}
           </div>
 
-          {/* Sidebar */}
-          <aside className="w-full md:w-2/6">
-            <CategoriesHeading title="Top Playlists" />
-            <div className="grid grid-cols-2 md:flex md:flex-col gap-2">
-              <TopPlaylist />
-              <TopPlaylist />
-              <TopPlaylist />
-              <TopPlaylist />
+
+         {/* Sidebar */}
+         <aside className="md:w-1/3 space-y-10 sticky top-16 h-full">
+          {/* Top Artists */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <CategoriesHeading title="Top 5 Artists" />
+            <div className="grid grid-cols-2 md:grid-cols-1 gap-4 mt-6">
+              {topArtists?.map((artist, index) => (
+                <TopMusic key={artist.id} topArtists={artist} index={index} />  
+              ))}
             </div>
-
-            <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
-
+          </div>
+          <div className="hidden md:block">
+            <CategoriesHeading title={"Feel The Beat"} />
+            <div className="w-full">
+            <NoContentDesign  />
+            </div>  
+          </div>
+          {/* Get Connected */}
+          {/* <div className="bg-white rounded-xl shadow-lg p-6">
             <CategoriesHeading title="Get Connected" />
-            <div className="flex justify-between p-4">
-              <FaFacebook className="text-3xl" />
-              <FaTwitter className="text-3xl" />
-              <FaLinkedin className="text-3xl" />
-              <FaYoutube className="text-3xl" />
-              <FaInstagram className="text-3xl" />
-              <FaPinterest className="text-3xl" />
+            <div className="flex justify-between mt-4 text-gray-700">
+              <FaFacebook className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+              <FaTwitter className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+              <FaLinkedin className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+              <FaYoutube className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+              <FaInstagram className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+              <FaPinterest className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
             </div>
-
-            <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
-          </aside>
+          </div> */}
+        </aside>
         </section>
       </div>
     </section>

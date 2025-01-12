@@ -101,15 +101,13 @@ function AllBlogPosts({ data: posts }) {
   const totalPages = Math.ceil(posts.length / postsPerPage);
 
   if (!posts || posts.length === 0) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-bold text-gray-800">No Posts Found</h2>
-        <p className="text-gray-600 mt-2">
-          It seems there are no posts available at the moment. Please check back later.
-        </p>
-      </div>
-    );
-  }
+        return (
+          <NoContentAvailable
+            title="No Posts Found"
+            message="It seems there are no posts available at the moment. Please check back later."
+          />
+        );
+      }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -117,8 +115,8 @@ function AllBlogPosts({ data: posts }) {
         {currentPosts?.map((post, index) => (
           <div
             key={post.id}
-            className="opacity-0 animate-[fadeInUp_0.5s_ease-out_forwards]"
-            style={{ animationDelay: `${index * 0.1}s` }}
+            className="opacity-1 animate-[fadeInUp_0.5s_ease-out_forwards]"
+             style={{ animationDelay: `${index * 0.1}s` }}
           >
             <BlogPost
               id={post.id}
