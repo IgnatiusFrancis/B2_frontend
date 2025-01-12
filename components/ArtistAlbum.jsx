@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FaDownload, FaPlay, FaPause } from "react-icons/fa";
 import pld from "@/public/pld.jpeg";
 
-function ArtistAlbum({ id, title, image, subTitle, audioUrl, createdAt, publicId, artist }) {
+function ArtistAlbum({ id, title, url, subTitle, audioUrl, createdAt, publicId, artist }) { 
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState(null);
 
@@ -26,11 +26,11 @@ function ArtistAlbum({ id, title, image, subTitle, audioUrl, createdAt, publicId
   };
 
 return (
-    <div className="flex flex-col gap-4 w-full bg-gray-100 rounded-lg p-4 shadow-md">
+    <div className="flex flex-col gap-4 w-full bg-gray-100 rounded-lg p-4 shadow-md hover:scale-105 hover:shadow-xl transition-all duration-500 bg-white">
       <div className="flex items-center gap-4">
         <div className="w-20 h-20">
           <Image
-            src={image?.url || pld}
+            src={url || pld}
             width={1000}
             height={1000}
             alt="artist"

@@ -1,4 +1,3 @@
-import RecentPost from "./RecentPost";
 import TrendingVideos from "./TrendingVideo";
 
 async function HomePost({ videos }) {

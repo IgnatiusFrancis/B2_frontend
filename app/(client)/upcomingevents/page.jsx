@@ -1,6 +1,5 @@
 // Parent Component (UpcomingEvent)
 import SectionHeader from "@/components/SectionHeader";
-import { FaSearch } from "react-icons/fa";
 import AllEvent from "@/components/AllEvents";
 import { getEvents } from "@/lib/api";
 import SearchComponent from "@/hooks/useSearchArtist";
