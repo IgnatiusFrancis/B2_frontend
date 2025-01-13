@@ -1,98 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import EventOverview from "@/components/EventOverview";
-import { usePostData } from "@/hooks/usePostData";
-function AllEventOverview() {
-  const [currentPage, setCurrentPage] = useState(1);
+function AllEventOverview({events}) {
 
-  const url = `https://b2xclusive.onrender.com/api/v1/event/events?page=${currentPage}`;
+  const eventsPerPage = 3;
+    const [currentPage, setCurrentPage] = useState(1);
+  
+    const totalPages = Math.ceil(events.length / eventsPerPage);
+  
+    const currentEvents = useMemo(() => {
+      const indexOfLastEvents = currentPage * eventsPerPage;
+      const indexOfFirstEvents = indexOfLastEvents - eventsPerPage;
+      return events.slice(indexOfFirstEvents, indexOfLastEvents);
+    }, [currentPage, events]);
 
-  const { isLoading, isError, data } = usePostData("events", url);
+    if (!events || events.length === 0) {
+      return (
+        <NoContentAvailable
+          title="No events Found"
+          message="It seems there are no events available at the moment. Please check back later."
+        />
+      );
+    }
 
-  const postsPerPage = 10;
-
-  if (isError)
-    return (
-      <div>
-        <p className="text-red-500 font-bold">Error Fetching Posts</p>
-      </div>
-    );
-  if (isLoading)
-    return (
-      <div className="w-full flex flex-col  gap-2 py-2">
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-      </div>
-    );
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = data?.data?.data?.slice(
-    indexOfFirstPost,
-    indexOfLastPost,
-  );
-
-  // Calculate total number of pages
-  const totalPages = Math.ceil(data?.data?.data?.length / postsPerPage);
-
-  // Generate an array of page numbers
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
 
   return (
     <>
       <div className="w-full">
         <div className="w-full">
-          {currentPosts?.map((event) => (
+          {currentEvents?.map((event) => (
             <EventOverview key={event.id} {...event} />
           ))}
         </div>
         <div className="flex justify-center mt-4 gap-2">
-          {/* Previous button */}
+        {totalPages > 1 && ( 
+        <div className="flex justify-center py-8">
           <button
-            onClick={handlePrevPage}
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="border text-[10px] md:text-xs border-gray-500 text-gray-500 p-1 rounded-md"
+            className="border border-gray-500 text-gray-500 px-4 py-2 rounded-md mr-2"
           >
             Previous
           </button>
-          {/* Page number buttons */}
-          {pageNumbers.map((number) => (
+          {Array.from({ length: totalPages }).map((_, index) => (
             <button
-              key={number}
-              onClick={() => setCurrentPage(number)}
-              className={`border border-gray-500 text-primarycolor md:text-xs text-[10px] py-1 px-2 rounded-md ${
-                currentPage === number ? "bg-black" : ""
+              key={index}
+              onClick={() => setCurrentPage(index + 1)}
+              className={`border border-gray-500 text-gray-500 px-4 py-2 rounded-md mr-2 ${
+                currentPage === index + 1 ? "bg-gray-100" : ""
               }`}
             >
-              {number}
+              {index + 1}
             </button>
           ))}
-          {/* Next button */}
           <button
-            onClick={handleNextPage}
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className="bg-primarycolor text-white p-1 md:text-xs text-[10px] rounded-md"
+            className="bg-primarycolor text-white px-4 py-2 rounded-md ml-2"
           >
             Next
-          </button>{" "}
-        </div>{" "}
+          </button>
+        </div>
+      )}
+        </div>
       </div>
     </>
   );
