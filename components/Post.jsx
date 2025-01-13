@@ -1,13 +1,14 @@
 import Image from "next/image";
 
-function Post({ image, title, subtitle, createdAt, views }) {
+function Post({ url, title, subtitle, createdAt, views }) { 
+
   return (
     <>
       <div className="border flex items-center justify-between border-gray-100  p-2">
         <div className="flex gap-2 w-3/5 items-center">
           <div className="w-[30px] h-[30px] rounded-full">
             <Image
-              src={image[0]?.url}
+              src={url}
               width={1000}
               height={1000}
               alt="alb"
