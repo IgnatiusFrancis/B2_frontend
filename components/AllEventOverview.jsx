@@ -3,7 +3,8 @@
 import { useMemo, useState } from "react";
 
 import EventOverview from "@/components/EventOverview";
-function AllEventOverview({events}) {
+import NoContentAvailable from "./NoAvailableContent";
+function AllEventOverview({events}) { 
 
   const eventsPerPage = 3;
     const [currentPage, setCurrentPage] = useState(1);

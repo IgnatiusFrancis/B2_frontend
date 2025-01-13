@@ -45,9 +45,6 @@
 // export default Events;
 
 
-
-
-"use client";
 import { Suspense } from 'react';
 import { getArtists, getEvents } from "@/lib/api";
 import { Users, Calendar, Search } from 'lucide-react';
