@@ -35,9 +35,10 @@ function AllUser() {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          },
+          }
         );
         setAllUser(usersResponse.data.data);
+        console.log(allUser);
         setIsLoading(false);
       } catch (error) {
         console.log(error.message);

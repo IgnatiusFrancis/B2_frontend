@@ -122,7 +122,7 @@ import Link from "next/link";
 import axios from "axios";
 import pld from "@/public/pld.jpeg";
 
-function EventOverview({ id, title, image, createdAt, subtitle }) {
+function EventOverview({ id, title, url, createdAt, subtitle }) {
   const [showActions, setShowActions] = useState(false);
   const [token, setToken] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -194,7 +194,7 @@ function EventOverview({ id, title, image, createdAt, subtitle }) {
       <div className="w-7/12 flex items-center gap-3">
         <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
           <Image
-            src={image?.[0]?.url || pld}
+            src={url || pld}
             width={40}
             height={40}
             alt={title || "Event image"}
@@ -212,7 +212,12 @@ function EventOverview({ id, title, image, createdAt, subtitle }) {
       </div>
 
       <div className="w-3/12 text-sm text-gray-600">
-        {new Date(createdAt).toLocaleDateString()}
+        {new Date(createdAt).toLocaleDateString("en-US", {
+                      weekday: "long", 
+                      year: "numeric",
+                      month: "long", 
+                      day: "numeric",
+                    })}
       </div>
 
       <div className="w-2/12 relative">

@@ -35,7 +35,7 @@ function User({ id, userName, email, image, bio, createdAt, role }) {
 
       const response = await axios.delete(
         `https://b2xclusive.onrender.com/api/v1/artist/delete/${id}`,
-        config,
+        config
       );
       toast.dismiss();
 

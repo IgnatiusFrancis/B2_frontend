@@ -83,9 +83,9 @@ import ArtistCard from './ArtistCard';
 import NoContentAvailable from "./NoAvailableContent";
 import ArtistContent from "./ArtistContent";
 
-const AllArtistOverview = ({ artists = [] }) => {
+const AllArtistOverview = ({ artists = [] }) => { 
   const [currentPage, setCurrentPage] = useState(1);
-  const artistsPerPage = 4;
+  const artistsPerPage = 8;
 
   const { 
     currentArtists, 

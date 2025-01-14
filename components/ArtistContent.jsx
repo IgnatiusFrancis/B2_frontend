@@ -241,8 +241,13 @@ const ArtistCard = ({ id, name, url, bio, createdAt }) => {
         </div>
 
         <div className="mt-4 text-xs text-gray-500">
-          Added {new Date(createdAt).toLocaleDateString()}
-        </div>
+          Added  {new Date(createdAt).toLocaleDateString("en-US", {
+                      weekday: "long", 
+                      year: "numeric",
+                      month: "long", 
+                      day: "numeric",
+                    })}
+        </div> 
       </div>
     </div>
   );

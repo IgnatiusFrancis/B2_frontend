@@ -59,7 +59,7 @@ async function Events() {
   ]);
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-6"> 
       <header className="mb-8">
         <h1 className="text-2xl font-bold mb-2">Artists & Events</h1>
         <div className="flex items-center gap-4 text-gray-600">
@@ -80,19 +80,17 @@ async function Events() {
           <div className="p-6 border-b">
             <h2 className="text-lg font-semibold">Artists</h2>
           </div>
-          <Suspense fallback={<div className="p-6">Loading artists...</div>}>
+          {/* <Suspense fallback={<div className="p-6">Loading artists...</div>}> */}
             <AllArtistOverview artists={artists} />
-          </Suspense>
+          {/* </Suspense> */}
         </section>
 
         {/* Events Section */}
         <section className="bg-white rounded-lg shadow">
           <div className="p-6 border-b">
             <h2 className="text-lg font-semibold">Events</h2>
-          </div>
-          <Suspense fallback={<div className="p-6">Loading events...</div>}>
+          </div>         
             <AllEventOverview events={events} />
-          </Suspense>
         </section>
       </div>
     </div>

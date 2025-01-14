@@ -1,96 +1,75 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import VideoOverview from "@/components/VideoOverview";
-import { usePostData } from "@/hooks/usePostData";
-function AllVideosOverview() {
+import NoContentAvailable from "./NoAvailableContent";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+
+function AllVideosOverview({ videos = [] }) {
+  const dataPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const url = `https://b2xclusive.onrender.com/api/v1/track/videos?page=${currentPage}`;
-  const postsPerPage = 10;
+  const totalPages = Math.ceil(videos.length / dataPerPage);
 
-  const { isLoading, isError, data } = usePostData("video-overview", url);
-  if (isError)
+  const currentvideos = useMemo(() => {
+    const indexOfLastData = currentPage * dataPerPage;
+    const indexOfFirstData = indexOfLastData - dataPerPage;
+    return videos.slice(indexOfFirstData, indexOfLastData);
+  }, [currentPage, videos]);
+
+  if (!videos || videos.length === 0) {
     return (
-      <div>
-        <p className="text-red-500 font-bold">Error Fetching Posts</p>
-      </div>
+      <NoContentAvailable
+        title="No videos Found"
+        message="It seems there are no videos available at the moment. Please check back later."
+      />
     );
-  if (isLoading)
-    return (
-      <div className="w-full flex flex-col  gap-2 py-2">
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded-lg "></div>
-      </div>
-    );
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = data?.data?.data?.slice(
-    indexOfFirstPost,
-    indexOfLastPost
-  );
-
-  // Calculate total number of pages
-  const totalPages = Math.ceil(data?.data?.data?.length / postsPerPage);
-
-  // Generate an array of page numbers
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
   }
 
   return (
-    <>
-      <div>
-        {currentPosts?.map((video) => (
+    <div className="flex flex-col">
+      <div className="divide-y divide-gray-100">
+        {currentvideos?.map((video) => (
           <VideoOverview key={video?.id} {...video} />
-        ))}{" "}
-        <div className="flex justify-center mt-4 gap-2">
-          {/* Previous button */}
+        ))}
+
+        <div className="flex justify-center items-center gap-2 p-4">
           <button
-            onClick={handlePrevPage}
+            className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="border text-[10px] md:text-xs border-gray-500 text-gray-500 p-1 rounded-md"
           >
-            Previous
+            <FaChevronLeft className="h-4 w-4" />
           </button>
-          {/* Page number buttons */}
-          {pageNumbers.map((number) => (
-            <button
-              key={number}
-              onClick={() => setCurrentPage(number)}
-              className={`border border-gray-500 text-primarycolor md:text-xs text-[10px] py-1 px-2 rounded-md ${
-                currentPage === number ? "bg-black" : ""
-              }`}
-            >
-              {number}
-            </button>
-          ))}
-          {/* Next button */}
+          <div className="flex gap-1">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                className={`px-3 py-1 rounded-lg ${
+                  currentPage === index + 1
+                    ? "bg-blue-500 text-white"
+                    : "border border-gray-200 hover:bg-gray-50"
+                }`}
+                onClick={() => setCurrentPage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+
           <button
-            onClick={handleNextPage}
+            className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
             disabled={currentPage === totalPages}
-            className="bg-primarycolor text-white p-1 md:text-xs text-[10px] rounded-md"
           >
-            Next
-          </button>{" "}
-        </div>{" "}
+            <FaChevronRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

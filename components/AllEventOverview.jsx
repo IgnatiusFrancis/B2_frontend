@@ -6,7 +6,7 @@ import EventOverview from "@/components/EventOverview";
 import NoContentAvailable from "./NoAvailableContent";
 function AllEventOverview({events}) { 
 
-  const eventsPerPage = 3;
+  const eventsPerPage = 8;
     const [currentPage, setCurrentPage] = useState(1);
   
     const totalPages = Math.ceil(events.length / eventsPerPage);
