@@ -28,14 +28,14 @@
 //     try {
 //       const cleanToken = token.replace(/^['"](.*)['"]$/, '$1');
 //       const decoded = jwtDecode(cleanToken);
-
+      
 //       if (decoded.exp < Date.now() / 1000) {
 //         localStorage.removeItem('b2xclusiveadmin');
 //         toast.error('Session expired. Please sign in again');
 //         router.push('/login');
 //         return null;
 //       }
-
+      
 //       return cleanToken;
 //     } catch (error) {
 //       console.error('Token validation error:', error);
@@ -96,7 +96,7 @@
 //   return (
 //     <div className="max-w-2xl mx-auto p-6">
 //       <h1 className="text-2xl font-bold mb-8">Add New Artist</h1>
-
+      
 //       <form onSubmit={handleSubmit} className="space-y-6">
 //         <div>
 //           <label className="block text-sm font-medium mb-2">Artist Name</label>
@@ -171,6 +171,7 @@
 // };
 
 // export default AddArtists;
+
 
 "use client";
 import { useCallback, useEffect, useState } from "react";
@@ -274,9 +275,7 @@ const AddArtists = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Artist Name
-            </label>
+            <label className="block text-sm font-medium mb-2">Artist Name</label>
             <input
               type="text"
               value={formData.name}
@@ -290,9 +289,7 @@ const AddArtists = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Artist Photo
-            </label>
+            <label className="block text-sm font-medium mb-2">Artist Photo</label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
               <input
                 type="file"
@@ -314,9 +311,7 @@ const AddArtists = () => {
                 ) : (
                   <div className="flex flex-col items-center">
                     <Upload className="w-12 h-12 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600">
-                      Click to upload image
-                    </p>
+                    <p className="text-sm text-gray-600">Click to upload image</p>
                   </div>
                 )}
               </label>

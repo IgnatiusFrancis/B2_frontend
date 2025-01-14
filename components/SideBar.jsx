@@ -11,7 +11,7 @@
 //   FaHamburger,
 // } = require("react-icons/fa");
 
-// import { CiLogout } from "react-icons/ci"; 
+// import { CiLogout } from "react-icons/ci";
 // import { toast } from "react-toastify";
 // import { MdCancel, MdMenuOpen, MdOutlineEmojiEvents } from "react-icons/md";
 // import Link from "next/link";
@@ -218,15 +218,12 @@
 
 // export default SideBar;
 
-
-
-
 "use client";
-import { useCallback, useMemo } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
+import { useCallback, useMemo } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 import {
   LayoutDashboard,
   FileText,
@@ -237,47 +234,52 @@ import {
   Menu,
   X,
   CalendarDays,
-} from 'lucide-react';
+  MoveIcon,
+  Folder,
+} from "lucide-react";
 
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const navigationItems = useMemo(() => [
-    { title: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { title: 'Content', href: '/admin/contents', icon: FileText },
-    { title: 'Events & Artists', href: '/admin/events', icon: CalendarDays },
-    { title: 'Users', href: '/admin/users', icon: Users },
-    { title: 'Create Post', href: '/admin/createpost', icon: PenTool },
-    { title: 'Account', href: '/admin/account', icon: Settings },
-  ], []);
+  const navigationItems = useMemo(
+    () => [
+      { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
+      { title: "Content", href: "/admin/contents", icon: FileText },
+      { title: "Events & Artists", href: "/admin/events", icon: CalendarDays },
+      { title: "Users", href: "/admin/users", icon: Users },
+      { title: "Create Post", href: "/admin/createpost", icon: PenTool },
+      { title: "Account", href: "/admin/account", icon: Settings },
+      { title: "Movie", href: "/admin/movie", icon: MoveIcon },
+      { title: "Movie Contents", href: "/admin/moviecontents", icon: Folder },
+    ],
+    []
+  );
 
   const handleLogout = useCallback(async () => {
     try {
-      const adminToken = localStorage.getItem('b2xclusiveadmin');
+      const adminToken = localStorage.getItem("b2xclusiveadmin");
       if (adminToken) {
-        localStorage.removeItem('b2xclusiveadmin');
-        Cookies.remove('b2xclusiveadmin');
-        toast.success('Logged out successfully', { position: 'top-center' });
-        router.push('/');
+        localStorage.removeItem("b2xclusiveadmin");
+        Cookies.remove("b2xclusiveadmin");
+        toast.success("Logged out successfully", { position: "top-center" });
+        router.push("/");
       }
     } catch (error) {
-      toast.error('Logout failed', { position: 'top-center' });
-      console.error('Logout error:', error);
+      toast.error("Logout failed", { position: "top-center" });
+      console.error("Logout error:", error);
     }
   }, [router]);
 
   const NavigationLink = ({ item }) => {
     const isActive = pathname === item.href;
     const Icon = item.icon;
-    
+
     return (
-      <Link 
+      <Link
         href={item.href}
         className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-          isActive 
-            ? 'bg-blue-600 text-white' 
-            : 'hover:bg-blue-50 text-gray-700'
+          isActive ? "bg-blue-600 text-white" : "hover:bg-blue-50 text-gray-700"
         }`}
       >
         <Icon className="w-5 h-5" />

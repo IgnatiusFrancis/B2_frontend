@@ -8,7 +8,7 @@ import Link from "next/link";
 import axios from "axios";
 import { FaComment } from "react-icons/fa";
 
-function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
+function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const dropdownRef = useRef(null);
@@ -25,7 +25,7 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    toast.warning("Deleting music...", {
+    toast.warning("Deleting Event...", {
       autoClose: false,
       position: "top-center",
     });
@@ -40,14 +40,14 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
       }
 
       await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/track/audio/delete/${id}`,
+        `https://b2xclusive.onrender.com/api/v1/track/event/delete/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       toast.dismiss();
-      toast.success("Music deleted successfully", {
+      toast.success("Event deleted successfully", {
         position: "top-center",
       });
 
@@ -55,9 +55,9 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
         window.location.reload();
       }, 1000);
     } catch (error) {
-      console.error("Failed to delete music:", error.message);
+      console.error("Failed to delete event:", error.message);
       toast.dismiss();
-      toast.error("Failed to delete music", {
+      toast.error("Failed to delete event", {
         position: "top-center",
       });
     } finally {
@@ -83,11 +83,11 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
       </div>
 
       <div className="col-span-1 flex justify-center">
-        <span className="text-sm text-gray-600">{duration || "00:00"}</span>
+        <span className="text-sm text-gray-600">{"NA" || "00:00"}</span>
       </div>
 
       <div className="col-span-2 flex justify-center items-center gap-2">
-        <span className="text-sm text-gray-600">{"NA"}</span>
+        <span className="text-sm text-gray-600">{location}</span>
       </div>
 
       <div className="col-span-2 text-center">
@@ -115,7 +115,7 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
         {showDropdown && (
           <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-10 py-1">
             <Link
-              href={`/admin/contents/edit/music/${id}`}
+              href={`/admin/contents/edit/event/${id}`}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
             >
               Edit Music
@@ -125,7 +125,7 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
               disabled={isDeleting}
               className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
             >
-              {isDeleting ? "Deleting..." : "Delete Music"}
+              {isDeleting ? "Deleting..." : "Delete Event"}
             </button>
           </div>
         )}
@@ -134,4 +134,4 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
   );
 }
 
-export default MusicOverview;
+export default EventOverviewPage;

@@ -282,24 +282,29 @@
 
 // export default Overview;
 
-
-
-
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import { ThemeContext } from "@/context/ThemeContext";
-import { 
-  Activity, 
-  Users, 
-  Music2, 
-  Calendar, 
-  Eye, 
+import {
+  Activity,
+  Users,
+  Music2,
+  Calendar,
+  Eye,
   Download,
   TrendingUp,
-  Clock
+  Clock,
 } from "lucide-react";
 
 const StatCard = ({ title, value, icon: Icon, trend }) => (
@@ -358,8 +363,10 @@ function ModernDashboard() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const storedToken = localStorage.getItem("b2xclusiveadmin")?.replace(/^['"](.*)['"]$/, "$1");
-        
+        const storedToken = localStorage
+          .getItem("b2xclusiveadmin")
+          ?.replace(/^['"](.*)['"]$/, "$1");
+
         if (!storedToken) {
           throw new Error("Authentication token not found");
         }
@@ -370,7 +377,7 @@ function ModernDashboard() {
         const [postsRes, artistsRes, usersRes] = await Promise.all([
           axios.get(`${baseURL}/post/posts`, { headers }),
           axios.get(`${baseURL}/artist/artists`, { headers }),
-          axios.get(`${baseURL}/users/allUsers?role=user`, { headers })
+          axios.get(`${baseURL}/users/allUsers?role=user`, { headers }),
         ]);
 
         setAllPosts(postsRes.data.data);
@@ -392,7 +399,7 @@ function ModernDashboard() {
     { title: "Artists", value: allArtists.length, icon: Music2, trend: 15 },
     { title: "Events", value: 50, icon: Calendar },
     { title: "Total Views", value: "125K", icon: Eye, trend: 24 },
-    { title: "Downloads", value: "32K", icon: Download, trend: 18 }
+    { title: "Downloads", value: "32K", icon: Download, trend: 18 },
   ];
 
   if (loading) {
@@ -421,7 +428,9 @@ function ModernDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Dashboard Overview
+          </h1>
           <p className="text-gray-500">Welcome back, Admin</p>
         </div>
         <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
@@ -442,23 +451,25 @@ function ModernDashboard() {
       {/* Charts and Recent Users */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <h2 className="text-lg font-bold text-gray-800 mb-4">Activity Overview</h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-4">
+            Activity Overview
+          </h2>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={allPosts.slice(-7).map(post => ({
+                data={allPosts.slice(-7).map((post) => ({
                   name: new Date(post.createdAt).toLocaleDateString(),
-                  views: Math.floor(Math.random() * 1000)
+                  views: Math.floor(Math.random() * 1000),
                 }))}
               >
                 <CartesianGrid strokeDasharray="3 3" className="opacity-50" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Line 
-                  type="monotone" 
-                  dataKey="views" 
-                  stroke="#8b5cf6" 
+                <Line
+                  type="monotone"
+                  dataKey="views"
+                  stroke="#8b5cf6"
                   strokeWidth={2}
                 />
               </LineChart>
@@ -469,7 +480,7 @@ function ModernDashboard() {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Recent Users</h2>
           <div className="space-y-4">
-            {allUsers.slice(0, 5).map(user => (
+            {allUsers.slice(0, 5).map((user) => (
               <UserCard key={user.id} user={user} />
             ))}
           </div>
@@ -481,12 +492,22 @@ function ModernDashboard() {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Latest Posts</h2>
           <div className="space-y-4">
-            {allPosts.slice(0, 5).map(post => (
-              <div key={post.id} className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors">
+            {allPosts.slice(0, 5).map((post) => (
+              <div
+                key={post.id}
+                className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors"
+              >
                 <div className="flex-1">
-                  <h3 className="font-medium text-sm text-gray-800">{post.title}</h3>
+                  <h3 className="font-medium text-sm text-gray-800">
+                    {post.title}
+                  </h3>
                   <p className="text-xs text-gray-500">
-                    {new Date(post.createdAt).toLocaleDateString()}
+                    {new Date(post.createdAt).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -503,19 +524,24 @@ function ModernDashboard() {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Top Artists</h2>
           <div className="space-y-4">
-            {allArtists.slice(0, 5).map(artist => (
-              <div key={artist.id} className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors">
+            {allArtists.slice(0, 5).map((artist) => (
+              <div
+                key={artist.id}
+                className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors"
+              >
                 <Image
-                  src={artist.url || '/placeholder.jpg'}
+                  src={artist.url || "/placeholder.jpg"}
                   alt={artist.name}
                   width={40}
                   height={40}
                   className="rounded-full object-cover"
                 />
                 <div className="flex-1">
-                  <h3 className="font-medium text-sm text-gray-800">{artist.name}</h3>
+                  <h3 className="font-medium text-sm text-gray-800">
+                    {artist.name}
+                  </h3>
                   <p className="text-xs text-gray-500">
-                    {artist.bio?.split(' ').slice(0, 5).join(' ')}...
+                    {artist.bio?.split(" ").slice(0, 5).join(" ")}...
                   </p>
                 </div>
                 <Music2 className="w-4 h-4 text-purple-500" />

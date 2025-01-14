@@ -207,7 +207,6 @@
 
 // export default CreatePost;
 
-
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -291,10 +290,7 @@ function CreatePost() {
     <>
       <section className="w-full flex justify-center py-12">
         <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-8">
-          <form
-            className="flex flex-col gap-8 items-start"
-            onSubmit={onSubmit}
-          >
+          <form className="flex flex-col gap-8 items-start" onSubmit={onSubmit}>
             <div className="flex flex-col gap-2 w-full">
               <label>Blog Title</label>
               <input
@@ -327,7 +323,9 @@ function CreatePost() {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <p className="text-sm text-gray-500 mt-2">Selected File: {file.name}</p>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Selected File: {file.name}
+                  </p>
                 </div>
               )}
             </div>
@@ -338,7 +336,9 @@ function CreatePost() {
                 <input
                   name="subtitle"
                   value={post.subtitle}
-                  onChange={(e) => setPost({ ...post, subtitle: e.target.value })}
+                  onChange={(e) =>
+                    setPost({ ...post, subtitle: e.target.value })
+                  }
                   type="text"
                   placeholder="Enter Blog subtitle"
                   className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
@@ -367,9 +367,7 @@ function CreatePost() {
               <div className="flex flex-col gap-2 md:w-2/12">
                 <label>
                   Tags{" "}
-                  <span className="text-gray-500">
-                    Separate tags with ","
-                  </span>
+                  <span className="text-gray-500">Separate tags with ","</span>
                 </label>
                 <input
                   value={post.tags}
