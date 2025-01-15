@@ -38,7 +38,7 @@ function AllUser() {
           }
         );
         setAllUser(usersResponse.data.data);
-        console.log(allUser);
+        // console.log(allUser);
         setIsLoading(false);
       } catch (error) {
         console.log(error.message);
@@ -47,7 +47,7 @@ function AllUser() {
       }
     };
     fetchdata();
-  }, [token]);
+  }, [token, allUser]);
 
   if (error)
     return (

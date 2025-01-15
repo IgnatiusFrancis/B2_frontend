@@ -3,15 +3,9 @@ import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 
 const SearchMovies = ({ onSearch, onClearSearch }) => {
-  const [searchTerm, setSearchTerm] = useState(""); 
-// check this later 
-// ./components/SearchMovies.jsx
-// 38:6  Warning: React Hook useEffect has a missing dependency: 'onClearSearch'. Either include it or remove the dependency array. If 'onClearSearch' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
-// ./components/SingleEventClient.jsx
-// 133:63  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+  const [searchTerm, setSearchTerm] = useState("");
 
-
-const fetchSearchResults = async () => {
+  const fetchSearchResults = async () => {
     if (searchTerm.trim() === "") {
       onClearSearch(); // Reset to default components when input is empty
       return;
@@ -41,7 +35,7 @@ const fetchSearchResults = async () => {
     if (searchTerm.trim() === "") {
       onClearSearch(); // Reset to default components when input is empty
     }
-  }, [searchTerm]); // Trigger only when searchTerm changes
+  }, [searchTerm, onClearSearch]); // Trigger only when searchTerm changes
 
   return (
     <section className="w-full md:w-5/6 mx-auto p-4">

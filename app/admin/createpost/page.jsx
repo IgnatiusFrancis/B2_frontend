@@ -349,9 +349,10 @@ function CreatePost() {
                 <label>
                   Categories{" "}
                   <span className="text-gray-500">
-                    Separate categories with ","
-                  </span>{" "}
+                    Separate categories with &quot;,&quot;
+                  </span>
                 </label>
+
                 <input
                   value={post.categories}
                   onChange={(e) =>
@@ -367,8 +368,11 @@ function CreatePost() {
               <div className="flex flex-col gap-2 md:w-2/12">
                 <label>
                   Tags{" "}
-                  <span className="text-gray-500">Separate tags with ","</span>
+                  <span className="text-gray-500">
+                    Separate tags with &quot;,&quot;
+                  </span>
                 </label>
+
                 <input
                   value={post.tags}
                   onChange={(e) =>
