@@ -1,66 +1,10 @@
-// import Image from "next/image";
-// import Link from "next/link";
-
-// const AllSeriesHome = ({ series: movieSeries }) => {
-//   if (!movieSeries || movieSeries.length === 0) {
-//     return (
-//       <div className="flex items-center justify-center h-64">
-//         <p className="text-gray-500 font-bold text-xl">
-//           No Movie Series Available
-//         </p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <section>
-//       <h2 className="text-2xl font-semibold mb-4">Series</h2>
-//       <div className="grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-4">
-//         {movieSeries.map((movie) => (
-//           <div
-//             key={movie.id}
-//             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
-//           >
-//             <Link href={`/series-menu/${movie.id}/`}>
-//               <div className="relative group cursor-pointer">
-//                 <Image
-//                   src={movie.seasons[0]?.episodes[0]?.url || "/placeholder.png"}
-//                   alt={movie.title}
-//                   height={100}
-//                   width={100}
-//                   className="w-full h-48 object-cover"
-//                 />
-//                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity flex items-center justify-center">
-//                   <p className="text-white font-bold text-lg hidden group-hover:block">
-//                     View Details
-//                   </p>
-//                 </div>
-//               </div>
-//               <div className="p-4">
-//                 <p className="font-semibold text-lg text-gray-800 truncate">
-//                   {movie.title}
-//                 </p>
-//                 <p className="text-sm text-gray-500 mt-1">
-//                   {movie.description || "No description available"}
-//                 </p>
-//               </div>
-//             </Link>
-//           </div>
-//         ))}
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default AllSeriesHome;
-
 "use client";
 import Image from "next/image";
 import Link from "next/link";
 import pld from "@/public/pld.jpeg";
 
-export default function AllSeriesHome({ series: movieSeries }) {
-  if (!movieSeries || movieSeries.length === 0) {
+export default function AllSeasonalHome({ seasonal }) {
+  if (!seasonal || seasonal.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-400 font-bold">No Movies Available</p>
@@ -71,10 +15,10 @@ export default function AllSeriesHome({ series: movieSeries }) {
   return (
     <section>
       <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-        Series Movies
+        Seasonal Movies
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {movieSeries.map((movie, index) => (
+        {seasonal.map((movie, index) => (
           <div
             key={movie.id}
             className="group relative bg-gray-800/50 rounded-xl overflow-hidden 

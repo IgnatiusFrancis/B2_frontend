@@ -4,7 +4,142 @@ import { useState } from "react";
 import Link from "next/link";
 import { FaFileDownload } from "react-icons/fa";
 import Image from "next/image";
+import pld from "@/public/pld.jpeg";
 
+// export const SingleSeasonsPage = ({ series }) => {
+//   const [downloadingEpisodeId, setDownloadingEpisodeId] = useState(null);
+//   const baseUrl = "https://b2xclusive.onrender.com/api/v1";
+
+//   const handleDownload = async (episodeId, key) => {
+//     try {
+//       setDownloadingEpisodeId(episodeId);
+
+//       // Construct the download URL with the specified format
+//       const downloadUrl = `${baseUrl}/track/download?type=episode&key=${key}&id=${episodeId}`;
+
+//       // Create a hidden anchor element to trigger the download
+//       const link = document.createElement("a");
+//       link.href = downloadUrl;
+
+//       // Trigger the download
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//     } catch (error) {
+//       console.error("Download failed:", error);
+//     } finally {
+//       setDownloadingEpisodeId(null);
+//     }
+//   };
+
+//   if (!series) {
+//     return (
+//       <div className="flex items-center justify-center h-64">
+//         <p className="text-gray-500 font-bold text-xl">No Series Found</p>
+//       </div>
+//     );
+//   }
+
+//   const season = series;
+//   const episodes = series?.episodes || [];
+
+//   if (!season || episodes.length === 0) {
+//     return (
+//       <div className="w-[90%] md:w-5/6 mx-auto my-10">
+//         <p className="text-gray-500 font-bold">No Episodes Found</p>
+//       </div>
+//     );
+//   }
+
+//   const trailerPosterUrl = episodes[0]?.imageUrl || pld;
+
+//   return (
+//     <div className="bg-gray-50 min-h-screen py-10">
+//       {/* Trailer Poster */}
+//       <div className="w-[90%] md:w-5/6 mx-auto my-10">
+//         <div className="relative group">
+//           <Image
+//             src={trailerPosterUrl}
+//             alt={season.movie?.title || "Season Poster"}
+//             height={100}
+//             width={100}
+//             className="w-full rounded-lg shadow-lg object-cover max-h-[600px] transition-transform transform group-hover:scale-105 duration-500"
+//           />
+//           <div className="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+//             <h1 className="text-white text-3xl font-bold">
+//               {season.movie?.title || "Season Title"}
+//             </h1>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Synopsis Section */}
+//       <section className="w-[90%] md:w-5/6 mx-auto my-10">
+//         <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+//           <h1 className="text-3xl font-bold text-gray-800">
+//             {season.movie?.title} - Season {season.seasonNumber || "Unknown"}
+//           </h1>
+//           <h2 className="text-2xl font-semibold text-gray-700">Synopsis</h2>
+//           <p className="text-gray-600">
+//             {season.movie?.description || "No synopsis available."}
+//           </p>
+//         </div>
+//       </section>
+
+//       {/* Episodes Section */}
+//       <section className="w-[90%] md:w-5/6 mx-auto my-10">
+//         <h2 className="my-5 font-bold text-2xl text-gray-800">Episodes:</h2>
+//         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+//           {episodes.map((episode) => (
+//             <div
+//               key={episode.id}
+//               className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 duration-300"
+//             >
+//               <Link href={`/season-menu/${season.id}/${episode.id}`}>
+//                 <div className="relative">
+//                   <Image
+//                     src={episode.imageUrl || pld}
+//                     alt={episode.episodeTitle || "Episode Image"}
+//                     height={100}
+//                     width={100}
+//                     className="w-full h-48 object-cover"
+//                   />
+//                   <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent text-white p-3 opacity-0 hover:opacity-100 transition-opacity duration-300">
+//                     <h3 className="text-lg font-bold">
+//                       {episode.episodeTitle || "Untitled Episode"}
+//                     </h3>
+//                     <p className="text-sm">{episode.description}</p>
+//                   </div>
+//                 </div>
+//               </Link>
+//               <div className="p-4 space-y-3">
+//                 <p className="text-sm text-gray-400">
+//                   Duration: {episode.duration || "Unknown"}
+//                 </p>
+//                 <button
+//                   className={`w-full py-2 ${
+//                     downloadingEpisodeId === episode.id
+//                       ? "bg-green-400"
+//                       : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+//                   } text-white font-semibold rounded-lg flex justify-center items-center gap-2 transition duration-300`}
+//                   onClick={() => handleDownload(episode.id, episode.key)}
+//                   disabled={downloadingEpisodeId === episode.id}
+//                 >
+//                   <FaFileDownload />
+//                   {downloadingEpisodeId === episode.id
+//                     ? "Downloading..."
+//                     : "Download"}
+//                 </button>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </section>
+//     </div>
+//   );
+// };
+
+// SingleSeasonsPage.jsx
 export const SingleSeasonsPage = ({ series }) => {
   const [downloadingEpisodeId, setDownloadingEpisodeId] = useState(null);
   const baseUrl = "https://b2xclusive.onrender.com/api/v1";
@@ -12,15 +147,9 @@ export const SingleSeasonsPage = ({ series }) => {
   const handleDownload = async (episodeId, key) => {
     try {
       setDownloadingEpisodeId(episodeId);
-
-      // Construct the download URL with the specified format
       const downloadUrl = `${baseUrl}/track/download?type=episode&key=${key}&id=${episodeId}`;
-
-      // Create a hidden anchor element to trigger the download
       const link = document.createElement("a");
       link.href = downloadUrl;
-
-      // Trigger the download
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -34,98 +163,116 @@ export const SingleSeasonsPage = ({ series }) => {
   if (!series) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500 font-bold text-xl">No Series Found</p>
+        <div className="text-center space-y-4 animate-fadeIn">
+          <div className="w-24 h-24 mx-auto bg-gray-800/50 rounded-full flex items-center justify-center">
+            <Play className="w-12 h-12 text-gray-400" />
+          </div>
+          <p className="text-gray-400 font-medium">No Series Found</p>
+        </div>
       </div>
     );
   }
 
   const season = series;
   const episodes = series?.episodes || [];
-
-  if (!season || episodes.length === 0) {
-    return (
-      <div className="w-[90%] md:w-5/6 mx-auto my-10">
-        <p className="text-gray-500 font-bold">No Episodes Found</p>
-      </div>
-    );
-  }
-
-  const trailerPosterUrl =
-    episodes[0]?.posterUrl?.url || "/default-placeholder.png";
+  const trailerPosterUrl = episodes[0]?.imageUrl || "/placeholder.png";
 
   return (
-    <div className="bg-gray-50 min-h-screen py-10">
-      {/* Trailer Poster */}
-      <div className="w-[90%] md:w-5/6 mx-auto my-10">
-        <div className="relative group">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white pb-20">
+      {/* Hero Section */}
+      <div className="relative w-full lg:w-5/6 mx-auto pt-8 px-4">
+        <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl">
           <Image
             src={trailerPosterUrl}
             alt={season.movie?.title || "Season Poster"}
-            height={100}
-            width={100}
-            className="w-full rounded-lg shadow-lg object-cover max-h-[600px] transition-transform transform group-hover:scale-105 duration-500"
+            fill
+            className="object-cover"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <h1 className="text-white text-3xl font-bold">
-              {season.movie?.title || "Season Title"}
-            </h1>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent">
+            <div className="absolute bottom-0 left-0 right-0 p-8">
+              <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                {season.movie?.title} - Season{" "}
+                {season.seasonNumber || "Unknown"}
+              </h1>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Synopsis Section */}
-      <section className="w-[90%] md:w-5/6 mx-auto my-10">
-        <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
-          <h1 className="text-3xl font-bold text-gray-800">
-            {season.movie?.title} - Season {season.seasonNumber || "Unknown"}
-          </h1>
-          <h2 className="text-2xl font-semibold text-gray-700">Synopsis</h2>
-          <p className="text-gray-600">
+      <section className="w-full lg:w-5/6 mx-auto mt-16 px-4">
+        <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
+          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+            Synopsis
+          </h2>
+          <p className="text-gray-300 text-lg leading-relaxed">
             {season.movie?.description || "No synopsis available."}
           </p>
         </div>
       </section>
 
-      {/* Episodes Section */}
-      <section className="w-[90%] md:w-5/6 mx-auto my-10">
-        <h2 className="my-5 font-bold text-2xl text-gray-800">Episodes:</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {episodes.map((episode) => (
+      {/* Episodes Grid */}
+      <section className="w-full lg:w-5/6 mx-auto mt-16 px-4">
+        <h2 className="text-2xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+          Episodes
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {episodes.map((episode, index) => (
             <div
               key={episode.id}
-              className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 duration-300"
+              className="group relative bg-gray-800/50 rounded-xl overflow-hidden hover:scale-105 
+                        transition-all duration-300 backdrop-blur-sm shadow-xl animate-fadeIn"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               <Link href={`/season-menu/${season.id}/${episode.id}`}>
-                <div className="relative">
+                <div className="aspect-video relative">
                   <Image
-                    src={episode.posterUrl?.url || "/default-placeholder.png"}
-                    alt={episode.episodeTitle || "Episode Image"}
-                    height={100}
-                    width={100}
-                    className="w-full h-48 object-cover"
+                    src={episode.imageUrl || "/placeholder.png"}
+                    alt={episode.episodeTitle}
+                    fill
+                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent text-white p-3 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                    <h3 className="text-lg font-bold">
-                      {episode.episodeTitle || "Untitled Episode"}
-                    </h3>
-                    <p className="text-sm">{episode.description}</p>
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent 
+                                opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    <div
+                      className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full 
+                                  group-hover:translate-y-0 transition-transform duration-300"
+                    >
+                      <h3 className="font-bold text-lg mb-1">
+                        {episode.episodeTitle || "Untitled Episode"}
+                      </h3>
+                      <p className="text-sm text-gray-300 line-clamp-2">
+                        {episode.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </Link>
-              <div className="p-4 space-y-3">
-                <p className="text-sm text-gray-400">
-                  Duration: {episode.duration || "Unknown"}
-                </p>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-sm text-gray-400">
+                    Duration: {episode.duration || "Unknown"}
+                  </p>
+                </div>
                 <button
-                  className={`w-full py-2 ${
-                    downloadingEpisodeId === episode.id
-                      ? "bg-green-400"
-                      : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
-                  } text-white font-semibold rounded-lg flex justify-center items-center gap-2 transition duration-300`}
-                  onClick={() => handleDownload(episode.id, episode.key)}
+                  onClick={() => handleDownload(episode.id, episode.moviekey)}
                   disabled={downloadingEpisodeId === episode.id}
+                  className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 
+                            transition-all duration-300 ${
+                              downloadingEpisodeId === episode.id
+                                ? "bg-purple-600/50 cursor-wait"
+                                : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                            }`}
                 >
-                  <FaFileDownload />
+                  <FaFileDownload
+                    className={
+                      downloadingEpisodeId === episode.id
+                        ? "animate-bounce"
+                        : ""
+                    }
+                  />
                   {downloadingEpisodeId === episode.id
                     ? "Downloading..."
                     : "Download"}

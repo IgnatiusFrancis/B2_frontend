@@ -13,7 +13,9 @@ function Layout({ children }) {
         <h1 className={` text-xl`}>Create post</h1>
 
         <div
-          className={`${showSideBar ? "w-10/12" : "w-full"} grid grid-cols-6 border-b border-gray-200 `}
+          className={`${
+            showSideBar ? "w-10/12" : "w-full"
+          } grid grid-cols-6 border-b border-gray-200 `}
         >
           <CreatePostLinks
             title={"Artists"}

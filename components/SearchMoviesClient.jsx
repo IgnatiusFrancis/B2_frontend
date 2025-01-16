@@ -1,71 +1,18 @@
-// // "use client";
-// // import { useState } from "react";
-
-// // export default function SearchMoviesClient({ initialMovies }) {
-// //   const [searchResults, setSearchResults] = useState(initialMovies);
-
-// //   const handleSearch = async (query) => {
-// //     const response = await fetch(`/api/movies/search?q=${query}`);
-// //     const data = await response.json();
-// //     setSearchResults(data.movies);
-// //   };
-
-// //   const handleClearSearch = () => setSearchResults(initialMovies);
-
-// //   return (
-// //     <>
-// //       <div className="p-4">
-// //         <input
-// //           type="text"
-// //           placeholder="Search movies..."
-// //           onChange={(e) => handleSearch(e.target.value)}
-// //           className="w-full border rounded p-2"
-// //         />
-// //         <button onClick={handleClearSearch} className="mt-2 text-blue-500">
-// //           Clear Search
-// //         </button>
-// //       </div>
-
-// //       <section className="grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-4 py-8">
-// //         {searchResults.map((movie) => (
-// //           <div key={movie.id} className="border rounded-md overflow-hidden">
-// //             <img
-// //               src={movie.posterUrl || "/placeholder.png"}
-// //               alt={movie.title}
-// //               className="w-full h-48 object-cover"
-// //             />
-// //             <div className="px-2 py-3">
-// //               <h3 className="text-center font-medium">{movie.title}</h3>
-// //               <p className="text-sm text-gray-600 truncate">
-// //                 {movie.description}
-// //               </p>
-// //             </div>
-// //           </div>
-// //         ))}
-// //       </section>
-// //     </>
-// //   );
-// // }
-
 // "use client";
 
 // import { useState } from "react";
 // import AllMoviesHome from "./MoviesHome";
 // import AllSeriesHome from "./SeriesHome";
+// import Image from "next/image";
 
-// export default function SearchMoviesClient({ movies, series }) {
+// export default function SearchMoviesClient({ movies, series, seasonal }) {
 //   const [searchResults, setSearchResults] = useState(null);
-//   // console.log("movies:",movies )
-//   // console.log("series:",series )
+
 //   const handleSearch = (query) => {
-//     console.log("Query:", query)
-//     console.log("movies:",movies )
-//     console.log("series:",series )
 //     if (!query) {
 //       setSearchResults(null); // Clear search results
 //       return;
 //     }
-//     console.log("Query:", query)
 
 //     // Search movies and series based on query
 //     const results = [
@@ -75,41 +22,42 @@
 //       ...series.filter((serie) =>
 //         serie.title.toLowerCase().includes(query.toLowerCase())
 //       ),
+//       ...seasonal.filter((seasonal) =>
+//         seasonal.title.toLowerCase().includes(query.toLowerCase())
+//       ),
 //     ];
 
 //     setSearchResults(results.length > 0 ? results : null);
 //   };
-// console.log("searchResults:",searchResults )
+
 //   return (
 //     <div className="w-[90%] md:w-5/6 mx-auto py-6">
 //       {/* Search Input */}
 //       <div className="mb-6">
 //         <input
 //           type="text"
-//           placeholder="Search for movies or series data..."
+//           placeholder="Search for movies or series..."
 //           className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-//           onChange={(e) => {
-//             console.log("Input Value:", e.target.value);
-//             handleSearch(e.target.value);
-//           }}
+//           onChange={(e) => handleSearch(e.target.value)}
 //         />
 //       </div>
 
 //       {/* Conditional Rendering */}
-
 //       {searchResults ? (
 //         // Render search results
 //         <section className="grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-4">
 //           {searchResults.map((item) => (
 //             <div key={item.id} className="border rounded-md overflow-hidden">
 //               <div className="h-48 bg-gray-200">
-//                 <img
+//                 <Image
 //                   src={
-//                     item.seasons?.[0]?.episodes?.[0]?.posterUrl?.url ||
+//                     item.seasons?.[0]?.episodes?.[0]?.url ||
 //                     item.key ||
 //                     "/placeholder.png"
 //                   }
 //                   alt={item.title}
+//                   height={100}
+//                   width={100}
 //                   className="w-full h-full object-contain"
 //                 />
 //               </div>
@@ -129,98 +77,142 @@
 //           ))}
 //         </section>
 //       ) : (
-//         // Render default movies and series
 //         <>
-//        <AllMoviesHome movies={movies} />
-//       <AllSeriesHome series={series} />
+//           <AllMoviesHome movies={movies} />
+//           <AllSeriesHome series={series} />
+//           {/* <AllSeriesHome seasonal={seasonal} /> */}
 //         </>
 //       )}
-
 //     </div>
 //   );
 // }
 
+// app/components/SearchMoviesClient.jsx
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import AllMoviesHome from "./MoviesHome";
 import AllSeriesHome from "./SeriesHome";
 import Image from "next/image";
+import { Search, Loader2 } from "lucide-react";
+import AllSeasonalHome from "./AllSeasonalHome";
+import pld from "@/public/pld.jpeg";
 
-export default function SearchMoviesClient({ movies, series }) {
+export default function SearchMoviesClient({ movies, series, seasonal }) {
   const [searchResults, setSearchResults] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   const handleSearch = (query) => {
-    if (!query) {
-      setSearchResults(null); // Clear search results
-      return;
-    }
+    setSearchQuery(query);
+    startTransition(() => {
+      if (!query) {
+        setSearchResults(null);
+        return;
+      }
 
-    // Search movies and series based on query
-    const results = [
-      ...movies.filter((movie) =>
-        movie.title.toLowerCase().includes(query.toLowerCase())
-      ),
-      ...series.filter((serie) =>
-        serie.title.toLowerCase().includes(query.toLowerCase())
-      ),
-    ];
+      const results = [
+        ...movies.filter((movie) =>
+          movie.title.toLowerCase().includes(query.toLowerCase())
+        ),
+        ...series.filter((serie) =>
+          serie.title.toLowerCase().includes(query.toLowerCase())
+        ),
+        ...seasonal.filter((seasonal) =>
+          seasonal.title.toLowerCase().includes(query.toLowerCase())
+        ),
+      ];
 
-    setSearchResults(results.length > 0 ? results : null);
+      setSearchResults(results.length > 0 ? results : null);
+    });
   };
 
   return (
-    <div className="w-[90%] md:w-5/6 mx-auto py-6">
+    <div className="w-full lg:w-5/6 mx-auto px-4 py-6">
       {/* Search Input */}
-      <div className="mb-6">
+      <div className="relative max-w-3xl mx-auto mb-12 group">
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          {isPending ? (
+            <Loader2 className="h-5 w-5 text-gray-400 animate-spin" />
+          ) : (
+            <Search className="h-5 w-5 text-gray-400" />
+          )}
+        </div>
         <input
           type="text"
           placeholder="Search for movies or series..."
-          className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl 
+                   focus:ring-2 focus:ring-purple-500 focus:border-transparent
+                   transition-all duration-300 placeholder-gray-400
+                   backdrop-blur-lg shadow-xl"
           onChange={(e) => handleSearch(e.target.value)}
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-xl blur-xl 
+                      group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100"
         />
       </div>
 
-      {/* Conditional Rendering */}
-      {searchResults ? (
-        // Render search results
-        <section className="grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-4">
-          {searchResults.map((item) => (
-            <div key={item.id} className="border rounded-md overflow-hidden">
-              <div className="h-48 bg-gray-200">
-                <Image
-                  src={
-                    item.seasons?.[0]?.episodes?.[0]?.posterUrl?.url ||
-                    item.key ||
-                    "/placeholder.png"
-                  }
-                  alt={item.title}
-                  height={100}
-                  width={100}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div className="px-2 py-3">
-                <h3 className="text-center font-medium">{item.title}</h3>
-                <p className="text-sm text-gray-600 truncate">
-                  {item.description}
-                </p>
-                <p className="text-xs text-gray-500">
-                  Genre: {item.genre.join(", ")}
-                </p>
-                <p className="text-xs text-gray-500">
-                  Language: {item.language}
-                </p>
-              </div>
+      {/* Results */}
+      <div className="space-y-12">
+        {searchResults ? (
+          <div className="animate-fadeIn">
+            <h2 className="text-2xl font-bold mb-6 text-gray-200">
+              Search Results for "{searchQuery}"
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {searchResults.map((item) => (
+                <SearchResultCard key={item.id} item={item} />
+              ))}
             </div>
-          ))}
-        </section>
-      ) : (
-        <>
-          <AllMoviesHome movies={movies} />
-          <AllSeriesHome series={series} />
-        </>
-      )}
+          </div>
+        ) : (
+          <div className="space-y-16 animate-fadeIn">
+            <AllMoviesHome movies={movies} />
+            <AllSeriesHome series={series} />
+            <AllSeasonalHome seasonal={seasonal} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Search Result Card Component
+function SearchResultCard({ item }) {
+  return (
+    <div
+      className="group relative bg-gray-800/50 rounded-xl overflow-hidden hover:scale-105 
+                    transition-all duration-300 backdrop-blur-sm shadow-xl"
+    >
+      <div className="aspect-[2/3] relative">
+        <Image
+          src={item.seasons?.[0]?.episodes?.imageKey || item.imageUrl || pld}
+          alt={item.title}
+          fill
+          className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 
+                      group-hover:opacity-100 transition-opacity duration-300"
+        />
+      </div>
+      <div
+        className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full 
+                    group-hover:translate-y-0 transition-transform duration-300"
+      >
+        <div className="bg-gray-900/90 backdrop-blur-sm p-4 rounded-lg">
+          <h3 className="font-bold text-white mb-2">{item.title}</h3>
+          <p className="text-sm text-gray-300 line-clamp-2">
+            {item.description}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <span className="text-xs px-2 py-1 bg-purple-500/20 rounded-full text-purple-200">
+              {item.genre}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

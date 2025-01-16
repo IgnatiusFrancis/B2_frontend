@@ -10,30 +10,21 @@ function Layout({ children }) {
   return (
     <>
       <div className={`w-full md:w-10/12 p-2 flex flex-col gap-2`}>
-        <h1 className={` text-xl`}>Create post</h1>
+        <h1 className={` text-xl`}>Movie Section</h1>
 
         <div
           className={`${
             showSideBar ? "w-10/12" : "w-full"
-          } grid grid-cols-6 border-b border-gray-200 `}
+          } grid grid-cols-3 border-b border-gray-200 `}
         >
+          <CreatePostLinks title={"Create Movie"} href={"/admin/movie"} />
           <CreatePostLinks
-            title={"Artists"}
-            href={"/admin/createpost/addartist"}
-          />
-          <CreatePostLinks title={"Blog"} href={"/admin/createpost"} />
-          <CreatePostLinks
-            title={"Music"}
-            href={"/admin/createpost/addmusic"}
+            title={"Create Season"}
+            href={"/admin/movie/addseason"}
           />
           <CreatePostLinks
-            title={"Movie"}
-            href={"/admin/createmovie/addmovie"}
-          />
-
-          <CreatePostLinks
-            title={"Events"}
-            href={"/admin/createpost/addevent"}
+            title={"Create Episode"}
+            href={"/admin/movie/addepisode"}
           />
         </div>
 

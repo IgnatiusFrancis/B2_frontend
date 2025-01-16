@@ -1,7 +1,97 @@
-"use client";
+// "use client";
 
-import { FaFileDownload } from "react-icons/fa";
+// import { FaFileDownload } from "react-icons/fa";
+// import { useState } from "react";
+
+// const SingleMovie = ({ movie }) => {
+//   const [isDownloading, setIsDownloading] = useState(false);
+
+//   if (!movie) {
+//     return (
+//       <div className="flex items-center justify-center h-64">
+//         <p className="text-gray-500 font-bold text-xl">No Movie Found</p>
+//       </div>
+//     );
+//   }
+
+//   const embedYouTubeUrl = (url) => {
+//     if (!url) return "";
+//     const videoId = url.split("v=")[1]?.split("&")[0];
+//     return `https://www.youtube.com/embed/${videoId}`;
+//   };
+
+//   const handleDownload = async () => {
+//     try {
+//       setIsDownloading(true);
+
+//       const data = movie.movie;
+
+//       // Construct the download URL with the specified format
+//       const downloadUrl = `https://b2xclusive.onrender.com/api/v1/track/download?type=episode&key=${data.episode[0].moviekey}&id=${data.episode[0].id}`;
+
+//       // Create a hidden anchor element to trigger the download
+//       const link = document.createElement("a");
+//       link.href = downloadUrl;
+
+//       // Trigger the download
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//     } catch (error) {
+//       console.error("Download failed:", error);
+//     } finally {
+//       setIsDownloading(false);
+//     }
+//   };
+
+//   const data = movie.movie;
+
+//   return (
+//     <div>
+//       <div className="w-[90%] md:w-5/6 mx-auto my-10 aspect-video">
+//         <iframe
+//           className="w-full h-full rounded-lg shadow-lg"
+//           src={embedYouTubeUrl(data.trailerUrl)}
+//           title={`${data.title} Trailer`}
+//           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+//           referrerPolicy="strict-origin-when-cross-origin"
+//           allowFullScreen
+//         ></iframe>
+//       </div>
+
+//       <section className="w-[90%] md:w-5/6 mx-auto my-10">
+//         <div className="space-y-4">
+//           <h2 className="md:text-2xl text-xl font-bold">Synopsis</h2>
+//           <p className="text-gray-600">
+//             {data.description || "No synopsis available."}
+//           </p>
+//         </div>
+
+//         <div className="space-y-4 my-10">
+//           <h2 className="md:text-2xl text-xl font-bold">
+//             Download link for {data.title}
+//           </h2>
+//           <button
+//             className={`md:w-[40%] w-full py-5 ${
+//               isDownloading ? "bg-green-400" : "bg-green-600"
+//             } text-white flex justify-center items-center gap-2 rounded-2xl border-none transition-colors`}
+//             onClick={handleDownload}
+//             disabled={isDownloading}
+//           >
+//             <FaFileDownload />
+//             {isDownloading ? "Initiating Download..." : "Download"}
+//           </button>
+//         </div>
+//       </section>
+//     </div>
+//   );
+// };
+
+// export default SingleMovie;
+"use client";
 import { useState } from "react";
+import { FaFileDownload } from "react-icons/fa";
+import { Play, Info, Download } from "lucide-react";
 
 const SingleMovie = ({ movie }) => {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -9,8 +99,13 @@ const SingleMovie = ({ movie }) => {
   if (!movie) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500 font-bold text-xl">No Movie Found</p>
-      </div> 
+        <div className="text-center space-y-4 animate-fadeIn">
+          <div className="w-24 h-24 mx-auto bg-gray-800/50 rounded-full flex items-center justify-center">
+            <Play className="w-12 h-12 text-gray-400" />
+          </div>
+          <p className="text-gray-400 font-medium">No Movie Found</p>
+        </div>
+      </div>
     );
   }
 
@@ -23,22 +118,15 @@ const SingleMovie = ({ movie }) => {
   const handleDownload = async () => {
     try {
       setIsDownloading(true);
-
       const data = movie.movie;
-
-      // Construct the download URL with the specified format
-      const downloadUrl = `https://b2xclusive.onrender.com/api/v1/track/download?type=episode&key=${data.episode[0].key}&id=${data.episode[0].id}`;
-
-      // Create a hidden anchor element to trigger the download
+      const downloadUrl = `https://b2xclusive.onrender.com/api/v1/track/download?type=episode&key=${data.episode[0].moviekey}&id=${data.episode[0].id}`;
       const link = document.createElement("a");
       link.href = downloadUrl;
-
-      // Trigger the download
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error("Download failed:", error); 
+      console.error("Download failed:", error);
     } finally {
       setIsDownloading(false);
     }
@@ -47,42 +135,89 @@ const SingleMovie = ({ movie }) => {
   const data = movie.movie;
 
   return (
-    <div>
-      <div className="w-[90%] md:w-5/6 mx-auto my-10 aspect-video">
-        <iframe
-          className="w-full h-full rounded-lg shadow-lg"
-          src={embedYouTubeUrl(data.trailerUrl)}
-          title={`${data.title} Trailer`}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-        ></iframe>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white pb-20">
+      {/* Hero Trailer Section */}
+      <div className="relative w-full lg:w-5/6 mx-auto pt-8 px-4">
+        <div
+          className="relative rounded-2xl overflow-hidden shadow-2xl 
+                      transform hover:scale-[1.01] transition-all duration-500"
+        >
+          <div className="aspect-video bg-gray-800/50">
+            <iframe
+              className="w-full h-full"
+              src={embedYouTubeUrl(data.trailerUrl)}
+              title={`${data.title} Trailer`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/40 to-transparent" />
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent">
+          <h1 className="text-4xl md:text-5xl font-bold mb-2">{data.title}</h1>
+          <p className="text-gray-300 text-lg">Official Trailer</p>
+        </div>
       </div>
 
-      <section className="w-[90%] md:w-5/6 mx-auto my-10">
-        <div className="space-y-4">
-          <h2 className="md:text-2xl text-xl font-bold">Synopsis</h2>
-          <p className="text-gray-600">
+      {/* Info Section */}
+      <div className="w-full lg:w-5/6 mx-auto mt-16 px-4 space-y-8">
+        {/* Synopsis */}
+        <div
+          className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 shadow-xl 
+                      transform hover:scale-[1.01] transition-all duration-300"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <Info className="w-6 h-6 text-purple-400" />
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+              Synopsis
+            </h2>
+          </div>
+          <p className="text-gray-300 text-lg leading-relaxed">
             {data.description || "No synopsis available."}
           </p>
         </div>
 
-        <div className="space-y-4 my-10">
-          <h2 className="md:text-2xl text-xl font-bold">
-            Download link for {data.title}
-          </h2>
+        {/* Download Section */}
+        <div
+          className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 shadow-xl 
+                      transform hover:scale-[1.01] transition-all duration-300"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <Download className="w-6 h-6 text-purple-400" />
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+              Download {data.title}
+            </h2>
+          </div>
+
           <button
-            className={`md:w-[40%] w-full py-5 ${
-              isDownloading ? "bg-green-400" : "bg-green-600"
-            } text-white flex justify-center items-center gap-2 rounded-2xl border-none transition-colors`}
             onClick={handleDownload}
             disabled={isDownloading}
+            className={`group relative w-full md:w-auto px-8 py-4 rounded-xl flex items-center justify-center gap-3 
+                      transition-all duration-300 ${
+                        isDownloading
+                          ? "bg-purple-600/50 cursor-wait"
+                          : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                      }`}
           >
-            <FaFileDownload />
-            {isDownloading ? "Initiating Download..." : "Download"}
+            <div className="absolute inset-0 bg-white/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100" />
+            <FaFileDownload
+              className={`relative ${
+                isDownloading
+                  ? "animate-bounce"
+                  : "group-hover:scale-110 transition-transform duration-300"
+              }`}
+            />
+            <span className="relative font-medium">
+              {isDownloading ? "Initiating Download..." : "Download Movie"}
+            </span>
           </button>
+
+          <p className="mt-4 text-sm text-gray-400">
+            Click the button above to start downloading. The download will begin
+            automatically.
+          </p>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
