@@ -36,8 +36,7 @@ function AddEpisode() {
 
   const [seasonData, setSeasonData] = useState({
     movieId: "",
-    seasonTitle: "",
-    seasonDescription: "",
+    seasonId: "",
     duration: "",
     episodeTitle: "",
     episodeDescription: "",
@@ -72,8 +71,6 @@ function AddEpisode() {
     const { name, value } = e.target;
     setSeasonData((prev) => ({ ...prev, [name]: value }));
   };
-
-  // Rest of the handlers remain similar but updated for seasonData...
 
   const handleFileChange = (e, type) => {
     const files = e.target.files;
@@ -171,7 +168,7 @@ function AddEpisode() {
     });
 
     if (thumbnail) formData.append("thumbnail", thumbnail);
-    videos.forEach((video) => formData.append("movies", video));
+    videos.forEach((video) => formData.append("episodes", video));
 
     try {
       const token = await validateToken();
@@ -241,7 +238,7 @@ function AddEpisode() {
         const response = await axios.get(
           `https://b2xclusive.onrender.com/api/v1/track/seasons`
         );
-        console.log(response?.data?.data.seasons);
+
         setAllMovies(response?.data?.data.seasons);
       } catch (error) {
         console.log(error, "Unable to fetch Movies");
@@ -328,17 +325,39 @@ function AddEpisode() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Season Title
+                  Season
                 </label>
-                <input
+                {/* <input
                   type="text"
-                  name="seasonTitle"
-                  value={seasonData.seasonTitle}
+                  name="seasonId"
+                  value={seasonData.seasonId}
                   onChange={handleInputChange}
                   placeholder="Enter season title"
                   className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   required
-                />
+                /> */}
+                <select
+                  value={seasonData.seasonId}
+                  onChange={(e) =>
+                    setSeasonData({ ...seasonData, seasonId: e.target.value })
+                  }
+                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  required
+                  disabled={getMovies}
+                >
+                  <option value="">Select a season</option>
+
+                  {/* Filter to get only the seasons of the selected movie */}
+                  {allMovies
+                    .filter((movie) => movie.id === seasonData.movieId) // Filter by the selected movie ID
+                    .flatMap((movie) =>
+                      movie.seasons.map((season) => (
+                        <option key={season.id} value={season.id}>
+                          {season.seasonTitle}
+                        </option>
+                      ))
+                    )}
+                </select>
               </div>
 
               <div>
@@ -357,21 +376,6 @@ function AddEpisode() {
                     required
                   />
                 </div>
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Season Description
-                </label>
-                <textarea
-                  name="seasonDescription"
-                  value={seasonData.seasonDescription}
-                  onChange={handleInputChange}
-                  placeholder="Enter season description"
-                  rows={4}
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                />
               </div>
             </div>
           </div>

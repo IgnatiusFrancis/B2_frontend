@@ -154,11 +154,32 @@ export default function SearchMoviesClient({ movies, series, seasonal }) {
       </div>
 
       {/* Results */}
-      <div className="space-y-12">
+      {/* <div className="space-y-12">
         {searchResults ? (
           <div className="animate-fadeIn">
             <h2 className="text-2xl font-bold mb-6 text-gray-200">
               Search Results for "{searchQuery}"
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {searchResults.map((item) => (
+                <SearchResultCard key={item.id} item={item} />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-16 animate-fadeIn"> 
+            <AllMoviesHome movies={movies} />
+            <AllSeriesHome series={series} />
+            <AllSeasonalHome seasonal={seasonal} />
+          </div>
+        )}
+      </div> */}
+
+      <div className="space-y-12">
+        {searchResults ? (
+          <div className="animate-fadeIn">
+            <h2 className="text-2xl font-bold mb-6 text-gray-200">
+              {`Search Results for "${searchQuery}"`}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {searchResults.map((item) => (
