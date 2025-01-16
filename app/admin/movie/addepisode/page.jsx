@@ -204,7 +204,7 @@ function AddEpisode() {
       );
       console.log("Submitted");
       toast.success("Movie created successfully!");
-      // router.push("/admin");
+      router.push("/admin");
     } catch (error) {
       console.error("Upload error:", error);
 
@@ -327,15 +327,6 @@ function AddEpisode() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Season
                 </label>
-                {/* <input
-                  type="text"
-                  name="seasonId"
-                  value={seasonData.seasonId}
-                  onChange={handleInputChange}
-                  placeholder="Enter season title"
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                /> */}
                 <select
                   value={seasonData.seasonId}
                   onChange={(e) =>

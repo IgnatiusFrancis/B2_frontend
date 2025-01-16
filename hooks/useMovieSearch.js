@@ -2,17 +2,14 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import AllMoviesHome from "./MoviesHome";
-import AllSeriesHome from "./SeriesHome";
 import Image from "next/image";
 import { Search, Loader2 } from "lucide-react";
-import AllSeasonalHome from "./AllSeasonalHome";
 import pld from "@/public/pld.jpeg";
 
-export default function SearchMoviesClient({ movies, series, seasonal }) {
+export default function UseSearchMovies({ data, ContentContainer, searchFields }) { 
   const [searchResults, setSearchResults] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition(); 
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -23,20 +20,15 @@ export default function SearchMoviesClient({ movies, series, seasonal }) {
       }
 
       const results = [
-        ...movies.filter((movie) =>
+        ...searchFields.filter((movie) =>
           movie.title.toLowerCase().includes(query.toLowerCase())
-        ),
-        ...series.filter((serie) =>
-          serie.title.toLowerCase().includes(query.toLowerCase())
-        ),
-        ...seasonal.filter((seasonal) =>
-          seasonal.title.toLowerCase().includes(query.toLowerCase())
         ),
       ];
 
-      setSearchResults(results.length > 0 ? results : null);
+      setSearchResults(results.length > 0 ? results : null); 
     });
   };
+
 
   return (
     <div className="w-full lg:w-5/6 mx-auto px-4 py-6">
@@ -78,9 +70,7 @@ export default function SearchMoviesClient({ movies, series, seasonal }) {
           </div>
         ) : (
           <div className="space-y-16 animate-fadeIn">
-            <AllMoviesHome movies={movies} />
-            <AllSeriesHome series={series} />
-            <AllSeasonalHome seasonal={seasonal} />
+            {ContentContainer && <ContentContainer data={data} />}
           </div>
         )}
       </div>
@@ -89,7 +79,7 @@ export default function SearchMoviesClient({ movies, series, seasonal }) {
 }
 
 // Search Result Card Component
-function SearchResultCard({ item }) {
+function SearchResultCard({ item }) { 
   return (
     <div
       className="group relative bg-gray-800/50 rounded-xl overflow-hidden hover:scale-105 

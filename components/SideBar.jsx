@@ -236,6 +236,8 @@ import {
   CalendarDays,
   MoveIcon,
   Folder,
+  TrendingUpIcon,
+  LucideTrendingUp,
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -247,8 +249,18 @@ const Sidebar = () => {
       { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
       { title: "Content", href: "/admin/contents", icon: FileText },
       { title: "Events & Artists", href: "/admin/events", icon: CalendarDays },
+      {
+        title: "Create Content",
+        href: "/admin/createpost",
+        icon: PenTool,
+      },
+      {
+        title: "Top Artist & Top Videos",
+        href: "/admin/topArtist&TopTrendingVideo",
+        icon: LucideTrendingUp,
+      },
       { title: "Users", href: "/admin/users", icon: Users },
-      { title: "Create Post", href: "/admin/createpost", icon: PenTool },
+
       { title: "Account", href: "/admin/account", icon: Settings },
       { title: "Movie", href: "/admin/movie", icon: MoveIcon },
       { title: "Movie Contents", href: "/admin/moviecontents", icon: Folder },

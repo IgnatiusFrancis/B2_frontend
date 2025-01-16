@@ -7,7 +7,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Loader2, Upload } from "lucide-react";
 
-const AddArtists = () => {
+const TopArtists = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -182,4 +182,4 @@ const AddArtists = () => {
   );
 };
 
-export default AddArtists;
+export default TopArtists;

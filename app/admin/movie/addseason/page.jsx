@@ -208,7 +208,7 @@ function AddSeason() {
       );
       console.log("Submitted");
       toast.success("Movie created successfully!");
-      // router.push("/admin");
+      router.push("/admin");
     } catch (error) {
       console.error("Upload error:", error);
 
