@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FaFileDownload } from "react-icons/fa";
 import Image from "next/image";
 import pld from "@/public/pld.jpeg";
-import { Play } from "next/font/google";
+import { Play } from "lucide-react";
 
 // SingleSeasonsPage.jsx
 export const SingleSeasonsPage = ({ series }) => {
