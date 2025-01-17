@@ -1,26 +1,26 @@
-// AllOverviewPost.jsx
 "use client";
 import { useMemo, useState } from "react";
 import PostContent from "./PostContent";
 import NoContentAvailable from "./NoAvailableContent";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import User from "./User";
 
-function AllOverviewPost({ posts = [] }) {
-  const dataPerPage = 8;
+function AllUsers({ users = [] }) {
+  const dataPerPage = 20;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(posts.length / dataPerPage);
+  const totalPages = Math.ceil(users.length / dataPerPage);
 
-  const currentPosts = useMemo(() => {
+  const currentusers = useMemo(() => {
     const indexOfLastData = currentPage * dataPerPage;
     const indexOfFirstData = indexOfLastData - dataPerPage;
-    return posts.slice(indexOfFirstData, indexOfLastData);
-  }, [currentPage, posts]);
+    return users.slice(indexOfFirstData, indexOfLastData);
+  }, [currentPage, users]);
 
-  if (!posts || posts.length === 0) {
+  if (!users || users.length === 0) {
     return (
       <NoContentAvailable
-        title="No posts Found"
-        message="It seems there are no posts available at the moment. Please check back later."
+        title="No users Found"
+        message="It seems there are no users available at the moment. Please check back later."
       />
     );
   }
@@ -28,8 +28,17 @@ function AllOverviewPost({ posts = [] }) {
   return (
     <div className="flex flex-col">
       <div className="divide-y divide-gray-100">
-        {currentPosts?.map((post) => (
-          <PostContent key={post?.id} {...post} />
+        {currentusers.map((user) => (
+          <User
+            key={user.id}
+            id={user.id}
+            userName={user.userName}
+            email={user.email}
+            url={user.url}
+            role={user.role}
+            bio={user.bio}
+            createdAt={user.createdAt}
+          />
         ))}
       </div>
 
@@ -72,4 +81,4 @@ function AllOverviewPost({ posts = [] }) {
   );
 }
 
-export default AllOverviewPost;
+export default AllUsers;

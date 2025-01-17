@@ -18,16 +18,12 @@ function Layout({ children }) {
         >
           <CreatePostLinks
             title={"Top Artists"}
-            href={"/admin/topArtist&TopTrendingVideo/topartist"}
+            href={"/admin/topArtist&TopTrendingVideo"}
           />
           <CreatePostLinks
             title={"Top Trending Videos"}
             href={"/admin/topArtist&TopTrendingVideo/toptrendingvideo"}
           />
-          {/* <CreatePostLinks
-            title={"Top Artists"}
-            href={"/admin/topArtist&TopTrendingVideo"}
-          /> */}
         </div>
 
         <div className={`w-full p-4`}>{children}</div>

@@ -1,42 +1,29 @@
-import AllUsers from "@/components/AllUser";
+import AllUsers from "@/components/AllUsers";
+import { getUsers } from "@/lib/api";
 
-function FollowersDashboard() {
+async function Contents() {
+  const [users] = await Promise.all([getUsers()]);
+
   return (
-    <>
-      <div className="w-full md:10/12">
-        <div className="p-2 w-full flex flex-col gap-2">
-          <h1 className="text-xl ">All Users</h1>
-          <div className="min-h-72">
-            <div className="w-full p-2 flex border border-gray-100 rounded-se rounded-ss">
-              <div className="w-7/12">
-                <h1 className={` text-xs`}>Users</h1>
-              </div>
-              <h1 className={` w-3/12 text-xs`}>Date</h1>
+    <div className="w-full max-w-7xl mx-auto p-6 space-y-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold text-gray-800">USERS</h1>
+      </div>
 
-              <h1 className={` w-3/12 text-xs`}>Role</h1>
-              <h1 className={` w-2/12 text-xs`}>Action</h1>
-            </div>
-
-            <AllUsers />
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="bg-gray-50 p-4 border-b">
+          <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-600">
+            <div className="col-span-6">User Name</div>
+            <div className="col-span-1 text-center">Email</div>
+            <div className="col-span-2 text-center">Role</div>
+            <div className="col-span-2 text-center">Date</div>
           </div>
         </div>
-
-        <div className="p-2 w-full flex flex-col gap-2">
-          <h1 className="text-xl ">Comments</h1>
-          <div className="h-72">
-            <div className="w-full p-2 flex border border-gray-100 rounded-se rounded-ss">
-              <div className="w-7/12">
-                <h1 className={` text-xs`}>Comments</h1>
-              </div>
-              <h1 className={` w-3/12 text-xs`}>Date</h1>
-
-              <h1 className={` w-2/12 text-xs`}>Action</h1>
-            </div>
-          </div>
+        <div>
+          <AllUsers users={users} />
         </div>
       </div>
-    </>
+    </div>
   );
 }
-
-export default FollowersDashboard;
+export default Contents;

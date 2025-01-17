@@ -1,105 +1,43 @@
 "use client";
 import Image from "next/image";
-import { toast } from "react-toastify";
-import { FaComment, FaCommentDots, FaEllipsisV, FaEye } from "react-icons/fa";
 import pld from "@/public/pld.jpeg";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import axios from "axios";
-function User({ id, userName, email, image, bio, createdAt, role }) {
-  const [showActions, setShowActions] = useState(false);
-  const [token, setToken] = useState(""); // State to hold the token
-  useEffect(() => {
-    const storedToken = localStorage.getItem("b2exclusiveadmin");
-    if (storedToken) {
-      const cleanedToken = storedToken.replace(/^['"](.*)['"]$/, "$1");
-      setToken(cleanedToken);
-      console.log(cleanedToken);
-    } else {
-      console.error("Bearer token not found");
-    }
-  }, []);
 
-  const handleDelete = async () => {
-    toast.warning("deleting post...", {
-      autoClose: false,
-      position: "top-center",
-    });
+function User({ id, userName, email, url, role, bio, createdAt }) {
+  const imageUrl = url ? url : pld;
 
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const response = await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/artist/delete/${id}`,
-        config
-      );
-      toast.dismiss();
-
-      toast.success(`Artist Deleted successfully`, {
-        position: "top-center",
-      });
-
-      setTimeout(() => {
-        window.location.reload();
-      });
-    } catch (error) {
-      console.error("Failed delete artist", error.message);
-      toast.dismiss();
-      toast.error(`Failed to delete artist`, {
-        position: "top-center",
-      });
-    }
-  };
   return (
-    <>
-      <div className="w-full p-2 flex items-center border border-gray-100 rounded-se rounded-ss">
-        <div className="w-7/12 flex items-center gap-2">
-          <div className="w-[30px] h-[30px] rounded-full">
-            <Image
-              src={image?.url || pld}
-              width={1000}
-              height={1000}
-              alt="alb"
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </div>
-          <div>
-            <h1 className={`text-xs`}>{userName}</h1>
-            <p className="text-xs text-gray-400">{email}</p>
-          </div>
+    <div className="grid grid-cols-12 gap-4 items-center p-4 hover:bg-gray-50 transition-colors">
+      <div className="col-span-6 flex items-center gap-3">
+        <div className="relative w-10 h-10 rounded-full overflow-hidden">
+          <Image src={imageUrl} alt={userName} fill className="object-cover" />
         </div>
-        <h1 className={` w-3/12 text-xs `}>{createdAt?.split("T")[0]}</h1>
-        <h1 className={` w-3/12 text-xs `}>{role}</h1>
-        <div
-          className="w-2/12 relative cursor-pointer "
-          onClick={() => setShowActions(!showActions)}
-        >
-          <FaEllipsisV className={` text-center`} />
-          {showActions ? (
-            <div className="w-full border right-0 top-5 rounded-lg absolute bg-white flex flex-col ">
-              <Link
-                href={`/admin/contents/edit/blog/${id}`}
-                className="hover:bg-primarycolor hover:rounded-lg hover:text-white p-2 text-xs cursor-pointer"
-              >
-                Edit Post
-              </Link>
-              <p
-                onClick={handleDelete}
-                className="hover:bg-primarycolor hover:rounded-lg hover:text-white p-2 text-xs cursor-pointer"
-              >
-                Delete Post
-              </p>
-            </div>
-          ) : (
-            ""
-          )}{" "}
+        <div className="min-w-0">
+          <h3 className="text-sm font-medium truncate">{userName}</h3>
+          <p className="text-xs text-gray-500 truncate">
+            {bio?.split(" ").slice(0, 6).join(" ")}
+          </p>
         </div>
       </div>
-    </>
+
+      <div className="col-span-1 flex justify-center">
+        <span className="text-sm text-gray-600">{email}</span>
+      </div>
+
+      <div className="col-span-2 flex justify-center items-center gap-2">
+        <span className="text-sm text-gray-600">{role}</span>
+      </div>
+
+      <div className="col-span-2 text-center">
+        <span className="text-sm text-gray-600">
+          {new Date(createdAt).toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </span>
+      </div>
+    </div>
   );
 }
 

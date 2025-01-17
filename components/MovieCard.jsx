@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import pld from "@/public/pld.jpeg";
 
 export function MovieCard({ movie, index }) {
   return (

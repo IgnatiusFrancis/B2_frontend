@@ -25,7 +25,7 @@ async function Contents() {
     getAlbums(),
     getEvents(),
   ]);
-  console.log(events[0]);
+
   // value: movies.SINGLE.length,
   const stats = [
     { title: "Total Blogs", value: posts.length, icon: FaBlog },

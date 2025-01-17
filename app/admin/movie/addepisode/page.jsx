@@ -195,8 +195,7 @@ function AddEpisode() {
           }
         },
       };
-      console.log(token);
-      console.log("Submitting...");
+
       const response = await axios.put(
         "https://b2xclusive.onrender.com/api/v1/track/episode",
         formData,

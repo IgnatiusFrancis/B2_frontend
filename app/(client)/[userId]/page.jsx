@@ -10,8 +10,6 @@ function SingleUser({ params }) {
   const [userData, setUserData] = useState(null);
   const userId = params.userId;
 
-  console.log(userId);
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -28,7 +26,7 @@ function SingleUser({ params }) {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          },
+          }
         );
 
         // Set the retrieved user data into state
