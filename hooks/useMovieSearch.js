@@ -7,6 +7,7 @@ import { Search, Loader2 } from "lucide-react";
 import pld from "@/public/pld.jpeg";
 
 export default function UseSearchMovies({ data, ContentContainer, searchFields }) { 
+
   const [searchResults, setSearchResults] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isPending, startTransition] = useTransition(); 
@@ -19,13 +20,13 @@ export default function UseSearchMovies({ data, ContentContainer, searchFields }
         return;
       }
 
-      const results = [
-        ...searchFields.filter((movie) =>
-          movie.title.toLowerCase().includes(query.toLowerCase())
-        ),
-      ];
-
-      setSearchResults(results.length > 0 ? results : null); 
+      const filtered = data.filter((item) =>
+        searchFields.some((field) =>
+          item[field]?.toString().toLowerCase().includes(query.toLowerCase())
+        )
+      );
+   
+      setSearchResults(filtered.length > 0 ? filtered : null); 
     });
   };
 

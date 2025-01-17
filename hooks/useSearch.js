@@ -74,18 +74,6 @@ export default function SearchClient({ data, ContentContainer, searchFields, top
             <NoContentDesign  />
             </div>  
           </div>
-          {/* Get Connected */}
-          {/* <div className="bg-white rounded-xl shadow-lg p-6">
-            <CategoriesHeading title="Get Connected" />
-            <div className="flex justify-between mt-4 text-gray-700">
-              <FaFacebook className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-              <FaTwitter className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-              <FaLinkedin className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-              <FaYoutube className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-              <FaInstagram className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-              <FaPinterest className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-            </div>
-          </div> */}
         </aside>
         </section>
       </div>

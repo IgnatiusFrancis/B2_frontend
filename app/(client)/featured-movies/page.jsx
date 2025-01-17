@@ -1,12 +1,11 @@
 // app/(client)/movieshome/page.jsx
 import SectionHeader from "@/components/SectionHeader";
-import SearchMoviesClient from "@/components/SearchMoviesClient";
 import { fetchMovies } from "@/lib/api";
 import UseSearchMovies from "@/hooks/useMovieSearch";
 import AllMoviesPage from "@/components/AllMovies";
 
 export default async function AllMovies() {
-  const allMovies = await fetchMovies(1, 100, "SINGLE");
+  const allMovies = await fetchMovies(1, 300, "SINGLE");
   const series = allMovies.SINGLE;
 
   return (
