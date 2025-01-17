@@ -14,7 +14,7 @@
 // //   const [audio, setAudio] = useState(null);
 // //   const [currentTrack, setCurrentTrack] = useState(null);
 // //   const toggleExpand = (id) => {
-// //     setExpandedId(expandedId === id ? null : id); 
+// //     setExpandedId(expandedId === id ? null : id);
 // //   };
 
 // //   const handlePlayPause = (audioUrl) => {
@@ -136,8 +136,6 @@
 // // };
 
 // // export default TopList;
-
-
 
 // "use client";
 
@@ -322,10 +320,6 @@
 
 // export default TopList;
 
-
-
-
-
 "use client";
 
 import React, { useState, useContext, useEffect, useRef } from "react";
@@ -336,15 +330,15 @@ import { ThemeContext } from "@/context/ThemeContext";
 
 // Waveform Component
 const Waveform = ({ isPlaying }) => {
-  const bars = 200; 
-  
+  const bars = 200;
+
   return (
-    <div className="flex items-center gap-[2px] h-4 mx-2"> 
+    <div className="flex items-center gap-[2px] h-4 mx-2">
       {[...Array(bars)].map((_, i) => (
         <div
           key={i}
           className={`w-[2px] bg-blue-500 rounded-full transition-all duration-150 ${
-            isPlaying ? 'animate-waveform' : 'h-1'
+            isPlaying ? "animate-waveform" : "h-1"
           }`}
           style={{
             animationDelay: `${i * 0.05}s`,
@@ -422,7 +416,7 @@ const TopList = ({ topArtists }) => {
       <div
         className={`px-6 py-4 flex justify-between items-center ${theme}-bgg bg-white rounded-lg`}
       >
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row items-center gap-4">
           {/* Artist Image */}
           <div className="w-[70px] h-[70px] flex-shrink-0 rounded-full overflow-hidden border-2 border-gray-200">
             <Image
@@ -484,9 +478,8 @@ const TopList = ({ topArtists }) => {
                     {currentTrackId === track.id && (
                       <Waveform isPlaying={isPlaying} />
                     )}
-             
                   </div>
-  
+
                   {/* Download Button */}
                   <a
                     href={`https://b2xclusive.onrender.com/api/v1/track/download?type=audio&key=${track?.key}&id=${track?.id}`}

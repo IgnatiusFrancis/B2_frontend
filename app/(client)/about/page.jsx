@@ -6,7 +6,6 @@ import { useContext } from "react";
 import Image from "next/image";
 
 function About() {
-
   return (
     <>
       <section className={``}>
@@ -79,7 +78,7 @@ function About() {
               </p>
             </div>
           </div>
-          <div className="w-full md:w-2/4 flex flex-col gap-10">
+          <div className="w-full md:w-2/4 flex flex-col gap-10 mt-10 md:mt-0">
             <div className="flex gap-20">
               <div className="flex flex-col items-center w-2/4">
                 <h1 className={`  font-bold text-4xl`}>20+</h1>
@@ -122,7 +121,7 @@ function About() {
               aperiam? Molestiae harum ut facilis!
             </p>
           </div>
-          <div className="w-full md:w-2/4">
+          <div className="w-full md:w-2/4 md:my-0 my-10">
             <h1 className={`  font-bold text-3xl`}>Our Mission</h1>
             <p className={``}>
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut

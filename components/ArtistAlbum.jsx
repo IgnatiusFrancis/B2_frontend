@@ -5,8 +5,7 @@
 // import { FaDownload, FaPlay, FaPause } from "react-icons/fa";
 // import pld from "@/public/pld.jpeg";
 
-
-// function ArtistAlbum({ id, title, url, subTitle, audioUrl, createdAt, publicId, artist }) { 
+// function ArtistAlbum({ id, title, url, subTitle, audioUrl, createdAt, publicId, artist }) {
 //   const [isPlaying, setIsPlaying] = useState(false);
 //   const [audio, setAudio] = useState(null);
 
@@ -25,7 +24,7 @@
 
 //     setIsPlaying(!isPlaying);
 //   };
- 
+
 // return (
 //     <div className="flex flex-col gap-4 w-full bg-gray-100 rounded-lg p-4 shadow-md hover:scale-105 hover:shadow-xl transition-all duration-500 bg-white">
 //       <div className="flex items-center gap-4">
@@ -70,11 +69,6 @@
 
 // export default ArtistAlbum;
 
-
-
-
-
-
 // "use client";
 
 // import Image from "next/image";
@@ -82,13 +76,12 @@
 // import { FaDownload, FaPlay, FaPause } from "react-icons/fa";
 // import pld from "@/public/pld.jpeg";
 
-
 // // Waveform Component
 // const Waveform = ({ isPlaying }) => {
-//   const bars = 200; 
-  
+//   const bars = 200;
+
 //   return (
-//     <div className="flex items-center gap-[2px] h-4 mx-2"> 
+//     <div className="flex items-center gap-[2px] h-4 mx-2">
 //       {[...Array(bars)].map((_, i) => (
 //         <div
 //           key={i}
@@ -104,11 +97,9 @@
 //   );
 // };
 
-
-// function ArtistAlbum({ id, title, url, subTitle, audioUrl, createdAt, publicId, artist }) { 
+// function ArtistAlbum({ id, title, url, subTitle, audioUrl, createdAt, publicId, artist }) {
 //   const [isPlaying, setIsPlaying] = useState(false);
 //   const [audio, setAudio] = useState(null);
-
 
 //     useEffect(() => {
 //       // Cleanup function to handle component unmount
@@ -123,12 +114,12 @@
 //     const toggleExpand = (id) => {
 //       setExpandedId(expandedId === id ? null : id);
 //     };
-  
+
 //     const handlePlayPause = (track) => {
 //       if (!track?.audioUrl) return;
-  
+
 //       const audioUrl = track.audioUrl.replace("http://", "https://");
-  
+
 //       if (audioRef.current) {
 //         if (currentTrackId === track.id) {
 //           // Same track - toggle play/pause
@@ -163,7 +154,7 @@
 //         setCurrentTrackId(track.id);
 //       }
 //     };
- 
+
 // return (
 //     <div className="flex flex-col gap-4 w-full bg-gray-100 rounded-lg p-4 shadow-md hover:scale-105 hover:shadow-xl transition-all duration-500 bg-white">
 //       <div className="flex items-center gap-4">
@@ -223,16 +214,6 @@
 
 // export default ArtistAlbum;
 
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import Image from "next/image";
@@ -274,7 +255,7 @@ function ArtistAlbum({
   handlePlayPause,
 }) {
   return (
-    <div className="flex flex-col gap-4 w-full bg-gray-100 rounded-lg p-4 shadow-md hover:scale-100 hover:shadow-xl transition-all duration-500 bg-white">
+    <div className="flex flex-col gap-4 w-full mb-5  rounded-lg p-4 shadow-md hover:scale-100 hover:shadow-xl transition-all duration-500 bg-white">
       <div className="flex items-center gap-4">
         <div className="w-20 h-20">
           <Image
@@ -322,4 +303,3 @@ function ArtistAlbum({
 }
 
 export default ArtistAlbum;
-

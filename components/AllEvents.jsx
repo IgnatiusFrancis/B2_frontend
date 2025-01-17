@@ -32,7 +32,7 @@ function AllEvent({ data: allEvents = [] }) {
 
   return (
     <div className="w-full pb-6">
-      <div className="w-full p-2 md:w-5/6 md:mx-auto flex flex-col gap-2">
+      <div className="w-full p-3 md:w-5/6 md:mx-auto flex flex-col gap-2">
         {currentEvents.map((event, index) => (
           <motion.div
             key={event.id}

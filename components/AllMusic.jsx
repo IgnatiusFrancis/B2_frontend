@@ -77,7 +77,7 @@
 //           <button
 //             onClick={() => handlePageChange(currentPage - 1)}
 //             disabled={currentPage === 1}
-//             className="border text-[10px] md:text-base border-gray-500 text-gray-500 px-2 md:px-4 md:py-2 rounded-md 
+//             className="border text-[10px] md:text-base border-gray-500 text-gray-500 px-2 md:px-4 md:py-2 rounded-md
 //               hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
 //           >
 //             Previous
@@ -139,19 +139,6 @@
 // }
 
 // export default AllMusic;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 "use client";
 
@@ -248,7 +235,7 @@ function AllMusic({ data: audios }) {
           {/* <p className="text-gray-500 font-bold">No Audio Music Available</p> */}
         </div>
       ) : (
-        <section className="w-full p-2 md:w-5/6 md:mx-auto md:flex flex-col gap-2">
+        <section className="w-[90%] p-2 md:w-5/6 mx-auto md:flex flex-col gap-4">
           {currentAudio.map((music, index) => (
             <motion.div
               key={index} // Use the index for animation keys
