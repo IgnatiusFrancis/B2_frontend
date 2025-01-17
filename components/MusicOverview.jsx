@@ -6,7 +6,6 @@ import pld from "@/public/pld.jpeg";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { FaComment } from "react-icons/fa";
 
 function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -25,18 +24,14 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    toast.warning("Deleting music...", {
-      autoClose: false,
-      position: "top-center",
-    });
 
     try {
-      const token = localStorage
-        .getItem("b2exclusiveadmin")
-        ?.replace(/^['"](.*)['"]$/, "$1");
+      const storedUser = localStorage.getItem("b2xclusiveadmin");
+      const token = storedUser ? JSON.parse(storedUser) : null;
 
       if (!token) {
-        throw new Error("Authentication token not found");
+        console.error("No token found in the stored user object");
+        return;
       }
 
       await axios.delete(
@@ -50,6 +45,8 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
       toast.success("Music deleted successfully", {
         position: "top-center",
       });
+
+      console.log("deleted....");
 
       setTimeout(() => {
         window.location.reload();

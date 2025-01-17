@@ -18,12 +18,7 @@ function AllEventOverviewPage({ events = [] }) {
   }, [currentPage, events]);
 
   if (!events || events.length === 0) {
-    return (
-      <NoContentAvailable
-        title="No events Found"
-        message="It seems there are no events available at the moment. Please check back later."
-      />
-    );
+    return null;
   }
 
   return (

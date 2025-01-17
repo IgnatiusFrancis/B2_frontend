@@ -149,7 +149,7 @@ function AddEpisode() {
       toast.error("Please select at least one video file");
       return;
     }
-    console.log(videos.length);
+
     if (!thumbnail) {
       toast.error("Please select a thumbnail image");
       return;

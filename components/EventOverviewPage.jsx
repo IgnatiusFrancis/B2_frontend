@@ -8,7 +8,7 @@ import Link from "next/link";
 import axios from "axios";
 import { FaComment } from "react-icons/fa";
 
-function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
+function EventOverviewPage({ id, title, url, location, date, subtitle }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const dropdownRef = useRef(null);
@@ -25,22 +25,18 @@ function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    toast.warning("Deleting Event...", {
-      autoClose: false,
-      position: "top-center",
-    });
 
     try {
-      const token = localStorage
-        .getItem("b2exclusiveadmin")
-        ?.replace(/^['"](.*)['"]$/, "$1");
+      const storedUser = localStorage.getItem("b2xclusiveadmin");
+      const token = storedUser ? JSON.parse(storedUser) : null;
 
       if (!token) {
-        throw new Error("Authentication token not found");
+        console.error("No token found in the stored user object");
+        return;
       }
 
       await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/track/event/delete/${id}`,
+        `https://b2xclusive.onrender.com/api/v1/event/delete/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -92,7 +88,7 @@ function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
 
       <div className="col-span-2 text-center">
         <span className="text-sm text-gray-600">
-          {new Date(createdAt).toLocaleDateString("en-US", {
+          {new Date(date).toLocaleDateString("en-US", {
             weekday: "long",
             year: "numeric",
             month: "long",
@@ -115,10 +111,10 @@ function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
         {showDropdown && (
           <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-10 py-1">
             <Link
-              href={`/admin/contents/edit/event/${id}`}
+              href={`/admin/contents/edit/events/${id}`}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
             >
-              Edit Music
+              Edit Event
             </Link>
             <button
               onClick={handleDelete}

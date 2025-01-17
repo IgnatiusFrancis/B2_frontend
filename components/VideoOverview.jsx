@@ -73,18 +73,14 @@ function VideoOverview({ id, title, url, duration, createdAt, subtitle }) {
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    toast.warning("Deleting music...", {
-      autoClose: false,
-      position: "top-center",
-    });
 
     try {
-      const token = localStorage
-        .getItem("b2exclusiveadmin")
-        ?.replace(/^['"](.*)['"]$/, "$1");
+      const storedUser = localStorage.getItem("b2xclusiveadmin");
+      const token = storedUser ? JSON.parse(storedUser) : null;
 
       if (!token) {
-        throw new Error("Authentication token not found");
+        console.error("No token found in the stored user object");
+        return;
       }
 
       await axios.delete(
