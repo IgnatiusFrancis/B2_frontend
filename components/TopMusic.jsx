@@ -36,7 +36,7 @@ function TopMusic({ topArtists, index }) {
         {/* Artist Name */}
         <Link
           href={`/artists/${id}`}
-          className={`font-bold text-[16px] md:text-lg text-gray-900 ${theme}-text hover:text-blue-500 transition-colors duration-300`}
+          className={`font-bold text-wrap text-[16px] md:text-lg text-gray-900 ${theme}-text hover:text-blue-500 transition-colors duration-300`}
         >
           {name}
         </Link>

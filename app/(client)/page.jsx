@@ -44,8 +44,8 @@ export default async function Home() {
   return (
     <main>
       <HeroSection />
-      <section className="w-full md:w-9/12 mx-auto md:flex mt-8 gap-6">
-        <div className="w-full md:w-3/4">
+      <section className="w-full lg:w-[80%] md:w-[90%] mx-auto md:flex mt-8 gap-6">
+        <div className="w-full md:w-[80%] mx-auto p-3">
           {/* NEW ALBUM SECTION */}
           <CategoriesHeading title={"New Album releases"} />
 
@@ -81,18 +81,20 @@ export default async function Home() {
           {/* TOP 40 section */}
           <CategoriesHeading title={"Top Trending Artist Songs"} />
 
-          <div className="py-4 grid grid-cols-2 md:flex md:flex-col gap-4 ">
-            <TopList topArtists={topArtists} />
+          <div className="w-full py-4">
+            <div className="grid gap-4 md:grid-cols-1">
+              <TopList topArtists={topArtists} />
+            </div>
           </div>
         </div>
 
-        <div className="w-full md:w-4/12">
+        <div className="w-full md:w-[40%] mx-auto p-3">
           {/* Sidebar */}
-          <aside className="grid grid-cols-3 md:flex md:flex-col gap-2 py-2">
+          <aside className="grid grid-cols-2 md:flex md:flex-col gap-2 py-2">
             {/* Top Artists */}
             <div className="bg-white rounded-xl shadow-lg p-6">
               <CategoriesHeading title="Top 5 Artists" />
-              <div className="grid grid-cols-2 md:grid-cols-1 gap-4 mt-6">
+              <div className="grid grid-cols-1 gap-4 mt-6">
                 {topArtists?.map((artist, index) => (
                   <TopMusic key={artist.id} topArtists={artist} index={index} />
                 ))}
@@ -100,7 +102,7 @@ export default async function Home() {
             </div>
 
             {/* Get Connected */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-lg p-6 ">
               <CategoriesHeading title="Get Connected" />
               <div className="flex justify-between mt-4 text-gray-700">
                 <FaFacebook className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
@@ -120,10 +122,10 @@ export default async function Home() {
               <HomeRecentPost posts={posts} />
             </div>
           </div>
-         
+
           {/*Animated section */}
           <div className="hidden md:block">
-          <CategoriesHeading title={"Feel The Beat"} />         
+            <CategoriesHeading title={"Feel The Beat"} />
             <div className="w-full">
               <NoContentDesign />
             </div>

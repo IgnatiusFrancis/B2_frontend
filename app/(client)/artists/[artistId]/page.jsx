@@ -69,36 +69,36 @@ export default async function SingleMusics({ params, searchParams }) {
       </div>
 
       {/* Main Content */}
-      <section className="w-full md:w-5/6 md:mx-auto flex flex-col md:flex-row gap-2 py-8">
+      <section className="w-full md:w-5/6 md:mx-auto flex flex-col md:flex-row md:gap-10 gap-2 py-8">
         <div className="w-4/6">
           {activeTab === "songs" && (
-            <>
+            <div className="ml-5">
               <CategoriesHeading title="Artist Songs" />
               <div className="py-4">
                 <ArtistSongs tracks={artist?.track} />
               </div>
-            </>
+            </div>
           )}
 
           {activeTab === "videos" && (
-            <>
+            <div className="ml-5">
               <CategoriesHeading title="Artist Videos" />
               <ArtistVideos videos={artist?.videos} />
-            </>
+            </div>
           )}
 
           {activeTab === "bio" && (
-            <>
+            <div className="ml-5">
               <CategoriesHeading title="Biography" />
               <div className="py-4">
                 <p>{artist?.bio}</p>
               </div>
-            </>
+            </div>
           )}
         </div>
 
         {/* Sidebar */}
-        <div className="md:w-2/6">
+        <div className="md:w-2/6 w-[90%] mx-auto">
           <CategoriesHeading title="Top 10 Artists" />
           <div className="grid grid-cols-2 py-4 md:flex flex-col gap-2">
             {topArtists?.map((artist, index) => (
