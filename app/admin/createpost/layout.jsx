@@ -17,11 +17,12 @@ function Layout({ children }) {
             showSideBar ? "w-10/12" : "w-full"
           } grid grid-cols-6 border-b border-gray-200 `}
         >
+          <CreatePostLinks title={"Blog"} href={"/admin/createpost"} />
           <CreatePostLinks
             title={"Artists"}
             href={"/admin/createpost/addartist"}
           />
-          <CreatePostLinks title={"Blog"} href={"/admin/createpost"} />
+
           <CreatePostLinks
             title={"Music"}
             href={"/admin/createpost/addmusic"}

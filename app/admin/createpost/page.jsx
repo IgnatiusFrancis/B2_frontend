@@ -99,6 +99,11 @@ function CreatePost() {
       return;
     }
 
+    if (!content.trim()) {
+      toast.error("Post Description is required");
+      return;
+    }
+
     setUploading(true);
     setUploadProgress(0);
 
@@ -165,10 +170,10 @@ function CreatePost() {
         title: "",
         subtitle: "",
         description: "",
-        subtitle: "",
         tags: [],
         categories: [],
       });
+      setContent("");
       setThumbnail(null);
       setThumbnailPreview(null);
       setFileErrors([]);
@@ -268,7 +273,7 @@ function CreatePost() {
                   }
                   name="categories[]"
                   type="text"
-                  placeholder="Blog categories"
+                  placeholder="Optional"
                   className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
                 />
               </div>
@@ -288,7 +293,7 @@ function CreatePost() {
                   }
                   name="tags[]"
                   type="text"
-                  placeholder="Blog tags"
+                  placeholder="Optional"
                   className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
                 />
               </div>

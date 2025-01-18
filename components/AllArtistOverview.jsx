@@ -22,8 +22,8 @@ const AllArtistOverview = ({ artists = [] }) => {
   if (!artists?.length) {
     return (
       <NoContentAvailable
-        title="No Artists Found"
-        message="No artists are available at the moment. Check back later or add new artists."
+        title="No artists Found"
+        message="Create artists and come back"
       />
     );
   }
