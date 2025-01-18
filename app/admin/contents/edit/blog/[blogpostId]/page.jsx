@@ -380,7 +380,7 @@ function EditBlog({ params }) {
           }
         },
       };
-      console.log(formData, thumbnail);
+
       const response = await axios.patch(
         `https://b2xclusive.onrender.com/api/v1/post/update/${blogpostId}`,
         formData,

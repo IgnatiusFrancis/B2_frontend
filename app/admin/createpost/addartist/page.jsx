@@ -4,92 +4,154 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { Loader2, Upload } from "lucide-react";
+
+// Constants remain the same
+const MAX_FILE_SIZE = 500 * 1024 * 1024;
+const MAX_THUMBNAIL_SIZE = 5 * 1024 * 1024;
+const UPLOAD_TIMEOUT = 3600000;
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 const AddArtists = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [fileErrors, setFileErrors] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     bio: "",
-    file: null,
   });
 
-  const validateToken = useCallback(async () => {
-    const token = localStorage.getItem("b2xclusiveadmin");
-    if (!token) {
-      toast.error("Please sign in to continue");
-      router.push("/login");
-      return null;
-    }
+  const validateFiles = (files, type) => {
+    const errors = [];
+    const allowedTypes =
+      type === "video" ? ALLOWED_VIDEO_TYPES : ALLOWED_IMAGE_TYPES;
+    const maxSize = type === "video" ? MAX_FILE_SIZE : MAX_THUMBNAIL_SIZE;
 
-    try {
-      const cleanToken = token.replace(/^['"](.*)['"]$/, "$1");
-      const decoded = jwtDecode(cleanToken);
-
-      if (decoded.exp < Date.now() / 1000) {
-        localStorage.removeItem("b2xclusiveadmin");
-        toast.error("Session expired. Please sign in again");
-        router.push("/login");
-        return null;
+    Array.from(files).forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        errors.push(`${file.name}: Invalid file type`);
       }
+      if (file.size > maxSize) {
+        errors.push(
+          `${file.name}: File too large (max ${maxSize / (1024 * 1024)}MB)`
+        );
+      }
+    });
 
-      return cleanToken;
-    } catch (error) {
-      console.error("Token validation error:", error);
-      toast.error("Authentication error");
-      router.push("/login");
-      return null;
-    }
-  }, [router]);
+    return errors;
+  };
 
-  useEffect(() => {
-    validateToken();
-  }, [validateToken]);
+  const handleFileChange = (e, type) => {
+    const files = e.target.files;
+    setFileErrors([]);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData((prev) => ({ ...prev, file }));
-      setPreviewUrl(URL.createObjectURL(file));
+    if (type === "thumbnail") {
+      const errors = validateFiles([files[0]], "image");
+      if (errors.length > 0) {
+        setFileErrors(errors);
+        return;
+      }
+      setThumbnail(files[0]);
+      const previewUrl = URL.createObjectURL(files[0]);
+      setThumbnailPreview(previewUrl);
     }
   };
 
+  // Cleanup preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      if (thumbnailPreview) {
+        URL.revokeObjectURL(thumbnailPreview);
+      }
+    };
+  }, [thumbnailPreview]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+
+    if (fileErrors.length > 0) {
+      toast.error("Please fix file errors before submitting");
+      return;
+    }
+
+    if (!thumbnail) {
+      toast.error("Please select artist image");
+      return;
+    }
+
+    setUploading(true);
+    setUploadProgress(0);
 
     try {
-      const token = await validateToken();
-      if (!token) return;
+      const form = new FormData();
+      form.append("name", formData.name);
+      form.append("bio", formData.bio);
+      if (thumbnail) form.append("file", thumbnail);
 
-      const submitData = new FormData();
-      submitData.append("name", formData.name);
-      submitData.append("bio", formData.bio);
-      if (formData.file) {
-        submitData.append("file", formData.file);
+      const storedUser = localStorage.getItem("b2xclusiveadmin");
+      const token = storedUser ? JSON.parse(storedUser) : null;
+
+      if (!token) {
+        toast.error("Authentication token not found");
+        return;
       }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+        timeout: UPLOAD_TIMEOUT,
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100
+          );
+          setUploadProgress(progress);
+          if (progress < 100) {
+            toast.info(`Upload Progress: ${progress}%`, {
+              toastId: "uploadProgress",
+              autoClose: false,
+            });
+          } else {
+            toast.dismiss("uploadProgress");
+          }
+        },
+      };
 
       const response = await axios.put(
         "https://b2xclusive.onrender.com/api/v1/artist/create",
-        submitData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        form,
+        config
       );
 
       toast.success(response.data.message);
-      router.push("/admin");
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Failed to create artist");
-      console.error("Submission error:", error);
+      console.error("Failed to upload post", error);
+      if (axios.isAxiosError(error)) {
+        if (error.code === "ECONNABORTED") {
+          toast.error("Upload timed out. Please try again");
+        } else if (error.response?.status === 413) {
+          toast.error("File too large for server. Please reduce file size");
+        } else {
+          toast.error(error.response?.data?.message || "Failed to update post");
+        }
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     } finally {
-      setIsLoading(false);
+      setUploading(false);
+      setUploadProgress(0);
+
+      setFormData({
+        name: "",
+        bio: "",
+      });
+      setThumbnail(null);
+      setThumbnailPreview(null);
+      setFileErrors([]);
     }
   };
 
@@ -119,29 +181,41 @@ const AddArtists = () => {
             <label className="block text-sm font-medium mb-2">
               Artist Photo
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
               <input
                 type="file"
-                onChange={handleFileChange}
-                className="hidden"
-                id="file-upload"
                 accept="image/*"
+                onChange={(e) => handleFileChange(e, "thumbnail")}
+                className="hidden"
+                id="thumbnail-upload"
               />
-              <label htmlFor="file-upload" className="cursor-pointer">
-                {previewUrl ? (
+
+              <label
+                htmlFor="thumbnail-upload"
+                className="cursor-pointer block text-center"
+              >
+                {thumbnailPreview ? (
                   <div className="relative w-full h-64 rounded-lg overflow-hidden">
                     <Image
-                      src={previewUrl}
-                      alt="Preview"
+                      src={thumbnailPreview}
+                      alt="Thumbnail preview"
                       fill
                       className="object-cover"
                     />
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                      <p className="text-white text-sm">
+                        Click to change thumbnail
+                      </p>
+                    </div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center">
-                    <Upload className="w-12 h-12 text-gray-400 mb-2" />
+                    <Upload className="w-12 h-12 text-gray-400 mb-3" />
                     <p className="text-sm text-gray-600">
-                      Click to upload image
+                      Click to upload thumbnail
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Maximum size: 5MB
                     </p>
                   </div>
                 )}
@@ -162,18 +236,43 @@ const AddArtists = () => {
             />
           </div>
 
+          {/* Upload Progress */}
+          {uploading && uploadProgress > 0 && (
+            <div className="relative w-full bg-gray-100 rounded-full h-4 overflow-hidden">
+              <div
+                className="absolute inset-0 bg-blue-600 transition-all duration-300 ease-in-out"
+                style={{ width: `${uploadProgress}%` }}
+              >
+                <div className="h-full animate-pulse bg-blue-500/50"></div>
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-medium text-white drop-shadow">
+                  {uploadProgress}%
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Submit Button */}
           <button
             type="submit"
-            disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-300 flex items-center justify-center gap-2"
+            className={`w-full py-3 rounded-xl text-white font-medium flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
+              uploading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+            }`}
+            disabled={uploading || fileErrors.length > 0}
           >
-            {isLoading ? (
+            {uploading ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                Creating...
+                <span>Uploading ({uploadProgress}%)</span>
               </>
             ) : (
-              "Create Artist"
+              <>
+                <Upload className="w-5 h-5" />
+                <span>Create Artist</span>
+              </>
             )}
           </button>
         </form>

@@ -82,16 +82,20 @@ function CreatePost() {
   useEffect(() => {
     setPost((prevPost) => ({
       ...prevPost,
-      files: file,
       description: content,
     }));
-  }, [file, content]);
+  }, [content]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
     if (fileErrors.length > 0) {
       toast.error("Please fix file errors before submitting");
+      return;
+    }
+
+    if (!thumbnail) {
+      toast.error("Please select a post image");
       return;
     }
 
@@ -156,6 +160,18 @@ function CreatePost() {
     } finally {
       setUploading(false);
       setUploadProgress(0);
+
+      setPost({
+        title: "",
+        subtitle: "",
+        description: "",
+        subtitle: "",
+        tags: [],
+        categories: [],
+      });
+      setThumbnail(null);
+      setThumbnailPreview(null);
+      setFileErrors([]);
     }
   };
 
@@ -171,6 +187,7 @@ function CreatePost() {
                 onChange={(e) => setPost({ ...post, title: e.target.value })}
                 type="text"
                 name="title"
+                required={true}
                 placeholder="Enter Blog Title"
                 className="w-full bg-transparent rounded-lg text-2xl outline-none p-4 border border-gray-200"
               />
@@ -226,6 +243,7 @@ function CreatePost() {
                 <input
                   name="subtitle"
                   value={post.subtitle}
+                  required={true}
                   onChange={(e) =>
                     setPost({ ...post, subtitle: e.target.value })
                   }
@@ -280,6 +298,7 @@ function CreatePost() {
               <label htmlFor="">Post Description</label>
               <Tiptap
                 content={content}
+                required={true}
                 onChange={(newContent) => handleContentChange(newContent)}
               />
             </div>
