@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
-function AddEvent() {
+function AddAlbum() {
   const router = useRouter();
   const [uploadingEvent, setUploadingEvent] = useState(false);
   const [file, setFile] = useState(null);
@@ -261,4 +261,4 @@ function AddEvent() {
   );
 }
 
-export default AddEvent;
+export default AddAlbum;

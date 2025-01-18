@@ -32,8 +32,8 @@ function Layout({ children }) {
             href={"/admin/createpost/addvideo"}
           />
           <CreatePostLinks
-            title={"Organizer"}
-            href={"/admin/createpost/addorganizer"}
+            title={"Album"}
+            href={"/admin/createpost/addalbum"}
           />
 
           <CreatePostLinks
