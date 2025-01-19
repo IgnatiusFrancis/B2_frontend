@@ -129,7 +129,7 @@ function EditMusic({ params }) {
               name="title"
               className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-lg"
               placeholder="Enter track title"
-              required
+              // required
             />
           </div>
 
@@ -145,7 +145,7 @@ function EditMusic({ params }) {
                 type="text"
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                 placeholder="Enter subtitle"
-                required
+                // required
               />
             </div>
 
@@ -158,7 +158,7 @@ function EditMusic({ params }) {
                 onChange={(e) =>
                   setSingleMusic({ ...singleMusic, artistId: e.target.value })
                 }
-                required
+                // required
               >
                 <option value="">Select an artist</option>
                 {allArtist?.map((artist) => (
@@ -180,7 +180,7 @@ function EditMusic({ params }) {
                 type="text"
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                 placeholder="e.g. 3:45"
-                required
+                // required
               />
             </div>
           </div>
