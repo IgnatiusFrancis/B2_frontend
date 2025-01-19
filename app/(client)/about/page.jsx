@@ -31,12 +31,14 @@ const About = () => {
 
         <div className="md:w-1/2 space-y-6">
           <h2 className="text-2xl font-bold">We Bring You the Best Content</h2>
+
           <p className="text-gray-600">
             Our platform combines cutting-edge technology with creative
-            excellence to deliver exceptional entertainment experiences. We're
-            passionate about connecting artists with audiences and creating
-            moments that inspire.
+            excellence to deliver exceptional entertainment experiences.
+            We&#39;re passionate about connecting artists with audiences and
+            creating moments that inspire.
           </p>
+
           <div className="grid grid-cols-2 gap-8 pt-6">
             {stats.map((stat, index) => (
               <div key={index} className="border-l-2 border-blue-600 pl-4">
