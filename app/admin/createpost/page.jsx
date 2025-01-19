@@ -15,7 +15,6 @@ const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function CreatePost() {
   const router = useRouter();
-  const [file, setFile] = useState(null);
   const [content, setContent] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
@@ -157,7 +156,11 @@ function CreatePost() {
         } else if (error.response?.status === 413) {
           toast.error("File too large for server. Please reduce file size");
         } else {
-          toast.error(error.response?.data?.message || "Failed to update post");
+          toast.error(
+            error.response.data?.message ||
+              error?.response?.data?.errorResponse?.message ||
+              "Server error occurred"
+          );
         }
       } else {
         toast.error("An unexpected error occurred");

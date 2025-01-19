@@ -6,83 +6,100 @@ import Image from "next/image";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
+import { Loader2, Upload } from "lucide-react";
+
+// Constants remain the same
+const MAX_FILE_SIZE = 500 * 1024 * 1024;
+const MAX_THUMBNAIL_SIZE = 5 * 1024 * 1024;
+const UPLOAD_TIMEOUT = 3600000;
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function AddAlbum() {
   const router = useRouter();
-  const [uploadingEvent, setUploadingEvent] = useState(false);
-  const [file, setFile] = useState(null);
+  const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [fileErrors, setFileErrors] = useState([]);
+  const [allArtist, setALlArtist] = useState([]);
   const [content, setContent] = useState("");
+  const [gettingArtist, setGettingArtist] = useState(false);
   const [event, setEvent] = useState({
     title: "",
-    subTitle: "",
-    location: "",
-    date: "",
+    releaseDate: "",
+    artistId: "",
     description: content,
-    organisersId: [],
   });
-  const [allOrganizers, setAllOrganizers] = useState([]);
-  const [gettingOrganizers, setGettingOrganizers] = useState(false);
-  const [gettingOrganizersError, setGettingOrganizersError] = useState(false);
-  const [token, setToken] = useState("");
-  const [isTokenExpired, setIsTokenExpired] = useState(false);
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("b2xclusiveadmin");
-    if (storedToken) {
-      const cleanedToken = storedToken.replace(/^['"](.*)['"]$/, "$1");
+  const validateFiles = (files, type) => {
+    const errors = [];
+    const allowedTypes =
+      type === "video" ? ALLOWED_VIDEO_TYPES : ALLOWED_IMAGE_TYPES;
+    const maxSize = type === "video" ? MAX_FILE_SIZE : MAX_THUMBNAIL_SIZE;
 
-      try {
-        const decodedToken = jwtDecode(cleanedToken);
-        const currentTime = Date.now() / 1000; // Current time in seconds
-
-        if (decodedToken.exp < currentTime) {
-          console.error("Token is expired");
-          toast.error("Invalid or Expired token, please sign in", {
-            position: "top-center",
-          });
-          setIsTokenExpired(true);
-          localStorage.removeItem("b2xclusiveadmin");
-          router.push("/login");
-        } else {
-          setToken(cleanedToken);
-          setIsTokenExpired(false);
-        }
-      } catch (error) {
-        console.error("Invalid token:", error);
+    Array.from(files).forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        errors.push(`${file.name}: Invalid file type`);
       }
-    } else {
-      console.error("Bearer token not found");
+      if (file.size > maxSize) {
+        errors.push(
+          `${file.name}: File too large (max ${maxSize / (1024 * 1024)}MB)`
+        );
+      }
+    });
+
+    return errors;
+  };
+
+  const handleFileChange = (e, type) => {
+    const files = e.target.files;
+    setFileErrors([]);
+
+    if (type === "thumbnail") {
+      const errors = validateFiles([files[0]], "image");
+      if (errors.length > 0) {
+        setFileErrors(errors);
+        return;
+      }
+      setThumbnail(files[0]);
+      const previewUrl = URL.createObjectURL(files[0]);
+      setThumbnailPreview(previewUrl);
     }
-  }, [router]);
+  };
+
+  // Cleanup preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      if (thumbnailPreview) {
+        URL.revokeObjectURL(thumbnailPreview);
+      }
+    };
+  }, [thumbnailPreview]);
 
   useEffect(() => {
-    const fetchOrganizers = async () => {
-      setGettingOrganizers(true);
+    const fetchData = async () => {
+      setGettingArtist(true);
       try {
         const response = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/event/organisers`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `https://b2xclusive.onrender.com/api/v1/artist/artists`
         );
-        setAllOrganizers(response?.data?.data);
+        setALlArtist(response?.data?.data);
       } catch (error) {
-        console.error("Unable to fetch Organizers", error);
-        setGettingOrganizersError(true);
+        console.log(error, "Unable to fetch artists");
       } finally {
-        setGettingOrganizers(false);
+        setGettingArtist(false);
       }
     };
 
-    if (token) fetchOrganizers();
-  }, [token]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
     setEvent((prevEvent) => ({
       ...prevEvent,
-      files: file,
       description: content,
     }));
-  }, [file, content]);
+  }, [content]);
 
   const handleContentChange = (newContent) => {
     setContent(newContent);
@@ -90,37 +107,103 @@ function AddAlbum() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setUploadingEvent(true);
+
+    if (fileErrors.length > 0) {
+      toast.error("Please fix file errors before submitting");
+      return;
+    }
+
+    if (!thumbnail) {
+      toast.error("Please select a post image");
+      return;
+    }
+
+    if (!content.trim()) {
+      toast.error("Post Description is required");
+      return;
+    }
+
+    setUploading(true);
+    setUploadProgress(0);
     try {
-      let formData = new FormData(e.target);
-      formData.append("description", event.description);
+      const submitData = new FormData();
+      submitData.append("title", event.title);
+      submitData.append("description", content);
+      submitData.append("releaseDate", event.releaseDate);
+      submitData.append("artistId", event.artistId);
+      submitData.append("file", thumbnail);
+
+      const storedUser = localStorage.getItem("b2xclusiveadmin");
+      const token = storedUser ? JSON.parse(storedUser) : null;
+
+      if (!token) {
+        toast.error("Authentication token not found");
+        return;
+      }
 
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        timeout: UPLOAD_TIMEOUT,
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100
+          );
+          setUploadProgress(progress);
+          if (progress < 100) {
+            toast.info(`Upload Progress: ${progress}%`, {
+              toastId: "uploadProgress",
+              autoClose: false,
+            });
+          } else {
+            toast.dismiss("uploadProgress");
+          }
+        },
       };
 
       const response = await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/event/create",
-        formData,
+        "https://b2xclusive.onrender.com/api/v1/track/create-album",
+        submitData,
         config
       );
       toast.success(response.data.message, { position: "top-center" });
-
-      setTimeout(() => {
-        router.push("/admin");
-      }, 3000);
     } catch (error) {
       console.error("Failed to add event", error.message);
-      toast.error(
-        error?.response?.data?.message ||
-          error?.response?.data?.errorResponse?.message,
-        { position: "top-center" }
-      );
+      if (axios.isAxiosError(error)) {
+        if (error.code === "ECONNABORTED") {
+          toast.error(
+            "Upload timed out. Please try with smaller files or check your connection"
+          );
+        } else if (error.response?.status === 413) {
+          toast.error("Files too large for server. Please reduce file sizes");
+        } else if (error.response) {
+          toast.error(
+            error.response.data?.message ||
+              error?.response?.data?.errorResponse?.message ||
+              "Server error occurred"
+          );
+        } else if (error.request) {
+          toast.error("Network error. Please check your connection");
+        } else {
+          toast.error("An unexpected error occurred");
+        }
+      } else {
+        toast.error("Failed to create album");
+      }
     } finally {
-      setUploadingEvent(false);
+      setUploading(false);
+      setUploadProgress(0);
+      setEvent({
+        title: "",
+        releaseDate: "",
+        description: "",
+      });
+      setContent("");
+      setThumbnail(null);
+      setThumbnailPreview(null);
+      setFileErrors([]);
     }
   };
 
@@ -129,13 +212,13 @@ function AddAlbum() {
       <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-8">
         <form className="flex flex-col gap-8 items-start" onSubmit={onSubmit}>
           <div className="flex flex-col gap-2 w-full">
-            <label>Event Title</label>
+            <label>Album Title</label>
             <input
               value={event.title}
               onChange={(e) => setEvent({ ...event, title: e.target.value })}
               type="text"
               name="title"
-              placeholder="Enter Event Title"
+              placeholder="Enter Album Title"
               className="w-full bg-transparent rounded-lg text-2xl outline-none p-4 border border-gray-200"
               required
             />
@@ -143,116 +226,129 @@ function AddAlbum() {
 
           <div className="flex w-full gap-4 md:flex-row flex-col">
             <div className="flex flex-col md:w-6/12">
-              <label>Subtitle</label>
-              <input
-                value={event.subTitle}
-                onChange={(e) =>
-                  setEvent({ ...event, subTitle: e.target.value })
-                }
-                name="subTitle"
-                type="text"
-                placeholder="Enter subtitle"
-                className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
-                required
-              />
-            </div>
-
-            <div className="flex flex-col md:w-3/12">
-              <label>Organizers</label>
+              <label>Artist</label>
               <select
-                className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
-                name="organisersId[]"
-                required
+                value={event.artistId}
+                // onChange={(e) =>
+                //   setEvent((prev) => ({ ...prev, artistId: e.target.value }))
+                // }
                 onChange={(e) =>
-                  setEvent({ ...event, organisersId: e.target.value })
+                  setEvent({ ...event, artistId: e.target.value })
                 }
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                required
+                disabled={gettingArtist}
               >
-                <option value="null">
-                  {gettingOrganizers
-                    ? "Loading..."
-                    : gettingOrganizersError
-                    ? "Failed to load organizers"
-                    : "Select Organizers"}
-                </option>
-                {!gettingOrganizers &&
-                  !gettingOrganizersError &&
-                  allOrganizers?.map((organizer) => (
-                    <option key={organizer.id} value={organizer.id}>
-                      {organizer.name}
-                    </option>
-                  ))}
+                <option value="">Select an artist</option>
+                {allArtist.map((artist) => (
+                  <option key={artist.id} value={artist.id}>
+                    {artist.name}
+                  </option>
+                ))}
               </select>
             </div>
 
-            <div className="flex flex-col md:w-3/12">
-              <label>Date</label>
+            <div className="flex flex-col md:w-6/12">
+              <label>Release Date</label>
               <input
-                value={event.date}
-                name="date"
-                onChange={(e) => setEvent({ ...event, date: e.target.value })}
+                value={event.releaseDate}
+                name="releaseDate"
+                onChange={(e) =>
+                  setEvent({ ...event, releaseDate: e.target.value })
+                }
                 type="date"
                 className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
                 required
               />
             </div>
+          </div>
 
-            <div className="flex flex-col md:w-3/12">
-              <label>Location</label>
+          <div className="flex w-full flex-col gap-2">
+            <label>Blog header Image</label>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
               <input
-                value={event.location}
-                name="location"
-                onChange={(e) =>
-                  setEvent({ ...event, location: e.target.value })
-                }
-                type="text"
-                className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
-                required
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, "thumbnail")}
+                className="hidden"
+                id="thumbnail-upload"
               />
+
+              <label
+                htmlFor="thumbnail-upload"
+                className="cursor-pointer block text-center"
+              >
+                {thumbnailPreview ? (
+                  <div className="relative w-full h-64 rounded-lg overflow-hidden">
+                    <Image
+                      src={thumbnailPreview}
+                      alt="Thumbnail preview"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                      <p className="text-white text-sm">
+                        Click to change thumbnail
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center">
+                    <Upload className="w-12 h-12 text-gray-400 mb-3" />
+                    <p className="text-sm text-gray-600">
+                      Click to upload thumbnail
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Maximum size: 5MB
+                    </p>
+                  </div>
+                )}
+              </label>
             </div>
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <label>Upload Event Image</label>
-            <input
-              onChange={(e) => setFile(e.target.files[0])}
-              type="file"
-              multiple
-              name="files"
-              className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
-              required
-            />
-          </div>
-
-          {file && (
-            <div className="w-full">
-              <div className="w-full h-[300px]">
-                <Image
-                  src={URL.createObjectURL(file)}
-                  width={1000}
-                  height={1000}
-                  alt="post"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <p>Selected File: {file.name}</p>
-            </div>
-          )}
-
-          <div className="flex flex-col gap-2 w-full">
-            <label>Event Description</label>
+            <label>Album Description</label>
             <Tiptap content={content} onChange={handleContentChange} />
           </div>
 
+          {/* Upload Progress */}
+          {uploading && uploadProgress > 0 && (
+            <div className="relative w-full bg-gray-100 rounded-full h-4 overflow-hidden">
+              <div
+                className="absolute inset-0 bg-blue-600 transition-all duration-300 ease-in-out"
+                style={{ width: `${uploadProgress}%` }}
+              >
+                <div className="h-full animate-pulse bg-blue-500/50"></div>
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-medium text-white drop-shadow">
+                  {uploadProgress}%
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className={`${
-              uploadingEvent ? "bg-orange-100" : "bg-primarycolor"
-            } text-[14px] flex justify-center px-3 py-2 rounded-lg md:py-4 md:px-8 text-white`}
+            className={`w-full py-3 rounded-xl text-white font-medium flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
+              uploading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+            }`}
+            disabled={uploading || fileErrors.length > 0}
           >
-            {uploadingEvent ? (
-              <AiOutlineLoading3Quarters className="text-primarycolor text-center text-xl font-bold animate-spin infinite" />
+            {uploading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Uploading ({uploadProgress}%)</span>
+              </>
             ) : (
-              "Create Event"
+              <>
+                <Upload className="w-5 h-5" />
+                <span>Create Album</span>
+              </>
             )}
           </button>
         </form>
