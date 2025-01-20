@@ -6,6 +6,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import action from "@/app/actions";
 
 function EditArtist({ params }) {
   const { artistId } = params;
@@ -73,8 +74,9 @@ function EditArtist({ params }) {
         config
       );
 
-      toast.success(response.data.message, { position: "top-center" });
+      await action("artists");
       router.push("/admin/events");
+      toast.success(response.data.message, { position: "top-center" });
     } catch (error) {
       console.error("Failed to upload post", error.message);
       toast.error(error.response?.data?.message || "Failed to upload post", {

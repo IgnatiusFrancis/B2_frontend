@@ -7,6 +7,7 @@ import { Loader2, Music, Upload } from "lucide-react";
 import Tiptap from "@/components/TipTap";
 import Image from "next/image";
 import { ThemeContext } from "@/context/ThemeContext";
+import action from "@/app/actions";
 
 function EditMusic({ params }) {
   const { musicId } = params;
@@ -87,13 +88,12 @@ function EditMusic({ params }) {
         formData,
         config
       );
+
+      await action("audios");
+      router.push("/admin/contents");
       toast.success(musicResponse?.data?.message, {
         position: "top-center",
       });
-      router.push("/admin");
-      // setTimeout(() => {
-      //   router.push("/admin");
-      // }, 3000);
     } catch (error) {
       console.error("Failed to upload music", error.message);
       toast.error(error?.response?.data?.message || "Failed to upload music", {
