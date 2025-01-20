@@ -19,7 +19,12 @@ function AllVideosOverview({ videos = [] }) {
   }, [currentPage, videos]);
 
   if (!videos || videos.length === 0) {
-    return null;
+    return (
+      <NoContentAvailable
+        title="No videos Found"
+        message="There are no videos available at the moment"
+      />
+    );
   }
 
   return (

@@ -6,10 +6,21 @@ import pld from "@/public/pld.jpeg";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
+import action from "@/app/actions";
+import ConfirmationModal from "./confirmationModal";
 
-function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
+function MusicOverview({
+  id,
+  title,
+  url,
+  duration,
+  createdAt,
+  subtitle,
+  artist,
+}) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -24,6 +35,9 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
 
   const handleDelete = async () => {
     setIsDeleting(true);
+    const toastId = toast.loading("Deleting Audio...", {
+      position: "top-center",
+    });
 
     try {
       const storedUser = localStorage.getItem("b2xclusiveadmin");
@@ -41,25 +55,25 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
         }
       );
 
-      toast.dismiss();
-      toast.success("Music deleted successfully", {
-        position: "top-center",
+      await action("audios");
+
+      toast.update(toastId, {
+        render: "Audio deleted successfully",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
       });
-
-      console.log("deleted....");
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
     } catch (error) {
-      console.error("Failed to delete music:", error.message);
-      toast.dismiss();
-      toast.error("Failed to delete music", {
-        position: "top-center",
+      console.error("Delete error:", error);
+      toast.update(toastId, {
+        render: error.response?.data?.message || "Failed to delete audio",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
       });
     } finally {
       setIsDeleting(false);
-      setShowDropdown(false);
+      setIsModalOpen(false);
     }
   };
 
@@ -84,7 +98,7 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
       </div>
 
       <div className="col-span-2 flex justify-center items-center gap-2">
-        <span className="text-sm text-gray-600">{"NA"}</span>
+        <span className="text-sm text-gray-600">{artist?.name}</span>
       </div>
 
       <div className="col-span-2 text-center">
@@ -118,15 +132,23 @@ function MusicOverview({ id, title, url, duration, createdAt, subtitle }) {
               Edit Music
             </Link>
             <button
-              onClick={handleDelete}
+              onClick={() => setIsModalOpen(true)}
               disabled={isDeleting}
               className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
             >
-              {isDeleting ? "Deleting..." : "Delete Music"}
+              {isDeleting ? "Deleting..." : "Delete Audio"}
             </button>
           </div>
         )}
       </div>
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDelete}
+        title="Confirm Deletion"
+        description="Are you sure you want to delete this video? This action cannot be undone."
+      />
     </div>
   );
 }

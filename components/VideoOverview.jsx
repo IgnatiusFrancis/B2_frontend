@@ -7,12 +7,20 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { FaEllipsisVertical } from "react-icons/fa6";
-function VideoOverview({ id, title, url, duration, createdAt, subtitle }) {
-  const [showActions, setShowActions] = useState(false);
-  const [token, setToken] = useState(""); // State to hold the token
-
+import action from "@/app/actions";
+import ConfirmationModal from "./confirmationModal";
+function VideoOverview({
+  id,
+  title,
+  url,
+  duration,
+  createdAt,
+  subtitle,
+  artist,
+}) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -25,54 +33,11 @@ function VideoOverview({ id, title, url, duration, createdAt, subtitle }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // useEffect(() => {
-  //   const storedToken = localStorage.getItem("b2exclusiveadmin");
-  //   if (storedToken) {
-  //     const cleanedToken = storedToken.replace(/^['"](.*)['"]$/, "$1");
-  //     setToken(cleanedToken);
-  //     console.log(cleanedToken);
-  //   } else {
-  //     console.error("Bearer token not found");
-  //   }
-  // }, []);
-
-  // const handleDelete = async () => {
-  //   toast.warning("deleting post...", {
-  //     autoClose: false,
-  //     position: "top-center",
-  //   });
-
-  //   try {
-  //     const config = {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     };
-
-  //     const response = await axios.delete(
-  //       `https://b2xclusive.onrender.com/api/v1/track/video/delete/${id}`,
-  //       config
-  //     );
-  //     toast.dismiss();
-
-  //     toast.success(`Post Deleted successfully`, {
-  //       position: "top-center",
-  //     });
-
-  //     setTimeout(() => {
-  //       window.location.reload();
-  //     });
-  //   } catch (error) {
-  //     console.error("Failed delete post", error.message);
-  //     toast.dismiss();
-  //     toast.error(`Failed to delete post`, {
-  //       position: "top-center",
-  //     });
-  //   }
-  // };
-
   const handleDelete = async () => {
     setIsDeleting(true);
+    const toastId = toast.loading("Deleting video...", {
+      position: "top-center",
+    });
 
     try {
       const storedUser = localStorage.getItem("b2xclusiveadmin");
@@ -90,23 +55,25 @@ function VideoOverview({ id, title, url, duration, createdAt, subtitle }) {
         }
       );
 
-      toast.dismiss();
-      toast.success("Music deleted successfully", {
-        position: "top-center",
-      });
+      await action("videos");
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      toast.update(toastId, {
+        render: "Video deleted successfully",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
     } catch (error) {
-      console.error("Failed to delete music:", error.message);
-      toast.dismiss();
-      toast.error("Failed to delete music", {
-        position: "top-center",
+      console.error("Delete error:", error);
+      toast.update(toastId, {
+        render: error.response?.data?.message || "Failed to delete video",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
       });
     } finally {
       setIsDeleting(false);
-      setShowDropdown(false);
+      setIsModalOpen(false);
     }
   };
   return (
@@ -136,8 +103,7 @@ function VideoOverview({ id, title, url, duration, createdAt, subtitle }) {
       </div>
 
       <div className="col-span-2 flex justify-center items-center gap-2">
-        <FaComment className="text-gray-400" />
-        <span className="text-sm text-gray-600">Frank</span>
+        <span className="text-sm text-gray-600">{artist?.name}</span>
       </div>
 
       <div className="col-span-2 text-center">
@@ -164,21 +130,29 @@ function VideoOverview({ id, title, url, duration, createdAt, subtitle }) {
         {showDropdown && (
           <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-10 py-1">
             <Link
-              href={`/admin/contents/edit/blog/${id}`}
+              href={`/admin/contents/edit/video/${id}`}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
             >
-              Edit Post
+              Edit Video
             </Link>
             <button
-              onClick={handleDelete}
+              onClick={() => setIsModalOpen(true)}
               disabled={isDeleting}
               className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
             >
-              {isDeleting ? "Deleting..." : "Delete Post"}
+              {isDeleting ? "Deleting..." : "Delete Video"}
             </button>
           </div>
         )}
       </div>
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDelete}
+        title="Confirm Deletion"
+        description="Are you sure you want to delete this video? This action cannot be undone."
+      />
     </div>
   );
 }

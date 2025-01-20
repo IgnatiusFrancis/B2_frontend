@@ -127,6 +127,7 @@ const AddArtists = () => {
         config
       );
 
+      await action("artists");
       toast.success(response.data.message);
     } catch (error) {
       console.error("Failed to upload post", error);

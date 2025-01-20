@@ -6,6 +6,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Film, Loader2, Upload } from "lucide-react";
+import action from "@/app/actions";
 
 // Constants remain the same
 const MAX_FILE_SIZE = 500 * 1024 * 1024;
@@ -177,6 +178,7 @@ function AddVideos() {
         config
       );
 
+      await action("videos");
       toast.success(response?.data?.message, { position: "top-center" });
     } catch (error) {
       console.error("Failed to upload video", error.message);

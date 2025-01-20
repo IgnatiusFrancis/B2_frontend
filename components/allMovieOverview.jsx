@@ -8,7 +8,7 @@ function AllOverviewMovie({ moviesArray: movies = [] }) {
   const dataPerPage = 20;
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(movies.length / dataPerPage);
-  console.log(movies);
+
   const currentmovies = useMemo(() => {
     const indexOfLastData = currentPage * dataPerPage;
     const indexOfFirstData = indexOfLastData - dataPerPage;

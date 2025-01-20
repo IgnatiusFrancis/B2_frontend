@@ -7,6 +7,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Loader2, Music, Upload } from "lucide-react";
 import Tiptap from "@/components/TipTap";
+import action from "@/app/actions";
 
 // Constants remain the same
 const MAX_FILE_SIZE = 500 * 1024 * 1024;
@@ -126,6 +127,7 @@ const AddMusic = () => {
         config
       );
 
+      await action("audios");
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error?.response?.data?.message || "Failed to create music");

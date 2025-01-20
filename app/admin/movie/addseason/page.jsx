@@ -18,6 +18,7 @@ import {
   Type,
   LinkIcon,
 } from "lucide-react";
+import action from "@/app/actions";
 
 // Constants remain the same
 const MAX_FILE_SIZE = 500 * 1024 * 1024;
@@ -153,7 +154,7 @@ function AddSeason() {
       toast.error("Please select at least one video file");
       return;
     }
-    console.log(videos.length);
+
     if (!thumbnail) {
       toast.error("Please select a thumbnail image");
       return;
@@ -199,14 +200,13 @@ function AddSeason() {
           }
         },
       };
-      console.log(token);
-      console.log("Submitting...");
+
       const response = await axios.put(
         "https://b2xclusive.onrender.com/api/v1/track/createSeason",
         formData,
         config
       );
-      console.log("Submitted");
+      await action("series");
       toast.success("Movie created successfully!");
       router.push("/admin");
     } catch (error) {
@@ -242,10 +242,10 @@ function AddSeason() {
         const response = await axios.get(
           `https://b2xclusive.onrender.com/api/v1/track/seasons`
         );
-        console.log(response?.data?.data.seasons);
+
         setAllMovies(response?.data?.data.seasons);
       } catch (error) {
-        console.log(error, "Unable to fetch Movies");
+        console.error(error, "Unable to fetch Movies");
         setMovies(true);
       } finally {
         setMovies(false);

@@ -2,8 +2,8 @@
 "use client";
 import { useMemo, useState } from "react";
 import MusicOverview from "@/components/MusicOverview";
-import NoContentAvailable from "./NoAvailableContent";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import NoContentAvailable from "./NoAvailableContent";
 
 function AllMusicOverview({ audios = [] }) {
   const dataPerPage = 8;
@@ -17,7 +17,12 @@ function AllMusicOverview({ audios = [] }) {
   }, [currentPage, audios]);
 
   if (!audios || audios.length === 0) {
-    return null;
+    return (
+      <NoContentAvailable
+        title="No Audios Found"
+        message="There are no audios available at the moment"
+      />
+    );
   }
 
   return (
