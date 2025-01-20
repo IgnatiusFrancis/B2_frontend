@@ -5,7 +5,7 @@ import { Play, Heart } from "lucide-react";
 
 const AlbumCover = ({ album }) => {
   const { title, url } = album;
-  const artist = album.artist.name;
+  // const artist = album.artist.name;
 
   return (
     <div className="group relative h-[250px] md:h-[400px] overflow-hidden rounded-xl">
@@ -26,7 +26,7 @@ const AlbumCover = ({ album }) => {
         <div className="flex justify-between items-end">
           <div className="text-white">
             <h1 className="text-lg font-bold mb-1">{title}</h1>
-            <p className="text-sm text-gray-300">{artist}</p>
+            {/* <p className="text-sm text-gray-300">{artist}</p> */}
           </div>
           <button className="text-white hover:scale-110 transition-transform duration-200">
             <Heart className="w-5 h-5" />

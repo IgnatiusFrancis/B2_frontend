@@ -6,6 +6,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Loader2, Upload } from "lucide-react";
+import action from "../../actions";
 
 // Constants remain the same
 const MAX_FILE_SIZE = 500 * 1024 * 1024;
@@ -146,6 +147,9 @@ function CreatePost() {
         formData,
         config
       );
+
+      const c = await action("posts");
+      console.log(c);
 
       toast.success(response.data.message);
     } catch (error) {

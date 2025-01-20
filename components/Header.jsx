@@ -120,7 +120,7 @@ function Header() {
       const storedUserId = localStorage
         .getItem("b2exclusiveuserid")
         ?.replace(/^"|"$/g, "");
-      console.log(storedUserId, user);
+
       setUserId(storedUserId);
     }
   }, []);
@@ -165,7 +165,7 @@ function Header() {
     ],
     []
   );
-
+  console.log("user:", user);
   return (
     <>
       {showLogin && (

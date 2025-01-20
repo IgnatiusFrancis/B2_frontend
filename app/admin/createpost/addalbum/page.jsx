@@ -7,6 +7,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Loader2, Upload } from "lucide-react";
+import action from "@/app/actions";
 
 // Constants remain the same
 const MAX_FILE_SIZE = 500 * 1024 * 1024;
@@ -168,6 +169,8 @@ function AddAlbum() {
         submitData,
         config
       );
+      await action("albums");
+
       toast.success(response.data.message, { position: "top-center" });
     } catch (error) {
       console.error("Failed to add event", error.message);
