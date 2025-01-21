@@ -7,8 +7,7 @@ import pld from "@/public/pld.jpeg";
 import NoContentAvailable from "./NoAvailableContent";
 
 export default function ArtistVideos({ videos }) {
-
-  if (!videos || videos.length === 0) { 
+  if (!videos || videos.length === 0) {
     return (
       <NoContentAvailable
         title="No Videos Found"
@@ -41,11 +40,13 @@ export default function ArtistVideos({ videos }) {
               </div>
             </div>
             <div className="mt-3">
-              <h3 className="text-sm font-medium line-clamp-2">{video.title}</h3>
+              <h3 className="text-sm font-medium line-clamp-2 text-gray-200">
+                {video.title}
+              </h3>
               <div className="flex items-center gap-2 mt-1">
-                <p className="text-xs text-gray-500">{video.views} views</p>
-                <span className="text-xs text-gray-500">•</span>
-                <p className="text-xs text-gray-500">{video.duration}</p>
+                <p className="text-xs text-gray-200">{video.views} views</p>
+                <span className="text-xs text-gray-200">•</span>
+                <p className="text-xs text-gray-200">{video.duration}</p>
               </div>
             </div>
           </Link>

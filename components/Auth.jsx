@@ -12,6 +12,7 @@ import { document } from "postcss";
 function Auth() {
   const { theme, authDisplay, setUser } = useContext(ThemeContext);
   const router = useRouter();
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   const [newUser, setnewUser] = useState({
     userName: "",
@@ -34,8 +35,8 @@ function Auth() {
     try {
       setsigninLoading(true);
       const response = await axios.post(
-        "https://b2xclusive.onrender.com/api/v1/auth/user/signin",
-        signInUser,
+        `${baseUrl}/auth/user/signin`,
+        signInUser
       );
 
       const userData = response.data.data;
@@ -64,10 +65,7 @@ function Auth() {
       setsignupLoading(true);
       console.log(newUser);
 
-      const response = await axios.post(
-        "https://b2xclusive.onrender.com/api/v1/auth/user/signup",
-        newUser,
-      );
+      const response = await axios.post(`${baseUrl}/auth/user/signup`, newUser);
 
       console.log("User SignUp Successfull", response);
       setsignupSuccess(true);

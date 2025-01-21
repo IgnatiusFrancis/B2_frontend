@@ -95,6 +95,7 @@ import { Play, Info, Download } from "lucide-react";
 
 const SingleMovie = ({ movie }) => {
   const [isDownloading, setIsDownloading] = useState(false);
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   if (!movie) {
     return (
@@ -119,7 +120,7 @@ const SingleMovie = ({ movie }) => {
     try {
       setIsDownloading(true);
       const data = movie.movie;
-      const downloadUrl = `https://b2xclusive.onrender.com/api/v1/track/download?type=episode&key=${data.episode[0].moviekey}&id=${data.episode[0].id}`;
+      const downloadUrl = `${baseUrl}/track/download?type=episode&key=${data.episode[0].moviekey}&id=${data.episode[0].id}`;
       const link = document.createElement("a");
       link.href = downloadUrl;
       document.body.appendChild(link);

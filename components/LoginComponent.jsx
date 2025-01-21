@@ -272,8 +272,6 @@
 
 // export default AuthComponent;
 
-
-
 "use client";
 import Cookies from "js-cookie";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -287,6 +285,7 @@ import axios from "axios";
 function AuthComponent() {
   const { theme, setUser, setUserId, setAdminUser } = useContext(ThemeContext);
   const router = useRouter();
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   const [isLogin, setIsLogin] = useState(false);
   const [signInUser, setsignInUser] = useState({ email: "", password: "" });
@@ -317,25 +316,25 @@ function AuthComponent() {
   // const handleAuth = async (e) => {
   //   e.preventDefault();
   //   setLoading(true); // Start loading spinner
-  
+
   //   try {
   //     const endpoint = isLogin
   //       ? "https://b2xclusive.onrender.com/api/v1/auth/user/signin"
   //       : "https://b2xclusive.onrender.com/api/v1/auth/user/signup";
-  
+
   //     const payload = isLogin ? signInUser : signUpUser;
-  
+
   //     const response = await axios.post(endpoint, payload);
-  
+
   //     const userData = response?.data;
   //     toast.success(userData.message, { position: "top-center" });
-  
+
   //     if (isLogin) {
   //       // Handle login logic
   //       if (userData?.data?.token) {
   //         setUser(userData?.data?.token);
   //         setUserId(userData?.data?.id);
-  
+
   //         // Store token for admin or user with appropriate expiration time
   //         const cookieExpiration = 1 ; // Expires in 1 hour
   //         if (userData?.data?.role === "admin") {
@@ -364,55 +363,58 @@ function AuthComponent() {
   //     setLoading(false); // End loading spinner
   //   }
   // };
-  
+
   const handleAuth = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
       const endpoint = isLogin
-        ? "https://b2xclusive.onrender.com/api/v1/auth/user/signin"
-        : "https://b2xclusive.onrender.com/api/v1/auth/user/signup";
-  
+        ? `${baseUrl}/auth/user/signin`
+        : `${baseUrl}/auth/user/signup`;
+
       const payload = isLogin ? signInUser : signUpUser;
       const response = await axios.post(endpoint, payload);
       const userData = response?.data;
-      
+
       toast.success(userData.message, { position: "top-center" });
-  
+
       if (isLogin) {
         if (userData?.data?.token) {
           setUser(userData?.data?.token);
           setUserId(userData?.data?.id);
-  
+
           // Match cookie expiration with token expiration or slightly less
           const cookieExpiration = 1; // 1 day
-          
+
           try {
             if (userData?.data?.role === "admin") {
               // Only call setAdminUser if it exists
-              if (typeof setAdminUser === 'function') {
+              if (typeof setAdminUser === "function") {
                 setAdminUser(userData?.data?.token);
               }
-              Cookies.set("b2xclusiveadmin", userData?.data?.token, { 
+              Cookies.set("b2xclusiveadmin", userData?.data?.token, {
                 expires: cookieExpiration,
                 secure: true, // Only send over HTTPS
-                sameSite: 'strict' // Protect against CSRF
+                sameSite: "strict", // Protect against CSRF
               });
               router.push("/admin");
             } else {
-              Cookies.set("b2xclusiveuser", userData?.data?.token, { 
+              Cookies.set("b2xclusiveuser", userData?.data?.token, {
                 expires: cookieExpiration,
                 secure: true,
-                sameSite: 'strict'
+                sameSite: "strict",
               });
               router.push("/");
             }
           } catch (cookieError) {
             console.error("Error setting cookies:", cookieError);
-            toast.warning("Login successful but there was an error saving your session", {
-              position: "top-center"
-            });
+            toast.warning(
+              "Login successful but there was an error saving your session",
+              {
+                position: "top-center",
+              }
+            );
           }
         } else {
           throw new Error("Invalid login response, token missing.");
@@ -423,7 +425,8 @@ function AuthComponent() {
     } catch (error) {
       console.error(error);
       toast.error(
-        error?.response?.data?.message || `Failed to ${isLogin ? "sign in" : "sign up"}`,
+        error?.response?.data?.message ||
+          `Failed to ${isLogin ? "sign in" : "sign up"}`,
         { position: "top-center" }
       );
     } finally {

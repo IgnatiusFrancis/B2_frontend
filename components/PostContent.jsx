@@ -16,6 +16,7 @@ function PostContent({ id, title, url, views, createdAt, subtitle }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -42,12 +43,9 @@ function PostContent({ id, title, url, views, createdAt, subtitle }) {
         return;
       }
 
-      await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/post/delete/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${baseUrl}/post/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       await action("posts");
 

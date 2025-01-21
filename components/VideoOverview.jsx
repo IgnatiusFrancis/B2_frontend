@@ -23,6 +23,8 @@ function VideoOverview({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -48,12 +50,9 @@ function VideoOverview({
         return;
       }
 
-      await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/track/video/delete/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${baseUrl}/track/video/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       await action("videos");
 

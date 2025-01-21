@@ -42,7 +42,7 @@ export default async function Home() {
   ]);
 
   return (
-    <main>
+    <main className="bg-gradient-to-b from-gray-900 to-black">
       <HeroSection />
       <section className="w-full lg:w-[80%] md:w-[90%] mx-auto md:flex mt-8 gap-6">
         <div className="w-full md:w-[80%] mx-auto p-3">
@@ -82,9 +82,9 @@ export default async function Home() {
 
         <div className="w-full md:w-[40%] mx-auto p-3">
           {/* Sidebar */}
-          <aside className="grid grid-cols-2 md:flex md:flex-col gap-2 py-2">
+          <aside className="grid grid-cols-1 md:flex md:flex-col gap-2 py-2">
             {/* Top Artists */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-gray-800/50 rounded-xl shadow-lg p-6">
               <CategoriesHeading title="Top 5 Artists" />
               <div className="grid grid-cols-1 gap-4 mt-6">
                 {topArtists?.map((artist, index) => (
@@ -94,9 +94,9 @@ export default async function Home() {
             </div>
 
             {/* Get Connected */}
-            <div className="bg-white rounded-xl shadow-lg p-6 ">
+            <div className="bg-gray-800/50 rounded-xl shadow-lg p-6 ">
               <CategoriesHeading title="Get Connected" />
-              <div className="flex justify-between mt-4 text-gray-700">
+              <div className="flex justify-between mt-4 text-gray-00">
                 <FaFacebook className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
                 <FaTwitter className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
                 <FaLinkedin className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />

@@ -355,6 +355,7 @@ const TopList = ({ topArtists }) => {
   const [currentTrackId, setCurrentTrackId] = useState(null);
   const { theme } = useContext(ThemeContext);
   const audioRef = useRef(null);
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   useEffect(() => {
     // Cleanup function to handle component unmount
@@ -432,7 +433,16 @@ const TopList = ({ topArtists }) => {
             <h1 className={`font-bold text-xl ${theme}-text`}>
               {artist?.name}
             </h1>
-            <p className="text-xs text-gray-500">{artist?.bio}</p>
+            <p
+              className="text-xs text-gray-500 overflow-hidden text-ellipsis whitespace-normal max-h-[3rem]"
+              style={{
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
+              }}
+            >
+              {artist?.bio}
+            </p>
           </div>
         </div>
 
@@ -482,7 +492,7 @@ const TopList = ({ topArtists }) => {
 
                   {/* Download Button */}
                   <a
-                    href={`https://b2xclusive.onrender.com/api/v1/track/download?type=audio&key=${track?.key}&id=${track?.id}`}
+                    href={`${baseUrl}/track/download?type=audio&key=${track?.key}&id=${track?.id}`}
                     download
                     className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-all duration-300"
                   >

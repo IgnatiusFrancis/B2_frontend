@@ -13,6 +13,7 @@ function MovieContent({ id, title, url, createdAt, downloads, type }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const dropdownRef = useRef(null);
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -40,12 +41,9 @@ function MovieContent({ id, title, url, createdAt, downloads, type }) {
         throw new Error("Authentication token not found");
       }
 
-      await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/movie/delete/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${baseUrl}/movie/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       toast.dismiss();
       toast.success("Post deleted successfully", {

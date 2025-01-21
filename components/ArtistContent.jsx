@@ -9,6 +9,7 @@ import { Menu, Transition } from "@headlessui/react";
 import ConfirmationModal from "./confirmationModal";
 
 const ArtistCard = ({ id, name, url, bio, createdAt }) => {
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
   const [isDeleting, setIsDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -27,12 +28,9 @@ const ArtistCard = ({ id, name, url, bio, createdAt }) => {
         return;
       }
 
-      await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/artist/delete/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${baseUrl}/artist/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       toast.update(toastId, {
         render: "Artist deleted successfully",

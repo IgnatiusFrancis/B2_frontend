@@ -15,6 +15,7 @@ function EventOverviewPage({ id, title, url, location, date, subtitle }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -41,12 +42,9 @@ function EventOverviewPage({ id, title, url, location, date, subtitle }) {
         return;
       }
 
-      await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/event/delete/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${baseUrl}/event/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       await action("events");
 

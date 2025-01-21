@@ -32,7 +32,7 @@ function AllBlogPosts({ data: posts }) {
         {currentPosts?.map((post, index) => (
           <div
             key={post.id}
-            className="opacity-1 animate-[fadeInUp_0.5s_ease-out_forwards]"
+            className="opacity-1 animate-[fadeInUp_0.5s_ease-out_forwards] "
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             <BlogPost
