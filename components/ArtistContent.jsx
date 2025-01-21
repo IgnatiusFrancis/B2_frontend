@@ -106,61 +106,58 @@
 
 // export default ArtistContent;
 
-
-
-
 "use client";
 import { useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { MoreVertical, Edit, Trash2, ExternalLink } from 'lucide-react';
-import { Menu, Transition } from '@headlessui/react';
+import { MoreVertical, Edit, Trash2, ExternalLink } from "lucide-react";
+import { Menu, Transition } from "@headlessui/react";
 
 const ArtistCard = ({ id, name, url, bio, createdAt }) => {
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = useCallback(async () => {
-    if (!window.confirm('Are you sure you want to delete this artist?')) {
+    if (!window.confirm("Are you sure you want to delete this artist?")) {
       return;
     }
 
     setIsDeleting(true);
-    const toastId = toast.loading('Deleting artist...', {
-      position: "top-center"
+    const toastId = toast.loading("Deleting artist...", {
+      position: "top-center",
     });
 
     try {
-      const token = localStorage.getItem("b2exclusiveadmin")?.replace(/^['"](.*)['"]$/, "$1");
-      
+      const token = localStorage
+        .getItem("b2exclusiveadmin")
+        ?.replace(/^['"](.*)['"]$/, "$1");
+
       if (!token) {
-        throw new Error('Authentication required');
+        throw new Error("Authentication required");
       }
 
-      await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/artist/delete/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      await axios.delete(`${baseUrl}/artist/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       toast.update(toastId, {
         render: "Artist deleted successfully",
         type: "success",
         isLoading: false,
-        autoClose: 2000
+        autoClose: 2000,
       });
 
       // Optionally trigger a refresh or update local state
       setTimeout(() => window.location.reload(), 2000);
     } catch (error) {
-      console.error('Delete error:', error);
+      console.error("Delete error:", error);
       toast.update(toastId, {
         render: error.response?.data?.message || "Failed to delete artist",
         type: "error",
         isLoading: false,
-        autoClose: 3000
+        autoClose: 3000,
       });
     } finally {
       setIsDeleting(false);
@@ -178,14 +175,12 @@ const ArtistCard = ({ id, name, url, bio, createdAt }) => {
           loading="lazy"
         />
       </div>
-      
+
       <div className="p-4">
         <div className="flex items-start justify-between">
           <div>
             <h3 className="font-medium">{name}</h3>
-            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-              {bio}
-            </p>
+            <p className="text-sm text-gray-600 mt-1 line-clamp-2">{bio}</p>
           </div>
 
           <Menu as="div" className="relative">
@@ -209,7 +204,7 @@ const ArtistCard = ({ id, name, url, bio, createdAt }) => {
                         href={`/admin/contents/edit/artist/${id}`}
                         className={`
                           flex items-center gap-2 px-4 py-2 text-sm rounded-md
-                          ${active ? 'bg-gray-100' : ''}
+                          ${active ? "bg-gray-100" : ""}
                         `}
                       >
                         <Edit className="w-4 h-4" />
@@ -225,12 +220,12 @@ const ArtistCard = ({ id, name, url, bio, createdAt }) => {
                         disabled={isDeleting}
                         className={`
                           flex items-center gap-2 px-4 py-2 text-sm rounded-md w-full text-red-600
-                          ${active ? 'bg-red-50' : ''}
-                          ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}
+                          ${active ? "bg-red-50" : ""}
+                          ${isDeleting ? "opacity-50 cursor-not-allowed" : ""}
                         `}
                       >
                         <Trash2 className="w-4 h-4" />
-                        {isDeleting ? 'Deleting...' : 'Delete Artist'}
+                        {isDeleting ? "Deleting..." : "Delete Artist"}
                       </button>
                     )}
                   </Menu.Item>
@@ -241,13 +236,14 @@ const ArtistCard = ({ id, name, url, bio, createdAt }) => {
         </div>
 
         <div className="mt-4 text-xs text-gray-500">
-          Added  {new Date(createdAt).toLocaleDateString("en-US", {
-                      weekday: "long", 
-                      year: "numeric",
-                      month: "long", 
-                      day: "numeric",
-                    })}
-        </div> 
+          Added{" "}
+          {new Date(createdAt).toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </div>
       </div>
     </div>
   );

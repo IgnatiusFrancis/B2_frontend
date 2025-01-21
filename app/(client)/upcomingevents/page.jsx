@@ -16,24 +16,26 @@ export default async function UpcomingEvent() {
         }
       />
 
-      <section className="w-full md:w-5/6 mx-auto py-10 px-8">
-        <div>
-          <h1
-            className={`md:text-left text-center text-lg md:text-2xl font-bold`}
-          >
-            Your Gateway to Extraordinary Experiences
-          </h1>
-          <p className={`text-center md:text-left`}>
-            Where every event tells a unique story
-          </p>
-        </div>
-      </section>
+      <div className="bg-gradient-to-b from-gray-900 to-black">
+        <section className="w-full md:w-5/6 mx-auto py-10 px-8">
+          <div>
+            <h1
+              className={`md:text-left text-center text-lg md:text-2xl font-bold`}
+            >
+              Your Gateway to Extraordinary Experiences
+            </h1>
+            <p className={`text-center md:text-left`}>
+              Where every event tells a unique story
+            </p>
+          </div>
+        </section>
 
-      <SearchComponent
-        data={allEvents}
-        ContentContainer={AllEvent}
-        searchFields={["title", "subTitle"]}
-      />
+        <SearchComponent
+          data={allEvents}
+          ContentContainer={AllEvent}
+          searchFields={["title", "subTitle"]}
+        />
+      </div>
     </>
   );
 }

@@ -7,7 +7,7 @@
 // import Link from "next/link";
 // import axios from "axios";
 
-// function EventOverview({ id, title, image, createdAt, subtitle }) { 
+// function EventOverview({ id, title, image, createdAt, subtitle }) {
 //   const [showActions, setShowActions] = useState(false);
 //   const [token, setToken] = useState(""); // State to hold the token
 //   console.log(title);
@@ -110,8 +110,6 @@
 
 // export default EventOverview;
 
-
-
 // EventOverview.jsx
 "use client";
 import { useState, useEffect } from "react";
@@ -126,6 +124,7 @@ function EventOverview({ id, title, url, createdAt, subtitle }) {
   const [showActions, setShowActions] = useState(false);
   const [token, setToken] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   useEffect(() => {
     try {
@@ -154,14 +153,11 @@ function EventOverview({ id, title, url, createdAt, subtitle }) {
         position: "top-center",
       });
 
-      await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/event/delete/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${baseUrl}/event/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       toast.dismiss();
       toast.success("Event deleted successfully", {
@@ -213,11 +209,11 @@ function EventOverview({ id, title, url, createdAt, subtitle }) {
 
       <div className="w-3/12 text-sm text-gray-600">
         {new Date(createdAt).toLocaleDateString("en-US", {
-                      weekday: "long", 
-                      year: "numeric",
-                      month: "long", 
-                      day: "numeric",
-                    })}
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
       </div>
 
       <div className="w-2/12 relative">

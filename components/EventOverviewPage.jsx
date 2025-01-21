@@ -12,6 +12,7 @@ function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const dropdownRef = useRef(null);
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -39,12 +40,9 @@ function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
         throw new Error("Authentication token not found");
       }
 
-      await axios.delete(
-        `https://b2xclusive.onrender.com/api/v1/track/event/delete/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${baseUrl}/track/event/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       toast.dismiss();
       toast.success("Event deleted successfully", {

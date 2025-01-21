@@ -28,7 +28,7 @@ function Contact() {
       console.log("Submitting with data:", contactData);
       const postresponse = await axios.post(
         "https://b2xclusive.onrender.com/api/v1/contactUs/message",
-        formData,
+        formData
       );
 
       console.log(postresponse.data);
@@ -42,7 +42,7 @@ function Contact() {
           error?.response?.data?.errorResponse?.message,
         {
           position: "top-center",
-        },
+        }
       );
     } finally {
       setuploadingPost(false); // Reset uploadingPost state
@@ -50,7 +50,7 @@ function Contact() {
   };
   return (
     <>
-      <section>
+      <section className="bg-gradient-to-b from-gray-900 to-black text-gray-200">
         <SectionHeader
           title={"Contact us"}
           desc={
@@ -72,7 +72,9 @@ function Contact() {
 
           <div className="md:flex md:gap-4 ">
             <div className="w-full md:w-2/4">
-              <h1 className={` font-bold text-4xl`}>Get In Touch</h1>
+              <h1 className={`text-gray-200 font-bold text-4xl`}>
+                Get In Touch
+              </h1>
               <form className="p-4" onSubmit={onSubmitContact}>
                 <div className=" md:flex w-full gap-4 my-2">
                   <input
@@ -121,7 +123,9 @@ function Contact() {
 
                 <button
                   type="submit" // Use handlePost instead of handleingPost
-                  className={`${uploadingPost ? "bg-orange-100" : "bg-primarycolor"} text-[14px] flex justify-center px-3 py-2 rounded-lg md:py-4 md:px-8 text-white`}
+                  className={`${
+                    uploadingPost ? "bg-orange-100" : "bg-primarycolor"
+                  } text-[14px] flex justify-center px-3 py-2 rounded-lg md:py-4 md:px-8 text-white`}
                 >
                   {uploadingPost ? (
                     <AiOutlineLoading3Quarters className="text-primarycolor text-center text-xl font-bold animate-spin infinite" />
@@ -133,7 +137,9 @@ function Contact() {
             </div>
 
             <div className={` flex flex-col gap-4 w-full md:w-2/4`}>
-              <h1 className={`  font-bold text-4xl`}>Contact Us</h1>
+              <h1 className={`text-gray-200  font-bold text-4xl`}>
+                Contact Us
+              </h1>
               <p className={``}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
                 sagittis lacinia tellus. Nullam venenatis a sem non dictum.

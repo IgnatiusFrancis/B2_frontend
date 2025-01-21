@@ -4,6 +4,7 @@ import { FaSearch } from "react-icons/fa";
 
 const SearchMovies = ({ onSearch, onClearSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
   const fetchSearchResults = async () => {
     if (searchTerm.trim() === "") {
@@ -11,7 +12,7 @@ const SearchMovies = ({ onSearch, onClearSearch }) => {
       return;
     }
 
-    const url = `https://b2xclusive.onrender.com/api/v1/track/search?page=1&limit=10&search=${encodeURIComponent(
+    const url = `${baseUrl}/track/search?page=1&limit=10&search=${encodeURIComponent(
       searchTerm
     )}`;
     try {
