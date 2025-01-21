@@ -59,6 +59,7 @@ const TopArtists = () => {
         config
       );
 
+      await action("topArtists");
       toast.success("Successfully updated top artists");
       router.push("/admin");
     } catch (error) {

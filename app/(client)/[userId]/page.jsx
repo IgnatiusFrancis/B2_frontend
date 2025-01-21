@@ -39,7 +39,6 @@ function SingleUser({ params }) {
     fetchUserData();
   }, [userId]);
 
-  console.log(userData);
   return (
     <>
       {/* Render section based on user data */}

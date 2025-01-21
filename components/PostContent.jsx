@@ -7,11 +7,14 @@ import pld from "@/public/pld.jpeg";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
+import ConfirmationModal from "./confirmationModal";
+import action from "@/app/actions";
 
 function PostContent({ id, title, url, views, createdAt, subtitle }) {
   const imageUrl = url ? url : pld;
   const [showDropdown, setShowDropdown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
   const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
@@ -27,41 +30,42 @@ function PostContent({ id, title, url, views, createdAt, subtitle }) {
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    toast.warning("Deleting post...", {
-      autoClose: false,
+    const toastId = toast.loading("Deleting post...", {
       position: "top-center",
     });
 
     try {
-      const token = localStorage
-        .getItem("b2exclusiveadmin")
-        ?.replace(/^['"](.*)['"]$/, "$1");
+      const storedUser = localStorage.getItem("b2xclusiveadmin");
+      const token = storedUser ? JSON.parse(storedUser) : null;
 
       if (!token) {
-        throw new Error("Authentication token not found");
+        toast.error("Authentication token not found");
+        return;
       }
 
       await axios.delete(`${baseUrl}/post/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      toast.dismiss();
-      toast.success("Post deleted successfully", {
-        position: "top-center",
-      });
+      await action("posts");
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      toast.update(toastId, {
+        render: "Post deleted successfully",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
     } catch (error) {
-      console.error("Failed to delete post:", error.message);
-      toast.dismiss();
-      toast.error("Failed to delete post", {
-        position: "top-center",
+      console.error("Delete error:", error);
+      toast.update(toastId, {
+        render: error.response?.data?.message || "Failed to delete post",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
       });
     } finally {
       setIsDeleting(false);
-      setShowDropdown(false);
+      setIsModalOpen(false);
     }
   };
 
@@ -121,7 +125,7 @@ function PostContent({ id, title, url, views, createdAt, subtitle }) {
               Edit Post
             </Link>
             <button
-              onClick={handleDelete}
+              onClick={() => setIsModalOpen(true)}
               disabled={isDeleting}
               className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
             >
@@ -130,6 +134,14 @@ function PostContent({ id, title, url, views, createdAt, subtitle }) {
           </div>
         )}
       </div>
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDelete}
+        title="Confirm Deletion"
+        description="Are you sure you want to delete this post? This action cannot be undone."
+      />
     </div>
   );
 }

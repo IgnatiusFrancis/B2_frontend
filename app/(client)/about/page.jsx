@@ -1,149 +1,127 @@
 "use client";
-
-import SectionHeader from "@/components/SectionHeader";
-import { ThemeContext } from "@/context/ThemeContext";
-import { useContext } from "react";
+import React from "react";
 import Image from "next/image";
+import NoContentDesign from "@/components/NoContent";
 
-function About() {
+const About = () => {
+  const stats = [
+    { value: "5+", label: "Years Experience" },
+    { value: "200+", label: "Content Plays" },
+    { value: "500+", label: "Happy Users" },
+    { value: "10", label: "Awards Won" },
+  ];
+
   return (
-    <>
-      <section
-        className={`bg-gradient-to-b from-gray-900 to-black text-gray-200`}
-      >
-        <SectionHeader
-          title={"About us"}
-          desc={
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, id."
-          }
-        />
+    <div className="bg-gradient-to-b from-gray-900 to-black">
+      <div className="max-w-6xl mx-auto px-4 py-16">
+        {/* Hero Section */}
+        <div className="mb-20">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-200">
+            About Us
+          </h1>
+          <div className="w-20 h-1 bg-blue-600 mb-8"></div>
+          <p className="text-white max-w-2xl">
+            We create meaningful experiences through innovative content and
+            technology, bringing the best entertainment to our users worldwide.
+          </p>
+        </div>
 
-        <section className="w-full p-2 md:p-8 md:w-5/6 md:mx-auto md:flex md:items-center md:gap-8">
-          <div className="w-full h-[400px] md:w-2/4">
-            <Image
-              src={"/alb.jpeg"}
-              width={1000}
-              height={1000}
-              alt="abt"
-              className="w-full h-full object-cover"
-            />
+        {/* Main Content */}
+        <div className="flex flex-col md:flex-row gap-12 mb-20">
+          <div className="md:w-1/2">
+            <NoContentDesign />
           </div>
 
-          <div className="w-full md:w-2/4 flex flex-col gap-4">
-            <h1 className={`text-gray-200`}>About us </h1>
-            <h1 className={`font-bold text-gray-200 text-4xl`}>
-              We Bring you the best content
-            </h1>
-            <p className={``}>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Aspernatur, eum explicabo sunt laborum quia nostrum facere!
-              Ratione et atque ex quam sint debitis beatae, non quasi
-              exercitationem ullam eum aperiam molestias, minus quis, aliquam
-              rerum! Ut placeat voluptates non magnam?
+          <div className="md:w-1/2 space-y-6">
+            <h2 className="text-2xl font-bold text-gray-200">
+              We Bring You the Best Content
+            </h2>
+
+            <p className="text-white">
+              Our platform combines cutting-edge technology with creative
+              excellence to deliver exceptional entertainment experiences.
+              We&#39;re passionate about connecting artists with audiences and
+              creating moments that inspire.
+            </p>
+
+            <div className="grid grid-cols-2 gap-8 pt-6">
+              {stats.map((stat, index) => (
+                <div key={index} className="border-l-2 border-blue-600 pl-4">
+                  <div className="text-3xl font-bold text-gray-200">
+                    {stat.value}
+                  </div>
+                  <div className="text-white text-sm">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Services */}
+        <div className="mb-20">
+          <h2 className="text-2xl font-bold mb-8 text-gray-200">
+            Our Services
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="border-t-2 border-blue-600 pt-4">
+              <h3 className="text-xl font-semibold mb-2 text-gray-200">
+                Trending Videos
+              </h3>
+              <p className="text-white">
+                Curated selection of viral and trending content across various
+                genres.
+              </p>
+            </div>
+            <div className="border-t-2 border-blue-600 pt-4">
+              <h3 className="text-xl font-semibold mb-2 text-gray-200">
+                Music
+              </h3>
+              <p className="text-white">
+                Extensive library of tracks from emerging artists to
+                chart-topping hits.
+              </p>
+            </div>
+            <div className="border-t-2 border-blue-600 pt-4">
+              <h3 className="text-xl font-semibold mb-2 text-gray-200">
+                Events
+              </h3>
+              <p className="text-white">
+                Exclusive access to live performances, virtual concerts, and
+                special events.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Vision & Mission */}
+        <div className="grid md:grid-cols-2 gap-12">
+          <div>
+            <h2 className="text-2xl font-bold mb-4 text-gray-200">
+              Our Vision
+            </h2>
+            <div className="w-16 h-1 bg-blue-600 mb-4"></div>
+            <p className="text-white">
+              To revolutionize digital entertainment by creating a global
+              platform that empowers creators and delivers exceptional content
+              experiences to audiences worldwide.
             </p>
           </div>
-        </section>
 
-        <section className="w-full p-2 md:p-8 md:w-5/6 md:mx-auto md:flex md:items-center md:gap-8">
-          <div className="w-full md:w-2/4 flex flex-col gap-4">
-            <h1 className={` text-4xl font-bold text-gray-200`}>Our Service</h1>
-            <div>
-              <h1 className={`text-gray-200 text-2xl`}> Trending Videos</h1>
-
-              <p className={``}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum,
-                aliquam?
-              </p>
-            </div>
-
-            <div>
-              <h1 className={`text-gray-200  text-2xl`}> Musics</h1>
-              <p className={``}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum,
-                aliquam?
-              </p>
-            </div>
-
-            <div>
-              <h1 className={`text-gray-200  text-2xl`}> Blogs</h1>
-              <p className={``}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum,
-                aliquam?
-              </p>
-            </div>
-
-            <div>
-              <h1 className={`text-gray-200  text-2xl`}> Events</h1>
-              <p className={``}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum,
-                aliquam?
-              </p>
-            </div>
-          </div>
-          <div className="w-full md:w-2/4 flex flex-col gap-10 mt-10 md:mt-0">
-            <div className="flex gap-20">
-              <div className="flex flex-col items-center w-2/4">
-                <h1 className={`text-gray-200  font-bold text-4xl`}>20+</h1>
-                <p className={``}>Years in Business</p>
-              </div>
-
-              <div className="flex flex-col items-center w-2/4">
-                <h1 className={`text-gray-200  font-bold text-4xl`}>5000+</h1>
-                <p className={``}>Music and Video Plays</p>
-              </div>
-            </div>
-            <div className="flex gap-20">
-              <div className="flex flex-col items-center w-2/4">
-                <h1 className={`text-gray-200  font-bold text-4xl`}>500+</h1>
-                <p className={``}>Satisfied Users</p>
-              </div>
-              <div className="flex flex-col items-center w-2/4">
-                <h1 className={`text-gray-200  font-bold text-4xl`}>21</h1>
-                <p className={``}>Awards</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full p-2 md:p-8 md:w-5/6 md:mx-auto md:flex md:items-center md:gap-8">
-          <div className="w-full md:w-2/4">
-            <h1 className={`text-gray-200  font-bold text-3xl`}>Our Vision</h1>
-            <p className={``}>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut
-              asperiores repudiandae in dolor consequuntur cum maiores eos,
-              corporis officia assumenda perspiciatis, excepturi aliquid ab nam,
-              veritatis doloribus ipsa ducimus dicta odio. Iste excepturi odit
-              officia alias error deleniti ipsam maxime voluptatibus vero
-              possimus provident sint vel sed, aliquam dolorum quo voluptas non
-              labore? Magnam modi odio sunt praesentium vel! Ipsum harum odit
-              vel illo voluptate nihil sapiente doloribus tenetur! Tempore unde,
-              ex commodi veritatis voluptatibus quasi aspernatur nobis facere
-              harum praesentium optio doloribus quod molestiae impedit
-              consectetur nostrum itaque iusto cum pariatur esse alias dolores
-              aperiam? Molestiae harum ut facilis!
+          <div>
+            <h2 className="text-2xl font-bold mb-4 text-gray-200">
+              Our Mission
+            </h2>
+            <div className="w-16 h-1 bg-blue-600 mb-4"></div>
+            <p className="text-white">
+              To connect, inspire, and entertain through innovative technology
+              and compelling content, while fostering a community of creativity
+              and engagement.
             </p>
           </div>
-          <div className="w-full md:w-2/4 md:my-0 my-10">
-            <h1 className={`text-gray-200  font-bold text-3xl`}>Our Mission</h1>
-            <p className={``}>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut
-              asperiores repudiandae in dolor consequuntur cum maiores eos,
-              corporis officia assumenda perspiciatis, excepturi aliquid ab nam,
-              veritatis doloribus ipsa ducimus dicta odio. Iste excepturi odit
-              officia alias error deleniti ipsam maxime voluptatibus vero
-              possimus provident sint vel sed, aliquam dolorum quo voluptas non
-              labore? Magnam modi odio sunt praesentium vel! Ipsum harum odit
-              vel illo voluptate nihil sapiente doloribus tenetur! Tempore unde,
-              ex commodi veritatis voluptatibus quasi aspernatur nobis facere
-              harum praesentium optio doloribus quod molestiae impedit
-              consectetur nostrum itaque iusto cum pariatur esse alias dolores
-              aperiam? Molestiae harum ut facilis!
-            </p>
-          </div>
-        </section>
-      </section>
-    </>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default About;

@@ -1,16 +1,19 @@
 "use client";
-import Image from "next/image";
-import { toast } from "react-toastify";
-import { FaEllipsisVertical } from "react-icons/fa6";
-import pld from "@/public/pld.jpeg";
+
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { toast } from "react-toastify";
 import axios from "axios";
-import { FaComment } from "react-icons/fa";
+import { FaEllipsisVertical } from "react-icons/fa6";
+import pld from "@/public/pld.jpeg";
+import ConfirmationModal from "./confirmationModal";
+import action from "@/app/actions";
 
-function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
+function EventOverviewPage({ id, title, url, location, date, subtitle }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
   const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
 
@@ -26,41 +29,44 @@ function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    toast.warning("Deleting Event...", {
-      autoClose: false,
+    const toastId = toast.loading("Deleting event...", {
       position: "top-center",
     });
 
     try {
-      const token = localStorage
-        .getItem("b2exclusiveadmin")
-        ?.replace(/^['"](.*)['"]$/, "$1");
+      const storedUser = localStorage.getItem("b2xclusiveadmin");
+      const token = storedUser ? JSON.parse(storedUser) : null;
 
       if (!token) {
-        throw new Error("Authentication token not found");
+        toast.error("Authentication token not found");
+        return;
       }
 
-      await axios.delete(`${baseUrl}/track/event/delete/${id}`, {
+      await axios.delete(`${baseUrl}/event/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      toast.dismiss();
-      toast.success("Event deleted successfully", {
-        position: "top-center",
+      await action("events");
+
+      toast.update(toastId, {
+        render: "Event deleted successfully",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
       });
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      //setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
-      console.error("Failed to delete event:", error.message);
-      toast.dismiss();
-      toast.error("Failed to delete event", {
-        position: "top-center",
+      console.error("Delete error:", error);
+      toast.update(toastId, {
+        render: error.response?.data?.message || "Failed to delete event",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
       });
     } finally {
       setIsDeleting(false);
-      setShowDropdown(false);
+      setIsModalOpen(false);
     }
   };
 
@@ -90,7 +96,7 @@ function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
 
       <div className="col-span-2 text-center">
         <span className="text-sm text-gray-600">
-          {new Date(createdAt).toLocaleDateString("en-US", {
+          {new Date(date).toLocaleDateString("en-US", {
             weekday: "long",
             year: "numeric",
             month: "long",
@@ -113,13 +119,13 @@ function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
         {showDropdown && (
           <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-10 py-1">
             <Link
-              href={`/admin/contents/edit/event/${id}`}
+              href={`/admin/contents/edit/events/${id}`}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
             >
-              Edit Music
+              Edit me
             </Link>
             <button
-              onClick={handleDelete}
+              onClick={() => setIsModalOpen(true)}
               disabled={isDeleting}
               className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
             >
@@ -128,6 +134,15 @@ function EventOverviewPage({ id, title, url, location, createdAt, subtitle }) {
           </div>
         )}
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDelete}
+        title="Confirm Deletion"
+        description="Are you sure you want to delete this event? This action cannot be undone."
+      />
     </div>
   );
 }

@@ -1,9 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
-import MusicOverview from "@/components/MusicOverview";
 import NoContentAvailable from "./NoAvailableContent";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import EventOverview from "./EventOverviewPage";
 import EventOverviewPage from "./EventOverviewPage";
 
 function AllEventOverviewPage({ events = [] }) {
@@ -21,7 +19,7 @@ function AllEventOverviewPage({ events = [] }) {
     return (
       <NoContentAvailable
         title="No events Found"
-        message="It seems there are no events available at the moment. Please check back later."
+        message="There are no events available at the moment"
       />
     );
   }

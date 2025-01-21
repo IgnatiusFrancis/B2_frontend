@@ -149,7 +149,7 @@ function AddEpisode() {
       toast.error("Please select at least one video file");
       return;
     }
-    console.log(videos.length);
+
     if (!thumbnail) {
       toast.error("Please select a thumbnail image");
       return;
@@ -201,7 +201,7 @@ function AddEpisode() {
         formData,
         config
       );
-      console.log("Submitted");
+
       toast.success("Movie created successfully!");
       router.push("/admin");
     } catch (error) {
@@ -240,7 +240,7 @@ function AddEpisode() {
 
         setAllMovies(response?.data?.data.seasons);
       } catch (error) {
-        console.log(error, "Unable to fetch Movies");
+        console.error(error, "Unable to fetch Movies");
         setMovies(true);
       } finally {
         setMovies(false);

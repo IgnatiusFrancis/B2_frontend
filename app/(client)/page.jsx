@@ -55,14 +55,6 @@ export default async function Home() {
             ))}
           </div>
 
-          {/* <div className="flex items-end justify-between mb-10">
-            <div className="w-[80%] h-[2px] bg-primarycolor"></div>
-            <div className="flex gap-4">
-              <FaBackward className={`border w-5 h-5 p-1  `} />
-              <FaForward className={`border w-5 h-5 p-1 `} />
-            </div>
-          </div> */}
-
           {/* UPCOMING EVENTS SECTION*/}
           <HomeEvents events={events} />
 

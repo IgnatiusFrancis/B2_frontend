@@ -1,10 +1,13 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import Tiptap from "@/components/TipTap";
+import Image from "next/image";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 import { Loader2, Upload } from "lucide-react";
+import action from "@/app/actions";
 
 // Constants remain the same
 const MAX_FILE_SIZE = 500 * 1024 * 1024;
@@ -12,16 +15,21 @@ const MAX_THUMBNAIL_SIZE = 5 * 1024 * 1024;
 const UPLOAD_TIMEOUT = 3600000;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-const AddArtists = () => {
+function AddAlbum() {
   const router = useRouter();
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [fileErrors, setFileErrors] = useState([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    bio: "",
+  const [allArtist, setALlArtist] = useState([]);
+  const [content, setContent] = useState("");
+  const [gettingArtist, setGettingArtist] = useState(false);
+  const [event, setEvent] = useState({
+    title: "",
+    releaseDate: "",
+    artistId: "",
+    description: content,
   });
 
   const validateFiles = (files, type) => {
@@ -69,7 +77,36 @@ const AddArtists = () => {
     };
   }, [thumbnailPreview]);
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      setGettingArtist(true);
+      try {
+        const response = await axios.get(
+          `https://b2xclusive.onrender.com/api/v1/artist/artists`
+        );
+        setALlArtist(response?.data?.data);
+      } catch (error) {
+        console.log(error, "Unable to fetch artists");
+      } finally {
+        setGettingArtist(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    setEvent((prevEvent) => ({
+      ...prevEvent,
+      description: content,
+    }));
+  }, [content]);
+
+  const handleContentChange = (newContent) => {
+    setContent(newContent);
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (fileErrors.length > 0) {
@@ -78,18 +115,24 @@ const AddArtists = () => {
     }
 
     if (!thumbnail) {
-      toast.error("Please select artist image");
+      toast.error("Please select a post image");
+      return;
+    }
+
+    if (!content.trim()) {
+      toast.error("Post Description is required");
       return;
     }
 
     setUploading(true);
     setUploadProgress(0);
-
     try {
-      const form = new FormData();
-      form.append("name", formData.name);
-      form.append("bio", formData.bio);
-      if (thumbnail) form.append("file", thumbnail);
+      const submitData = new FormData();
+      submitData.append("title", event.title);
+      submitData.append("description", content);
+      submitData.append("releaseDate", event.releaseDate);
+      submitData.append("artistId", event.artistId);
+      submitData.append("file", thumbnail);
 
       const storedUser = localStorage.getItem("b2xclusiveadmin");
       const token = storedUser ? JSON.parse(storedUser) : null;
@@ -122,34 +165,45 @@ const AddArtists = () => {
       };
 
       const response = await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/artist/create",
-        form,
+        "https://b2xclusive.onrender.com/api/v1/track/create-album",
+        submitData,
         config
       );
+      await action("albums");
 
-      await action("artists");
-      toast.success(response.data.message);
+      toast.success(response.data.message, { position: "top-center" });
     } catch (error) {
-      console.error("Failed to upload post", error);
+      console.error("Failed to add event", error.message);
       if (axios.isAxiosError(error)) {
         if (error.code === "ECONNABORTED") {
-          toast.error("Upload timed out. Please try again");
+          toast.error(
+            "Upload timed out. Please try with smaller files or check your connection"
+          );
         } else if (error.response?.status === 413) {
-          toast.error("File too large for server. Please reduce file size");
+          toast.error("Files too large for server. Please reduce file sizes");
+        } else if (error.response) {
+          toast.error(
+            error.response.data?.message ||
+              error?.response?.data?.errorResponse?.message ||
+              "Server error occurred"
+          );
+        } else if (error.request) {
+          toast.error("Network error. Please check your connection");
         } else {
-          toast.error(error.response?.data?.message || "Failed to update post");
+          toast.error("An unexpected error occurred");
         }
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error("Failed to create album");
       }
     } finally {
       setUploading(false);
       setUploadProgress(0);
-
-      setFormData({
-        name: "",
-        bio: "",
+      setEvent({
+        title: "",
+        releaseDate: "",
+        description: "",
       });
+      setContent("");
       setThumbnail(null);
       setThumbnailPreview(null);
       setFileErrors([]);
@@ -157,31 +211,63 @@ const AddArtists = () => {
   };
 
   return (
-    <div className="w-full flex justify-center py-12">
-      <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-2xl font-bold mb-8">Add New Artist</h1>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Artist Name
-            </label>
+    <section className="w-full flex justify-center py-12">
+      <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-8">
+        <form className="flex flex-col gap-8 items-start" onSubmit={onSubmit}>
+          <div className="flex flex-col gap-2 w-full">
+            <label>Album Title</label>
             <input
+              value={event.title}
+              onChange={(e) => setEvent({ ...event, title: e.target.value })}
               type="text"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, name: e.target.value }))
-              }
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-              placeholder="Enter artist name"
+              name="title"
+              placeholder="Enter Album Title"
+              className="w-full bg-transparent rounded-lg text-2xl outline-none p-4 border border-gray-200"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Artist Photo
-            </label>
+          <div className="flex w-full gap-4 md:flex-row flex-col">
+            <div className="flex flex-col md:w-6/12">
+              <label>Artist</label>
+              <select
+                value={event.artistId}
+                // onChange={(e) =>
+                //   setEvent((prev) => ({ ...prev, artistId: e.target.value }))
+                // }
+                onChange={(e) =>
+                  setEvent({ ...event, artistId: e.target.value })
+                }
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                required
+                disabled={gettingArtist}
+              >
+                <option value="">Select an artist</option>
+                {allArtist.map((artist) => (
+                  <option key={artist.id} value={artist.id}>
+                    {artist.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col md:w-6/12">
+              <label>Release Date</label>
+              <input
+                value={event.releaseDate}
+                name="releaseDate"
+                onChange={(e) =>
+                  setEvent({ ...event, releaseDate: e.target.value })
+                }
+                type="date"
+                className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="flex w-full flex-col gap-2">
+            <label>Blog header Image</label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
               <input
                 type="file"
@@ -224,17 +310,9 @@ const AddArtists = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Artist Bio</label>
-            <textarea
-              value={formData.bio}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, bio: e.target.value }))
-              }
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all min-h-[150px]"
-              placeholder="Enter artist biography"
-              required
-            />
+          <div className="flex flex-col gap-2 w-full">
+            <label>Album Description</label>
+            <Tiptap content={content} onChange={handleContentChange} />
           </div>
 
           {/* Upload Progress */}
@@ -272,14 +350,14 @@ const AddArtists = () => {
             ) : (
               <>
                 <Upload className="w-5 h-5" />
-                <span>Create Artist</span>
+                <span>Create Album</span>
               </>
             )}
           </button>
         </form>
       </div>
-    </div>
+    </section>
   );
-};
+}
 
-export default AddArtists;
+export default AddAlbum;

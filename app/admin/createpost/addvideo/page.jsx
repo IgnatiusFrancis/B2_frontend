@@ -3,11 +3,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Tiptap from "@/components/TipTap";
 import Image from "next/image";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
-import { Upload } from "lucide-react";
+import { Film, Loader2, Upload } from "lucide-react";
+import action from "@/app/actions";
+
+// Constants remain the same
+const MAX_FILE_SIZE = 500 * 1024 * 1024;
+const MAX_THUMBNAIL_SIZE = 5 * 1024 * 1024;
+const UPLOAD_TIMEOUT = 3600000;
+const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function AddVideos() {
   const router = useRouter();
@@ -15,62 +21,81 @@ function AddVideos() {
   const [gettingArtist, setGettingArtist] = useState(false);
   const [gettingArtisterror, setGettingArtisterror] = useState(false);
 
-  const [uploadingPost, setuploadingPost] = useState(false);
-
-  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [fileErrors, setFileErrors] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [content, setContent] = useState("");
 
   const handleContentChange = (cont) => {
     setContent(cont);
   };
 
-  const [token, setToken] = useState(""); // State to hold the token
+  const validateFiles = (files, type) => {
+    const errors = [];
+    const allowedTypes =
+      type === "video" ? ALLOWED_VIDEO_TYPES : ALLOWED_IMAGE_TYPES;
+    const maxSize = type === "video" ? MAX_FILE_SIZE : MAX_THUMBNAIL_SIZE;
 
-  const [isTokenExpired, setIsTokenExpired] = useState(false);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("b2xclusiveadmin");
-    if (storedToken) {
-      const cleanedToken = storedToken.replace(/^['"](.*)['"]$/, "$1");
-
-      try {
-        const decodedToken = jwtDecode(cleanedToken);
-        const currentTime = Date.now() / 1000; // Current time in seconds
-
-        if (decodedToken.exp < currentTime) {
-          console.error("Token is expired");
-          toast.error("Invalid or Expired token, please sign in", {
-            position: "top-center",
-          });
-
-          setIsTokenExpired(true);
-          // Optionally, you can remove the expired token from localStorage
-          localStorage.removeItem("b2xclusiveadmin");
-          router.push("/login");
-        } else {
-          setToken(cleanedToken);
-          setIsTokenExpired(false);
-        }
-      } catch (error) {
-        console.error("Invalid token:", error);
+    Array.from(files).forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        errors.push(`${file.name}: Invalid file type`);
       }
-    } else {
-      console.error("Bearer token not found");
+      if (file.size > maxSize) {
+        errors.push(
+          `${file.name}: File too large (max ${maxSize / (1024 * 1024)}MB)`
+        );
+      }
+    });
+
+    return errors;
+  };
+
+  const handleFileChange = (e, type) => {
+    const files = e.target.files;
+    setFileErrors([]);
+
+    if (type === "thumbnail") {
+      const errors = validateFiles([files[0]], "image");
+      if (errors.length > 0) {
+        setFileErrors(errors);
+        return;
+      }
+      const file = files[0];
+      setFormData((prev) => ({ ...prev, thumbnailFile: file }));
+      const previewUrl = URL.createObjectURL(file);
+      setThumbnailPreview(previewUrl);
+    } else if (type === "videos") {
+      const errors = validateFiles(files, "video");
+      if (errors.length > 0) {
+        setFileErrors(errors);
+        return;
+      }
+      setFormData((prev) => ({
+        ...prev,
+        videoFile: Array.from(files),
+      }));
+      setVideos(Array.from(files));
     }
-  }, [router]);
+  };
+
+  // Cleanup preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      if (thumbnailPreview) {
+        URL.revokeObjectURL(thumbnailPreview);
+      }
+    };
+  }, [thumbnailPreview]);
 
   useEffect(() => {
     const fetchData = async () => {
       setGettingArtist(true);
       try {
         const response = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/artist/artists`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
+          `https://b2xclusive.onrender.com/api/v1/artist/artists`
         );
         setALlArtist(response?.data?.data);
       } catch (error) {
@@ -82,52 +107,79 @@ function AddVideos() {
     };
 
     fetchData();
-  }, [token]);
+  }, []);
 
-  const [video, setVideo] = useState({
+  const [formData, setFormData] = useState({
     title: "",
-    duration: "",
     subTitle: "",
-    description: content,
+    description: "",
+    duration: "",
     artistId: "",
-    tags: [],
-    categories: [],
+    videoFile: null,
+    thumbnailFile: null,
   });
-
-  useEffect(() => {
-    setVideo((prevPost) => ({
-      ...prevPost,
-      videos: file,
-      thumbnail: thumbnail,
-      description: content,
-    }));
-  }, [file, content, thumbnail]);
 
   const onsubmit = async (e) => {
     e.preventDefault();
-    setuploadingPost(true);
+    if (fileErrors.length > 0) {
+      toast.error("Please fix file errors before submitting");
+      return;
+    }
+
+    if (!formData.videoFile?.length) {
+      toast.error("Please select at least one video file");
+      return;
+    }
+
+    if (!formData.thumbnailFile) {
+      toast.error("Please select a thumbnail image");
+      return;
+    }
+
+    setUploading(true);
+    setUploadProgress(0);
     try {
-      let formData = new FormData(e.target);
-      formData.append("description", video.description);
+      const submitData = new FormData();
+      submitData.append("title", formData.title);
+      submitData.append("subTitle", formData.subTitle);
+      submitData.append("description", content);
+      submitData.append("duration", formData.duration);
+      submitData.append("artistId", formData.artistId);
+      submitData.append("thumbnail", formData.thumbnailFile);
+
+      formData.videoFile.forEach((video) => submitData.append("videos", video));
+
+      // Authentication and API Call
+      const storedUser = localStorage.getItem("b2xclusiveadmin");
+      const token = storedUser ? JSON.parse(storedUser) : null;
+
+      if (!token) {
+        toast.error("Authentication token not found");
+        return;
+      }
+
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        timeout: UPLOAD_TIMEOUT,
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100
+          );
+          setUploadProgress(progress);
+        },
       };
 
-      const videoResponse = await axios.put(
+      const response = await axios.put(
         "https://b2xclusive.onrender.com/api/v1/track/createVideo",
-        formData,
-        config,
+        submitData,
+        config
       );
-      toast.success(videoResponse?.data?.message, {
-        position: "top-center",
-      });
 
-      setTimeout(() => {
-        router.push("/admin");
-      }, 3000);
+      await action("videos");
+      toast.success(response?.data?.message, { position: "top-center" });
     } catch (error) {
       console.error("Failed to upload video", error.message);
       toast.error(
@@ -135,29 +187,53 @@ function AddVideos() {
           error.response?.data?.errorResponse?.message,
         {
           position: "top-center",
-        },
+        }
       );
     } finally {
-      setuploadingPost(false); // Reset uploadingPost state
+      setUploading(false);
+      setUploadProgress(0);
+
+      resetForm();
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      subTitle: "",
+      description: "",
+      duration: "",
+      artistId: "",
+      videoFile: null,
+      thumbnailFile: null,
+    });
+    setContent("");
+    setThumbnailPreview(null);
+    setVideos([]);
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Add New Video</h1>
-        <p className="text-gray-600 mt-2">Upload and publish new video content</p>
+        <p className="text-gray-600 mt-2">
+          Upload and publish new video content
+        </p>
       </div>
 
       <form onSubmit={onsubmit} className="space-y-8">
         {/* Title Section */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Video Title</label>
+            <label className="block text-sm font-medium mb-2">
+              Video Title
+            </label>
             <input
               type="text"
-              value={video.title}
-              onChange={(e) => setVideo({ ...video, title: e.target.value })}
+              value={formData.title}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, title: e.target.value }))
+              }
               className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-lg"
               placeholder="Enter video title"
               required
@@ -169,19 +245,22 @@ function AddVideos() {
               <label className="block text-sm font-medium mb-2">Subtitle</label>
               <input
                 type="text"
-                value={video.subTitle}
-                onChange={(e) => setVideo({ ...video, subTitle: e.target.value })}
+                value={formData.subTitle}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, subTitle: e.target.value }))
+                }
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                placeholder="Enter subtitle"
-                required
+                placeholder="Optional"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium mb-2">Artist</label>
               <select
-                value={video.artistId}
-                onChange={(e) => setVideo({ ...video, artistId: e.target.value })}
+                value={formData.artistId}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, artistId: e.target.value }))
+                }
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                 required
                 disabled={gettingArtist}
@@ -199,11 +278,12 @@ function AddVideos() {
               <label className="block text-sm font-medium mb-2">Duration</label>
               <input
                 type="text"
-                value={video.duration}
-                onChange={(e) => setVideo({ ...video, duration: e.target.value })}
+                value={formData.duration}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, duration: e.target.value }))
+                }
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                placeholder="e.g. 3:45"
-                required
+                placeholder="Optional"
               />
             </div>
           </div>
@@ -213,20 +293,22 @@ function AddVideos() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Thumbnail Upload */}
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <label className="block text-sm font-medium mb-4">Video Thumbnail</label>
+            <label className="block text-sm font-medium mb-4">
+              Video Thumbnail
+            </label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
               <input
                 type="file"
-                onChange={(e) => setThumbnail(e.target.files[0])}
+                onChange={(e) => handleFileChange(e, "thumbnail")}
                 className="hidden"
                 id="thumbnail-upload"
                 accept="image/*"
               />
               <label htmlFor="thumbnail-upload" className="cursor-pointer">
-                {thumbnail ? (
+                {thumbnailPreview ? (
                   <div className="relative w-full h-48 rounded-lg overflow-hidden">
                     <Image
-                      src={URL.createObjectURL(thumbnail)}
+                      src={thumbnailPreview}
                       alt="Thumbnail preview"
                       fill
                       className="object-cover"
@@ -235,7 +317,9 @@ function AddVideos() {
                 ) : (
                   <div className="flex flex-col items-center py-8">
                     <Upload className="w-12 h-12 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600">Click to upload cover image</p>
+                    <p className="text-sm text-gray-600">
+                      Click to upload cover image
+                    </p>
                   </div>
                 )}
               </label>
@@ -248,16 +332,45 @@ function AddVideos() {
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
               <input
                 type="file"
-                onChange={(e) => setFile(e.target.files[0])}
                 className="hidden"
                 id="video-upload"
                 accept="video/*"
+                onChange={(e) => handleFileChange(e, "videos")}
               />
-              <label htmlFor="video-upload" className="cursor-pointer">
-                <div className="flex flex-col items-center py-8">
-                  <AiOutlineLoading3Quarters className="w-12 h-12 text-gray-400 mb-2" />
-                  <p className="text-sm text-gray-600">Click to upload video</p>
-                </div>
+              <label htmlFor="video-upload" className="cursor-pointer block">
+                {videos.length > 0 ? (
+                  <div className="space-y-3">
+                    {videos.map((video, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Film className="w-5 h-5 text-gray-400" />
+                          <span className="text-sm text-gray-700 truncate max-w-xs">
+                            {video.name}
+                          </span>
+                        </div>
+                        <span className="text-sm text-gray-500">
+                          {(video.size / (1024 * 1024)).toFixed(2)} MB
+                        </span>
+                      </div>
+                    ))}
+                    <p className="text-center text-sm text-gray-500 mt-4">
+                      Click to add more videos
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center">
+                    <Upload className="w-12 h-12 text-gray-400 mb-3" />
+                    <p className="text-sm text-gray-600">
+                      Click to upload videos
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Maximum size: 500MB per file
+                    </p>
+                  </div>
+                )}
               </label>
             </div>
           </div>
@@ -269,21 +382,45 @@ function AddVideos() {
           <Tiptap value={content} onChange={handleContentChange} />
         </div>
 
-        <div className="mt-6 flex justify-center">
-          <button
-            type="submit"
-            className={`w-full sm:w-64 px-6 py-3 rounded-lg text-white font-semibold ${
-              uploadingPost ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
-            }`}
-            disabled={uploadingPost}
-          >
-            {uploadingPost ? (
-              <AiOutlineLoading3Quarters className="w-6 h-6 animate-spin mx-auto" />
-            ) : (
-              "Upload Video"
-            )}
-          </button>
-        </div>
+        {/* Upload Progress */}
+        {uploading && uploadProgress > 0 && (
+          <div className="relative w-full bg-gray-100 rounded-full h-4 overflow-hidden">
+            <div
+              className="absolute inset-0 bg-blue-600 transition-all duration-300 ease-in-out"
+              style={{ width: `${uploadProgress}%` }}
+            >
+              <div className="h-full animate-pulse bg-blue-500/50"></div>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-xs font-medium text-white drop-shadow">
+                {uploadProgress}%
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className={`w-full py-3 rounded-xl text-white font-medium flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
+            uploading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+          }`}
+          disabled={uploading || fileErrors.length > 0}
+        >
+          {uploading ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span>Uploading ({uploadProgress}%)</span>
+            </>
+          ) : (
+            <>
+              <Upload className="w-5 h-5" />
+              <span>Create Season</span>
+            </>
+          )}
+        </button>
       </form>
     </div>
   );

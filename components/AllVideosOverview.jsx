@@ -22,7 +22,7 @@ function AllVideosOverview({ videos = [] }) {
     return (
       <NoContentAvailable
         title="No videos Found"
-        message="It seems there are no videos available at the moment. Please check back later."
+        message="There are no videos available at the moment"
       />
     );
   }

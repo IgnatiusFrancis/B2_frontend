@@ -7,6 +7,7 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import pld from "@/public/pld.jpeg";
 import Image from "next/image";
+import action from "@/app/actions";
 
 const UPLOAD_TIMEOUT = 10000;
 
@@ -57,6 +58,7 @@ const TrendingVideos = () => {
         config
       );
 
+      await action("trendingVideos");
       toast.success("Successfully updated trending videos");
       router.push("/admin");
     } catch (error) {
