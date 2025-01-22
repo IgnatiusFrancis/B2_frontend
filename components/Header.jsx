@@ -25,7 +25,7 @@ const B2XLogo = () => {
 
   return (
     <div
-      className="w-20 h-20 relative cursor-pointer transition-transform duration-300 hover:scale-105"
+      className="md:w-20 md:h-20 w-10 h-10 relative cursor-pointer transition-transform duration-300 hover:scale-105"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -230,7 +230,7 @@ function Header() {
             <div className="flex items-center gap-2">
               <B2XLogo />
               {/* <B2XMicDropLogo /> */}
-              <h1 className="text-4xl font-black bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-transparent bg-clip-text">
+              <h1 className="md:text-4xl text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-transparent bg-clip-text">
                 XCLUSIVE
               </h1>
             </div>
@@ -277,7 +277,7 @@ function Header() {
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex mt-6 p-4 justify-between bg-white rounded-lg shadow-md">
+          <nav className="hidden md:flex md:flex-wrap mt-6 p-4 justify-center bg-white rounded-lg shadow-md">
             {navlinks.map((link) => (
               <Link
                 key={link.id}

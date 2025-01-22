@@ -24,7 +24,11 @@ export async function SingleBlog({ params }) {
   return (
     <>
       {/* Section Header */}
-      <SectionHeader title={post?.title} desc={post?.subtitle} />
+      <SectionHeader
+        title={post?.title}
+        desc={post?.subtitle}
+        bgWallpaper="/blogWallpaper.jpeg"
+      />
 
       {/* Blog Section */}
       <div className="bg-gradient-to-b from-gray-900 to-black">
@@ -86,7 +90,7 @@ export async function SingleBlog({ params }) {
             {/* Top Artists */}
             <div className="bg-gray-800/50 rounded-xl shadow-lg p-6">
               <CategoriesHeading title="Top 5 Artists" />
-              <div className="grid grid-cols-2 md:grid-cols-1 gap-4 mt-6">
+              <div className="grid grid-cols-1 gap-4 mt-6">
                 {topArtists?.map((artist, index) => (
                   <TopMusic key={artist.id} topArtists={artist} index={index} />
                 ))}

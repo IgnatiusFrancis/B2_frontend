@@ -25,7 +25,7 @@ const AlbumCover = ({ album }) => {
       <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
         <div className="flex justify-between items-end">
           <div className="text-white">
-            <h1 className="text-lg font-bold mb-1">{title}</h1>
+            <h1 className="text-lg font-bold mb-1 text-gray-200">{title}</h1>
             <p className="text-sm text-gray-300">{artist}</p>
           </div>
           <button className="text-white hover:scale-110 transition-transform duration-200">

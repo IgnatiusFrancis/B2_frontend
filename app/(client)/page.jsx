@@ -96,7 +96,7 @@ export default async function Home() {
             {/* Get Connected */}
             <div className="bg-gray-800/50 rounded-xl shadow-lg p-6 ">
               <CategoriesHeading title="Get Connected" />
-              <div className="flex justify-between mt-4 text-gray-00">
+              <div className="flex justify-between mt-4 text-gray-200">
                 <FaFacebook className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
                 <FaTwitter className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
                 <FaLinkedin className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
