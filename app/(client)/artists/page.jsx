@@ -13,6 +13,7 @@ async function Artists() {
         desc={
           "Experience music that connects, inspires, and stays with you long after the last note fades."
         }
+        bgWallpaper="/artistWallpaper.jpeg"
       />
 
       <div className="bg-gradient-to-b from-gray-900 to-black">

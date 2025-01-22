@@ -5,14 +5,20 @@ import { getTopArtists, getVideos } from "@/lib/api";
 import SearchClient from "@/hooks/useSearch";
 
 async function VideosHome() {
-      const [videos, topArtists] = await Promise.all([
-        getVideos(),
-        getTopArtists(),
-      ]);
+  const [videos, topArtists] = await Promise.all([
+    getVideos(),
+    getTopArtists(),
+  ]);
 
   return (
     <>
-      <SectionHeader title={"All videos"} desc={"some"} />
+      <SectionHeader
+        title={"All videos"}
+        desc={
+          "Experience the story in motion, watch, learn, and be inspired with our curated video highlights!"
+        }
+        bgWallpaper="/videosWallpaper.jpeg"
+      />
 
       <section className="w-full md:w-5/6 mx-auto py-4">
         <div className="p-6">
@@ -30,7 +36,7 @@ async function VideosHome() {
         data={videos}
         ContentContainer={AllVideos}
         searchFields={["title", "description", "subTitle"]}
-        topArtists={topArtists} 
+        topArtists={topArtists}
       />
     </>
   );
