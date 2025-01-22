@@ -117,37 +117,43 @@ function Header() {
   const { user, signin, profileOptions, setUser } = useContext(ThemeContext);
   const baseUrl =
     process.env.B2XCLUSIVE_APP_BASE_URL ||
-    "https://b2xclusive.onrender.com/api/v1";
+    "https://xclusive.onrender.com/api/v1";
 
   useEffect(() => {
     const initializeUser = async () => {
-      const storedUser = localStorage.getItem("user");
-      const token = storedUser ? JSON.parse(storedUser) : null;
+      try {
+        const response = await axios.get(`${baseUrl}/auth/user/me`, {
+          withCredentials: true,
+        });
 
-      if (token) {
-        try {
-          const response = await axios.get(
-            `${baseUrl}/auth/user/me?token=${token}`
-          );
-
-          setUser(token);
-        } catch (error) {
-          console.error("Session expired or invalid token:", error);
-          localStorage.removeItem("user");
-          // toast.error("Session expired. Please log in again.", {
-          //   position: "top-center",
-          // });
+        if (response.data) {
+          setUser(response.data.data.user.userName);
         }
+      } catch (error) {
+        //console.error("Error fetching user data:", error);
+        setUser(null);
       }
     };
 
-    initializeUser();
-  }, []);
+    // Call initializeUser only if the user is not already logged in
+    if (!user) {
+      initializeUser();
+    }
+  }, [baseUrl, setUser, user]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      localStorage.removeItem("user");
-      window.location.reload();
+      await axios.post(
+        `${baseUrl}/auth/user/logout`,
+        {},
+        { withCredentials: true }
+      );
+
+      localStorage.removeItem("userName");
+      setUser(null);
+
+      window.location.href = "/";
+
       toast.success("Logout Successful", { position: "top-center" });
     } catch (error) {
       console.error("Error signing out:", error.message);

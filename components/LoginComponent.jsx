@@ -11,7 +11,7 @@ function AuthComponent() {
   const router = useRouter();
   const baseUrl =
     process.env.B2XCLUSIVE_APP_BASE_URL ||
-    "https://b2xclusive.onrender.com/api/v1";
+    "https://xclusive.onrender.com/api/v1";
 
   const [isLogin, setIsLogin] = useState(false);
   const [signInUser, setsignInUser] = useState({ email: "", password: "" });
@@ -46,22 +46,19 @@ function AuthComponent() {
         : `${baseUrl}/auth/user/signup`;
       const payload = isLogin ? signInUser : signUpUser;
 
-      const response = await axios.post(endpoint, payload);
+      const response = await axios.post(endpoint, payload, {
+        withCredentials: true,
+      });
       const userData = response?.data;
+      const user = userData.data.user;
 
       toast.success(userData.message, { position: "top-center" });
 
       if (isLogin) {
-        // Handle login logic
-        const { token, role } = userData?.data || {};
-        if (!token) throw new Error("Invalid login response, token missing.");
-
-        setUser(token);
-
-        // Navigate to appropriate page
+        const { role, userName } = user || {};
+        setUser(userName);
         role === "admin" ? router.push("/admin") : router.push("/");
       } else {
-        // Handle signup success
         setIsLogin(true); // Switch to login tab
       }
     } catch (error) {
