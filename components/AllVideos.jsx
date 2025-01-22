@@ -14,20 +14,19 @@
 //   const videosPerPage = 8;
 //     const [currentPage, setCurrentPage] = useState(1);
 //     const [currentVideo, setCurrentVideo] = useState(videos);
-  
+
 //     const handlePageChange = (newPage) => {
 //       setCurrentPage(newPage);
 //     };
-  
+
 //     useEffect(() => {
 //       const indexOfLastVideo = currentPage * videosPerPage;
 //       const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
 //       const newVideo = videos.slice(indexOfFirstVideo, indexOfLastVideo);
 //       setCurrentVideo(newVideo);
 //     }, [currentPage, videos]);
-  
-//     const totalPages = Math.ceil(videos.length / videosPerPage);
 
+//     const totalPages = Math.ceil(videos.length / videosPerPage);
 
 //   return (
 //     <>
@@ -44,7 +43,7 @@
 //           createdAt={video.createdAt}
 //             />
 //           ))}
-//         </div> 
+//         </div>
 
 //         <div className="flex justify-center py-8">
 //           <button
@@ -80,7 +79,6 @@
 
 // export default AllVideos;
 
-
 "use client";
 import { useEffect, useState } from "react";
 import Videos from "./Videos";
@@ -100,7 +98,6 @@ function AllVideos({ data: videos }) {
 
   const totalPages = Math.ceil(videos.length / videosPerPage);
 
-
   if (!videos || videos.length === 0) {
     return (
       <NoContentAvailable
@@ -111,24 +108,22 @@ function AllVideos({ data: videos }) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className=" mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentVideos.map((video) => (
+          <Videos
+            key={video.id}
+            id={video.id}
+            title={video.title}
+            url={video.url}
+            artist={video.artist}
+            subtitle={video.subtitle}
+            createdAt={video.createdAt}
+          />
+        ))}
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {currentVideos.map((video) => (
-            
-            <Videos
-              key={video.id}
-              id={video.id}
-              title={video.title}
-              url={video.url}
-              artist={video.artist}
-              subtitle={video.subtitle}
-              createdAt={video.createdAt}
-            />
-          ))}
-        </div>
-
-        <div className="flex justify-center mt-12 gap-2">
+      <div className="flex justify-center mt-12 gap-2">
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
@@ -136,21 +131,22 @@ function AllVideos({ data: videos }) {
         >
           Previous
         </button>
-        
+
         {Array.from({ length: totalPages }).map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentPage(index + 1)}
             className={`px-4 py-2 rounded-md text-sm font-medium
-              ${currentPage === index + 1
-                ? 'bg-primarycolor text-white'
-                : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+              ${
+                currentPage === index + 1
+                  ? "bg-primarycolor text-white"
+                  : "border border-gray-300 text-gray-700 hover:bg-gray-50"
               }`}
           >
             {index + 1}
           </button>
         ))}
-        
+
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === totalPages}

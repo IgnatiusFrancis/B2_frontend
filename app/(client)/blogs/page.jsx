@@ -2,27 +2,25 @@ import SectionHeader from "@/components/SectionHeader";
 import { getPosts, getTopArtists } from "@/lib/api";
 import SearchClient from "@/hooks/useSearch";
 import AllBlogPosts from "@/components/AllBlogPosts";
- 
+
 async function Blogs() {
-    const [posts, topArtists] = await Promise.all([
-      getPosts(),
-      getTopArtists(),
-    ]);
+  const [posts, topArtists] = await Promise.all([getPosts(), getTopArtists()]);
 
   return (
     <>
       <SectionHeader
         title={"Trending Stories"}
         desc={
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis ad quae dolores? Unde similique beatae aspernatur dolore corporis tempore exercitationem."
+          "Dive into stories, tips, and ideas that spark curiosity and fuel creativity!"
         }
+        bgWallpaper="/blogWallpaper.jpeg"
       />
 
-      <SearchClient 
+      <SearchClient
         data={posts}
         ContentContainer={AllBlogPosts}
         searchFields={["title", "author"]}
-        topArtists={topArtists}  
+        topArtists={topArtists}
       />
     </>
   );

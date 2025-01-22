@@ -6,7 +6,7 @@
 // function Videos({ id, title, artist, subtitle, createdAt, url }) {
 
 //   return (
-//     <div className="group transform hover:-translate-y-2 transition-all duration-500"> 
+//     <div className="group transform hover:-translate-y-2 transition-all duration-500">
 //       <Link
 //       prefetch={true}
 //         href={`/videoshome/${id}`}
@@ -46,8 +46,6 @@
 
 // export default Videos;
 
-
-
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -77,7 +75,7 @@ function Videos({ id, title, artist, subtitle, createdAt, url }) {
         </div>
 
         {/* Content Section */}
-        <div className="p-4">
+        <div className="p-2">
           {/* Title */}
           <h1 className="font-bold text-lg md:text-2xl truncate">{title}</h1>
 
@@ -86,11 +84,10 @@ function Videos({ id, title, artist, subtitle, createdAt, url }) {
             <p>{artist?.name || "Unknown Artist"}</p>
             <span className="text-sm text-gray-500">
               {new Date(createdAt).toLocaleDateString("en-US", {
-                      weekday: "long", 
-                      year: "numeric",
-                      month: "long", 
-                      day: "numeric",
-                    })}
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </span>
           </div>
 

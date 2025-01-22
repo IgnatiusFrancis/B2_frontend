@@ -11,8 +11,9 @@ async function Musics() {
       <SectionHeader
         title={"Musics"}
         desc={
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates suscipit labore eaque ducimus qui corporis expedita, quis possimus et corrupti."
+          "🎶 Dive into the rhythm! Discover beats, melodies, and tracks that move your soul in our music haven. Let the sound take you away!"
         }
+        bgWallpaper="/artistWallpaper.jpeg"
       />
 
       <div className="bg-gradient-to-b from-gray-900 to-black">

@@ -101,7 +101,7 @@ export default async function SingleMusics({ params, searchParams }) {
           {/* Sidebar */}
           <div className="md:w-2/6 w-[90%] mx-auto">
             <CategoriesHeading title="Top 10 Artists" />
-            <div className="grid grid-cols-2 py-4 md:flex flex-col gap-2">
+            <div className="grid grid-cols-1 py-4 md:flex flex-col gap-2">
               {topArtists?.map((artist, index) => (
                 <TopMusic key={artist.id} topArtists={artist} index={index} />
               ))}

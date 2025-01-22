@@ -34,7 +34,7 @@ function Artist({ id, name, url, bio }) {
                 {name}
               </h1>
               {showDetails ? (
-                <p className="text-[11px] text-white transition-all">
+                <p className=" text-[14px] text-white transition-all">
                   {bio.split(" ").slice(0, 30).join(" ")}.....
                 </p>
               ) : (

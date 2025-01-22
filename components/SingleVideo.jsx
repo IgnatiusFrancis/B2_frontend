@@ -65,7 +65,7 @@ function SingleVideo({ video, artistVideos, topArtists }) {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative h-[60vh] overflow-hidden"
+        className="relative h-[350px] overflow-hidden"
       >
         <Image
           src={video?.url || imgPlaceholder}
@@ -133,7 +133,9 @@ function SingleVideo({ video, artistVideos, topArtists }) {
                 dangerouslySetInnerHTML={{ __html: video.description }}
               />
               <div className="space-y-4 my-10">
-                <h2 className="text-2xl font-bold text-left">Download</h2>
+                <h2 className="text-2xl font-bold text-left text-gray-200">
+                  Download
+                </h2>
                 <div className="flex justify-start">
                   <button
                     className={`md:w-[40%] w-full py-4 ${
