@@ -26,8 +26,8 @@ async function VideosHome() {
             Find the most recent video release
           </h1>
           <p className={``}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illum,
-            consequatur.
+            🎥 Dive into the Rhythm* 🎶 Watch captivating music videos that
+            bring every beat to life. Your soundtrack, visualized!
           </p>
         </div>
       </section>
