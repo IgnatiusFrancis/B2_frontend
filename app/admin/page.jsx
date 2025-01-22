@@ -89,15 +89,14 @@ function ModernDashboard() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const storedToken = localStorage
-          .getItem("b2xclusiveadmin")
-          ?.replace(/^['"](.*)['"]$/, "$1");
+        const storedUser = localStorage.getItem("user");
+        const token = storedUser ? JSON.parse(storedUser) : null;
 
-        if (!storedToken) {
+        if (!token) {
           throw new Error("Authentication token not found");
         }
 
-        const headers = { Authorization: `Bearer ${storedToken}` };
+        const headers = { Authorization: `Bearer ${token}` };
         const baseURL = "https://b2xclusive.onrender.com/api/v1";
 
         const [

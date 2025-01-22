@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import LoginComponent from "./LoginComponent";
 import { MdCancel } from "react-icons/md";
 import B2XMicDropLogo from "./Logo2";
+import axios from "axios";
 
 const B2XLogo = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -112,26 +113,40 @@ function Header() {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const [userId, setUserId] = useState(null);
-  const { user, signin, profileOptions } = useContext(ThemeContext);
+  const [userId] = useState(null);
+  const { user, signin, profileOptions, setUser } = useContext(ThemeContext);
+  const baseUrl =
+    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    "https://b2xclusive.onrender.com/api/v1";
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUserId = localStorage
-        .getItem("b2exclusiveuserid")
-        ?.replace(/^"|"$/g, "");
+    const initializeUser = async () => {
+      const storedUser = localStorage.getItem("user");
+      const token = storedUser ? JSON.parse(storedUser) : null;
 
-      setUserId(storedUserId);
-    }
+      if (token) {
+        try {
+          const response = await axios.get(
+            `${baseUrl}/auth/user/me?token=${token}`
+          );
+
+          setUser(token);
+        } catch (error) {
+          console.error("Session expired or invalid token:", error);
+          localStorage.removeItem("user");
+          // toast.error("Session expired. Please log in again.", {
+          //   position: "top-center",
+          // });
+        }
+      }
+    };
+
+    initializeUser();
   }, []);
 
   const handleLogout = () => {
     try {
-      console.log(localStorage.getItem("b2xclusiveuser"));
-      console.log(localStorage.getItem("b2xclusiveuserid"));
-      localStorage.removeItem("b2xclusiveuser");
-      localStorage.removeItem("b2xclusiveuserid");
-      //router.push("/");
+      localStorage.removeItem("user");
       window.location.reload();
       toast.success("Logout Successful", { position: "top-center" });
     } catch (error) {
@@ -165,7 +180,7 @@ function Header() {
     ],
     []
   );
-  console.log("user:", user);
+
   return (
     <>
       {showLogin && (

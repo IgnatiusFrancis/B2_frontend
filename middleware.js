@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { jwtVerify } from "jose";
 
 export async function middleware(req) {
   const { cookies, nextUrl } = req;
-  const token = cookies.get("b2xclusiveadmin");
+  const storedUser = localStorage.getItem("user");
+        const token = storedUser ? JSON.parse(storedUser) : null;
+
 
   // Extracting the path
   const path = nextUrl.pathname;
@@ -14,6 +15,7 @@ export async function middleware(req) {
   // If no token is found or token is invalid, redirect to login
   if (!token || token === null) {
     if (isAdminRoute) {
+      
       return NextResponse.redirect(new URL("/", req.url));
     }
     return NextResponse.next();
