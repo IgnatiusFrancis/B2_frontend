@@ -69,10 +69,10 @@ function HeroSection() {
                 <div className="bg-gradient-to-t from-black w-full absolute top-0 bottom-0 left-0 right-0"></div>
               </div>
               <div className="absolute top-0 bottom-0 right-0 left-0 p-8 flex flex-col gap-4 items-center justify-center">
-                <h1 className="font-bold text-4xl md:text-5xl text-white uppercase text-center">
+                <h1 className="font-bold text-3xl md:text-5xl text-white uppercase text-center">
                   {each.text}
                 </h1>
-                <p className="text-white text-xl w-3/6 mx-auto text-center">
+                <p className="text-white text-xl md:w-[50%] w-[90%] mx-auto text-center">
                   {each.subtext}
                 </p>
                 <Link

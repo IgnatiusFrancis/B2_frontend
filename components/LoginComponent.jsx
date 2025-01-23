@@ -285,7 +285,8 @@ import axios from "axios";
 function AuthComponent() {
   const { theme, setUser, setUserId, setAdminUser } = useContext(ThemeContext);
   const router = useRouter();
-  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL;
+  console.log("Base URL:", baseUrl);
 
   const [isLogin, setIsLogin] = useState(false);
   const [signInUser, setsignInUser] = useState({ email: "", password: "" });
@@ -435,7 +436,7 @@ function AuthComponent() {
   };
 
   return (
-    <div className="md:flex md:w-5/6 w-full transition-all duration-500 rounded-xl md:p-4 mx-auto my-auto relative bg-white">
+    <div className="md:flex md:w-[60%] w-[90%] transition-all duration-500 rounded-xl md:p-4 mx-auto  relative bg-white">
       <div className={`${theme}-bg ${theme}-text p-10 w-full`}>
         {/* Tab Buttons */}
         <div className="py-4 flex justify-between">
