@@ -22,7 +22,9 @@ function MusicOverview({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
+  const baseUrl =
+    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -41,16 +43,8 @@ function MusicOverview({
     });
 
     try {
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        console.error("No token found in the stored user object");
-        return;
-      }
-
       await axios.delete(`${baseUrl}/track/audio/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
 
       await action("audios");

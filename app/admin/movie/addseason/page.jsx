@@ -109,39 +109,6 @@ function AddSeason() {
     };
   }, [thumbnailPreview]);
 
-  const validateToken = useCallback(async () => {
-    if (typeof window === "undefined") return null;
-
-    const token = localStorage.getItem("b2xclusiveadmin");
-    if (!token) {
-      toast.error("Please sign in to continue");
-      router.push("/login");
-      return null;
-    }
-
-    try {
-      const cleanToken = token.replace(/^['"](.*)['"]$/, "$1");
-      const decoded = jwtDecode(cleanToken);
-
-      if (decoded.exp < Date.now() / 1000) {
-        localStorage.removeItem("b2xclusiveadmin");
-        toast.error("Session expired. Please sign in again");
-        router.push("/login");
-        return null;
-      }
-
-      return cleanToken;
-    } catch (error) {
-      toast.error("Authentication error");
-      router.push("/login");
-      return null;
-    }
-  }, [router]);
-
-  useEffect(() => {
-    validateToken();
-  }, [validateToken]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -176,14 +143,11 @@ function AddSeason() {
     videos.forEach((video) => formData.append("movies", video));
 
     try {
-      const token = await validateToken();
-      if (!token) return;
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -202,11 +166,11 @@ function AddSeason() {
       };
 
       const response = await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/track/createSeason",
+        "https://xclusive.onrender.com/api/v1/track/createSeason",
         formData,
         config
       );
-      await action("series");
+      await action("movies");
       toast.success("Movie created successfully!");
       router.push("/admin");
     } catch (error) {
@@ -240,7 +204,7 @@ function AddSeason() {
       setMovies(true);
       try {
         const response = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/track/seasons`
+          `https://xclusive.onrender.com/api/v1/track/seasons`
         );
 
         setAllMovies(response?.data?.data.seasons);

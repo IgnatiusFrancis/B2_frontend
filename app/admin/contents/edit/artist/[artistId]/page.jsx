@@ -18,13 +18,12 @@ function EditArtist({ params }) {
     bio: "",
     image: [],
   });
-  const [token, setToken] = useState("");
 
   useEffect(() => {
     const fetchSingleArtist = async () => {
       try {
         const response = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/artist/${artistId}`
+          `https://xclusive.onrender.com/api/v1/artist/${artistId}`
         );
         const postData = response?.data?.data;
         setSingleArtist({
@@ -38,14 +37,6 @@ function EditArtist({ params }) {
       }
     };
     fetchSingleArtist();
-
-    const storedToken = localStorage.getItem("b2xclusiveadmin");
-    if (storedToken) {
-      const cleanedToken = storedToken.replace(/^['"](.*)['"]$/, "$1");
-      setToken(cleanedToken);
-    } else {
-      console.error("Bearer token not found");
-    }
   }, [artistId]);
 
   useEffect(() => {
@@ -63,13 +54,13 @@ function EditArtist({ params }) {
 
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       };
 
       const response = await axios.patch(
-        `https://b2xclusive.onrender.com/api/v1/artist/update/${artistId}`,
+        `https://xclusive.onrender.com/api/v1/artist/update/${artistId}`,
         formData,
         config
       );

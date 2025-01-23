@@ -39,7 +39,7 @@ const AddMusic = () => {
       setIsLoadingArtists(true);
       try {
         const response = await axios.get(
-          "https://b2xclusive.onrender.com/api/v1/artist/artists"
+          "https://xclusive.onrender.com/api/v1/artist/artists"
         );
 
         setArtists(response.data.data);
@@ -91,19 +91,11 @@ const AddMusic = () => {
         }
       });
 
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        toast.error("Authentication token not found");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -122,7 +114,7 @@ const AddMusic = () => {
       };
 
       const response = await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/track/createAudio",
+        "https://xclusive.onrender.com/api/v1/track/createAudio",
         submitData,
         config
       );

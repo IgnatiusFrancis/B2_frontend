@@ -49,6 +49,7 @@ function AuthComponent() {
       const response = await axios.post(endpoint, payload, {
         withCredentials: true,
       });
+
       const userData = response?.data;
       const user = userData.data.user;
 

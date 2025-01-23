@@ -92,19 +92,11 @@ const AddArtists = () => {
       form.append("bio", formData.bio);
       if (thumbnail) form.append("file", thumbnail);
 
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        toast.error("Authentication token not found");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -123,7 +115,7 @@ const AddArtists = () => {
       };
 
       const response = await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/artist/create",
+        "https://xclusive.onrender.com/api/v1/artist/create",
         form,
         config
       );

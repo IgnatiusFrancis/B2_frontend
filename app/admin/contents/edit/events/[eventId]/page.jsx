@@ -39,13 +39,8 @@ function EditEvent({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const organizerResponse = await axios.get(
-        //   `https://b2xclusive.onrender.com/api/v1/event/organisers`
-        // );
-        // setOrganizers(organizerResponse?.data?.data);
-
         const eventResponse = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/event/${eventId}`
+          `https://xclusive.onrender.com/api/v1/event/${eventId}`
         );
 
         setEventData(eventResponse?.data?.data);
@@ -124,19 +119,11 @@ function EditEvent({ params }) {
         formData.append("files", eventData?.url || "");
       }
 
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        console.error("No token found in the stored user object");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -155,7 +142,7 @@ function EditEvent({ params }) {
       };
 
       const response = await axios.patch(
-        `https://b2xclusive.onrender.com/api/v1/event/update/${eventId}`,
+        `https://xclusive.onrender.com/api/v1/event/update/${eventId}`,
         formData,
         config
       );

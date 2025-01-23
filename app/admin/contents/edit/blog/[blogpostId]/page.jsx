@@ -56,7 +56,7 @@ function EditBlog({ params }) {
     const fetchSinglePost = async () => {
       try {
         const response = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/post/${blogpostId}`
+          `https://xclusive.onrender.com/api/v1/post/${blogpostId}`
         );
         const postData = response?.data?.data;
         setSinglePost(postData);
@@ -114,19 +114,11 @@ function EditBlog({ params }) {
 
       if (thumbnail) formData.append("file", thumbnail);
 
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        toast.error("Authentication token not found");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -145,7 +137,7 @@ function EditBlog({ params }) {
       };
 
       const response = await axios.patch(
-        `https://b2xclusive.onrender.com/api/v1/post/update/${blogpostId}`,
+        `https://xclusive.onrender.com/api/v1/post/update/${blogpostId}`,
         formData,
         config
       );

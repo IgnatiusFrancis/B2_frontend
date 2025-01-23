@@ -1,5 +1,3 @@
-// export default Overview;
-
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -89,15 +87,8 @@ function ModernDashboard() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const storedUser = localStorage.getItem("user");
-        const token = storedUser ? JSON.parse(storedUser) : null;
 
-        if (!token) {
-          throw new Error("Authentication token not found");
-        }
-
-        const headers = { Authorization: `Bearer ${token}` };
-        const baseURL = "https://b2xclusive.onrender.com/api/v1";
+        const baseURL = "https://xclusive.onrender.com/api/v1";
 
         const [
           postsRes,
@@ -108,13 +99,13 @@ function ModernDashboard() {
           audios,
           topArtists,
         ] = await Promise.all([
-          axios.get(`${baseURL}/post/posts`, { headers }),
-          axios.get(`${baseURL}/artist/artists`, { headers }),
-          axios.get(`${baseURL}/users/allUsers`, { headers }),
-          axios.get(`${baseURL}/track/movies`, { headers }),
-          axios.get(`${baseURL}/track/videos`, { headers }),
-          axios.get(`${baseURL}/track/audios`, { headers }),
-          axios.get(`${baseURL}/artist/top/artists`, { headers }),
+          axios.get(`${baseURL}/post/posts`),
+          axios.get(`${baseURL}/artist/artists`),
+          axios.get(`${baseURL}/users/allUsers`),
+          axios.get(`${baseURL}/track/movies`),
+          axios.get(`${baseURL}/track/videos`),
+          axios.get(`${baseURL}/track/audios`),
+          axios.get(`${baseURL}/artist/top/artists`),
         ]);
 
         setAllPosts(postsRes.data.data);

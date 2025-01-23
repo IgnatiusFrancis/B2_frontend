@@ -1,9 +1,9 @@
 "use client";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import Cookies from "js-cookie";
+
 import {
   LayoutDashboard,
   FileText,
@@ -19,10 +19,14 @@ import {
   TrendingUpIcon,
   LucideTrendingUp,
 } from "lucide-react";
+import axios from "axios";
 
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const baseUrl =
+    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   const navigationItems = useMemo(
     () => [
@@ -48,20 +52,26 @@ const Sidebar = () => {
     []
   );
 
-  const handleLogout = useCallback(async () => {
+  const handleLogout = async () => {
     try {
-      const adminToken = localStorage.getItem("b2xclusiveadmin");
-      if (adminToken) {
-        localStorage.removeItem("b2xclusiveadmin");
-        Cookies.remove("b2xclusiveadmin");
-        router.push("/");
-        toast.success("Logged out successfully", { position: "top-center" });
-      }
+      await axios.post(
+        `${baseUrl}/auth/user/logout`,
+        {},
+        { withCredentials: true }
+      );
+
+      localStorage.removeItem("userName");
+      setUser(null);
+
+      //window.location.href = "/";
+      router.push("/");
+
+      toast.success("Logout Successful", { position: "top-center" });
     } catch (error) {
-      toast.error("Logout failed", { position: "top-center" });
-      console.error("Logout error:", error);
+      console.error("Error signing out:", error.message);
+      toast.error("Unable to logout user", { position: "top-center" });
     }
-  }, [router]);
+  };
 
   const NavigationLink = ({ item }) => {
     const isActive = pathname === item.href;
