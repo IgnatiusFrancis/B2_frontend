@@ -7,6 +7,7 @@ import ToastNotificationContainer from "@/components/ToastNotificationComponent"
 import ProgressBar from "@/components/ProgressBar";
 import QueryProvider from "@/providers/QueryProvider";
 import { Suspense } from "react";
+import LoadingAnimation from "@/components/PageLoad";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -23,13 +24,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <Suspense
+        {/* <Suspense
           fallback={
             <div className="flex items-center justify-center min-h-screen">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
             </div>
           }
         >
+          <ProgressBar />
+        </Suspense> */}
+        <Suspense fallback={<LoadingAnimation />}>
           <ProgressBar />
         </Suspense>
         <QueryProvider>
