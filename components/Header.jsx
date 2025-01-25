@@ -121,27 +121,27 @@ function Header() {
     process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
-  useEffect(() => {
-    const initializeUser = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/auth/user/me`, {
-          withCredentials: true,
-        });
+  // useEffect(() => {
+  //   const initializeUser = async () => {
+  //     try {
+  //       const response = await axios.get(`${baseUrl}/auth/user/me`, {
+  //         withCredentials: true,
+  //       });
 
-        if (response.data) {
-          setUser(response.data.data.user.userName);
-        }
-      } catch (error) {
-        //console.error("Error fetching user data:", error);
-        setUser(null);
-      }
-    };
+  //       if (response.data) {
+  //         setUser(response.data.data.user.userName);
+  //       }
+  //     } catch (error) {
+  //       //console.error("Error fetching user data:", error);
+  //       setUser(null);
+  //     }
+  //   };
 
-    // Call initializeUser only if the user is not already logged in
-    if (!user) {
-      initializeUser();
-    }
-  }, [baseUrl, setUser, user]);
+  //   // Call initializeUser only if the user is not already logged in
+  //   if (!user) {
+  //     initializeUser();
+  //   }
+  // }, [baseUrl, setUser, user]);
 
   const handleLogout = async () => {
     try {
