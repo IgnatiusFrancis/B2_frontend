@@ -49,19 +49,11 @@ function AddEvent() {
       let formData = new FormData(e.target);
       formData.append("description", event.description);
 
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        toast.error("Authentication token not found");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -80,7 +72,7 @@ function AddEvent() {
       };
 
       const response = await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/event/create",
+        "https://xclusive.onrender.com/api/v1/event/create",
         formData,
         config
       );

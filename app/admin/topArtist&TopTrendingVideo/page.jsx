@@ -36,25 +36,16 @@ const TopArtists = () => {
     };
 
     try {
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-
-      // Parse the stored JSON and extract the token
-      const token = storedUser ? JSON.parse(storedUser) : null;
-      if (!token) {
-        console.error("No token found in the stored user object");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
       };
 
       await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/artist/top/artists",
+        "https://xclusive.onrender.com/api/v1/artist/top/artists",
         formData,
         config
       );
@@ -92,7 +83,7 @@ const TopArtists = () => {
       setIsLoadingArtists(true);
       try {
         const response = await axios.get(
-          "https://b2xclusive.onrender.com/api/v1/artist/artists"
+          "https://xclusive.onrender.com/api/v1/artist/artists"
         );
 
         setArtists(response?.data?.data || []);

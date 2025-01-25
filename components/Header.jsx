@@ -11,6 +11,8 @@ import {
   FaLinkedin,
   FaYoutube,
   FaSoundcloud,
+  FaWhatsapp,
+  FaInstagram,
   FaUser,
   FaLock,
 } from "react-icons/fa";
@@ -19,6 +21,7 @@ import { toast } from "react-toastify";
 import LoginComponent from "./LoginComponent";
 import { MdCancel } from "react-icons/md";
 import B2XMicDropLogo from "./Logo2";
+import axios from "axios";
 
 const B2XLogo = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -112,27 +115,47 @@ function Header() {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const [userId, setUserId] = useState(null);
-  const { user, signin, profileOptions } = useContext(ThemeContext);
+  const [userId] = useState(null);
+  const { user, signin, profileOptions, setUser } = useContext(ThemeContext);
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUserId = localStorage
-        .getItem("b2exclusiveuserid")
-        ?.replace(/^"|"$/g, "");
+    const initializeUser = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/auth/user/me`, {
+          withCredentials: true,
+        });
 
-      setUserId(storedUserId);
+        if (response.data) {
+          setUser(response.data.data.user.userName);
+        }
+      } catch (error) {
+        //console.error("Error fetching user data:", error);
+        setUser(null);
+      }
+    };
+
+    // Call initializeUser only if the user is not already logged in
+    if (!user) {
+      initializeUser();
     }
-  }, []);
+  }, [baseUrl, setUser, user]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      console.log(localStorage.getItem("b2xclusiveuser"));
-      console.log(localStorage.getItem("b2xclusiveuserid"));
-      localStorage.removeItem("b2xclusiveuser");
-      localStorage.removeItem("b2xclusiveuserid");
-      //router.push("/");
-      window.location.reload();
+      await axios.post(
+        `${baseUrl}/auth/user/logout`,
+        {},
+        { withCredentials: true }
+      );
+
+      localStorage.removeItem("userName");
+      setUser(null);
+
+      window.location.href = "/";
+
       toast.success("Logout Successful", { position: "top-center" });
     } catch (error) {
       console.error("Error signing out:", error.message);
@@ -158,14 +181,14 @@ function Header() {
   const breakingNews = useMemo(
     () => [
       "Welcome to B2xclusive..",
-      "Again, police invite NLC president...",
-      "Female travellers' tales of sexual assault...",
-      "Why Lagos constructions keep crashing...",
-      "Victor Osimhen humiliated by Chelsea transfer...",
+      "Breaking: Tech giant announces groundbreaking innovation.",
+      "Nigeria celebrates major economic milestone.",
+      "Global leaders gather for climate action summit.",
+      "Local hero saves family from house fire.......",
     ],
     []
   );
-  console.log("user:", user);
+
   return (
     <>
       {showLogin && (
@@ -207,17 +230,29 @@ function Header() {
             {/* Social Links */}
             <div className="flex items-center gap-4">
               <p className="text-sm font-bold text-gray-600">Follow us</p>
-              <div className="flex gap-3">
+              <div className="flex gap-3 text-lg">
                 {[
-                  { icon: FaFacebook, color: "text-blue-600" },
-                  { icon: FaTwitter, color: "text-blue-400" },
-                  { icon: FaLinkedin, color: "text-blue-700" },
-                  { icon: FaYoutube, color: "text-red-600" },
-                  { icon: FaSoundcloud, color: "text-orange-500" },
+                  {
+                    icon: FaFacebook,
+                    color: "text-blue-600",
+                    link: "https://www.facebook.com/share/1RNuYmnfbq/?mibextid=wwXIfr",
+                  },
+                  {
+                    icon: FaWhatsapp,
+                    color: "text-green-400",
+                    link: "https://wa.me/message/DTRMTVSWSEOAP1",
+                  },
+                  {
+                    icon: FaInstagram,
+                    color: "text-pink-500",
+                    link: "https://www.instagram.com/b2xclusive?igsh=ZG01eTAxZ2cxaG5p",
+                  },
                 ].map((social, index) => (
                   <Link
                     key={index}
-                    href="#"
+                    href={social.link}
+                    target="_blank" // Opens in a new tab
+                    rel="noopener noreferrer" // Improves security for external links
                     className={`${social.color} hover:scale-125 transition-transform duration-300`}
                   >
                     <social.icon />
@@ -231,7 +266,7 @@ function Header() {
               <B2XLogo />
               {/* <B2XMicDropLogo /> */}
               <h1 className="md:text-4xl text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-transparent bg-clip-text">
-                XCLUSIVE
+                TRENDS
               </h1>
             </div>
 

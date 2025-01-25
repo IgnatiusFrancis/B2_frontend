@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { MapPin, Music, Users, Sparkles, Clock, Calendar } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { MapPin, Music, Users, Sparkles, Clock, Calendar } from "lucide-react";
 
 const AnimatedVenue = ({ event }) => {
   const pulseVariant = {
@@ -11,9 +11,9 @@ const AnimatedVenue = ({ event }) => {
       transition: {
         duration: 2,
         repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   const floatVariant = {
@@ -23,9 +23,9 @@ const AnimatedVenue = ({ event }) => {
       transition: {
         duration: 4,
         repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   return (
@@ -40,18 +40,18 @@ const AnimatedVenue = ({ event }) => {
               opacity: [0.3, 0.6, 0.3],
               scale: [0.8, 1, 0.8],
               x: [0, 30, 0],
-              y: [0, 30, 0]
+              y: [0, 30, 0],
             }}
             transition={{
               duration: 3,
               delay: i * 0.5,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
             className="absolute w-32 h-32 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-xl"
             style={{
               left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`
+              top: `${Math.random() * 100}%`,
             }}
           />
         ))}
@@ -93,8 +93,8 @@ const AnimatedVenue = ({ event }) => {
                   duration: 2,
                   delay: index * 0.3,
                   repeat: Infinity,
-                  ease: "easeInOut"
-                }
+                  ease: "easeInOut",
+                },
               }}
               className="bg-white/90 p-2 rounded-lg shadow-lg"
             >
@@ -110,11 +110,11 @@ const AnimatedVenue = ({ event }) => {
           transition={{ delay: 0.5 }}
           className="mt-6 text-gray-700 text-sm"
         >
-          <p className="flex items-center justify-center gap-2">
+          <p className="flex items-center justify-center gap-2 text-gray-200">
             <Calendar className="h-4 w-4" />
             {new Date(event?.date).toLocaleDateString("en-US", {
               month: "long",
-              day: "numeric"
+              day: "numeric",
             })}
           </p>
         </motion.div>

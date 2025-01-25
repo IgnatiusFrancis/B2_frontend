@@ -113,19 +113,11 @@ function CreatePost() {
 
       if (thumbnail) formData.append("file", thumbnail);
 
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        toast.error("Authentication token not found");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -143,13 +135,12 @@ function CreatePost() {
         },
       };
       const response = await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/post/create",
+        "https://xclusive.onrender.com/api/v1/post/create",
         formData,
         config
       );
 
-      const c = await action("posts");
-      console.log(c);
+      await action("posts");
 
       toast.success(response.data.message);
     } catch (error) {

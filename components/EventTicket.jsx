@@ -41,14 +41,13 @@ function EventTicket({ id, title, url, location, date }) {
           {/* Flex container to spread the event details */}
           <div className="flex flex-col gap-4 w-full md:w-4/6">
             {/* Event Title */}
-           
 
             <div className="flex gap-4 text-gray-600 justify-between">
               {/* Event Date */}
               <p className="text-sm md:text-base font-semibold w-full md:w-2/5">
                 <span className="font-semibold">Date:</span> {title}
               </p>
-              
+
               <p className="text-sm md:text-base font-semibold w-full md:w-2/5">
                 <span className="font-semibold">Date:</span> {dateString}
               </p>
@@ -68,7 +67,7 @@ function EventTicket({ id, title, url, location, date }) {
         <div className="md:p-4 px-4 mt-4 md:mt-0 flex justify-end">
           <Link
             href={`/upcomingevents/${id}`}
-            className="text-[16px] px-6 py-3 rounded-lg md:py-4 md:px-8 bg-primarycolor text-white font-semibold shadow-md transition-all hover:bg-primarycolor/90"
+            className="text-[16px] px-6 py-3 rounded-lg md:py-4 md:px-8  bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white font-semibold shadow-md transition-all hover:bg-primarycolor/90"
           >
             View
           </Link>

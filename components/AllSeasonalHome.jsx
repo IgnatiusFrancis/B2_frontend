@@ -19,14 +19,14 @@ export default function AllSeasonalHome({ seasonal: seasonal }) {
         </h2>
         <Link
           href="/seasonal-movies"
-          className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 
+          className="group flex items-center gap-2 px-4 py-2 rounded-lg  bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 hover:bg-gray-700/50 
                      transition-all duration-300 backdrop-blur-sm border border-gray-700/50"
         >
-          <span className="text-gray-300 group-hover:text-purple-400 transition-colors">
+          <span className="text-gray-200 group-hover:text-purple-400 transition-colors">
             Load More
           </span>
           <ArrowRight
-            className="w-4 h-4 text-gray-400 group-hover:text-purple-400 transition-colors 
+            className="w-4 h-4 text-gray-200 group-hover:text-purple-400 transition-colors 
                                 transform group-hover:translate-x-1 duration-300"
           />
         </Link>

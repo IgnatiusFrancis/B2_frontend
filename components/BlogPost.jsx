@@ -35,9 +35,9 @@ function BlogPost({ id, title, subtitle, url, updatedAt, author }) {
               />
             </div>
             <span className="text-sm text-gray-600">{author?.userName}</span>
-            <span className="text-primarycolor font-medium text-sm ml-auto">
+            {/* <span className="text-gray-200 font-medium text-sm ml-auto">
               Follow
-            </span>
+            </span> */}
           </div>
 
           <h2 className="text-xl font-bold line-clamp-2 group-hover:text-primarycolor transition-colors duration-300 text-gray-200">
@@ -56,9 +56,7 @@ function BlogPost({ id, title, subtitle, url, updatedAt, author }) {
               })}
             </span>
             <span className="text-sm text-gray-500">6 min read</span>
-            <span className="text-primarycolor text-sm ml-auto">
-              Read More →
-            </span>
+            <span className="text-gray-200 text-sm ml-auto">Read More →</span>
           </div>
         </div>
       </Link>

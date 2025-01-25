@@ -4,7 +4,7 @@ import {
   Mail,
   MapPin,
   Instagram,
-  Twitter,
+  MessageCircle,
   Facebook,
   Linkedin,
 } from "lucide-react";
@@ -21,7 +21,7 @@ const Contact = () => {
       icon: Mail,
       title: "Email Us",
       content: "hello@b2exclusive.com",
-      desc: "We&#39;ll respond within 24 hours",
+      desc: "We will respond within 24 hours",
     },
     {
       icon: MapPin,
@@ -32,10 +32,21 @@ const Contact = () => {
   ];
 
   const socialLinks = [
-    { icon: Instagram, label: "Instagram", href: "#" },
-    { icon: Twitter, label: "Twitter", href: "#" },
-    { icon: Facebook, label: "Facebook", href: "#" },
-    { icon: Linkedin, label: "LinkedIn", href: "#" },
+    {
+      icon: Instagram,
+      label: "Instagram",
+      href: "https://www.instagram.com/b2xclusive?igsh=ZG01eTAxZ2cxaG5p",
+    },
+    {
+      icon: MessageCircle,
+      label: "Whatsapp",
+      href: "https://wa.me/message/DTRMTVSWSEOAP1",
+    },
+    {
+      icon: Facebook,
+      label: "Facebook",
+      href: "https://www.facebook.com/share/1RNuYmnfbq/?mibextid=wwXIfr",
+    },
   ];
 
   return (

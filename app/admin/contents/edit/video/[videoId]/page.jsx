@@ -35,12 +35,12 @@ function EditVideo({ params }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/artist/artists`
+          `https://xclusive.onrender.com/api/v1/artist/artists`
         );
         setAllArtist(response?.data?.data);
 
         const videoResponse = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/track/video/${videoId}`
+          `https://xclusive.onrender.com/api/v1/track/video/${videoId}`
         );
         const postData = videoResponse?.data?.data;
         setSingleVideo(postData);
@@ -61,25 +61,17 @@ function EditVideo({ params }) {
     e.preventDefault();
     setUploadingPost(true);
     try {
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        console.error("No token found in the stored user object");
-        return;
-      }
-
       let formData = new FormData(e.target);
       formData.append("description", singleVideo.description);
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       };
 
       const videoResponse = await axios.patch(
-        `https://b2xclusive.onrender.com/api/v1/track/video/update/${videoId}`,
+        `https://xclusive.onrender.com/api/v1/track/video/update/${videoId}`,
         formData,
         config
       );

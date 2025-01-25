@@ -9,7 +9,10 @@ import { Menu, Transition } from "@headlessui/react";
 import ConfirmationModal from "./confirmationModal";
 
 const ArtistCard = ({ id, name, url, bio, createdAt }) => {
-  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -20,16 +23,8 @@ const ArtistCard = ({ id, name, url, bio, createdAt }) => {
     });
 
     try {
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        toast.error("Authentication token not found");
-        return;
-      }
-
       await axios.delete(`${baseUrl}/artist/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
 
       toast.update(toastId, {
@@ -52,7 +47,7 @@ const ArtistCard = ({ id, name, url, bio, createdAt }) => {
       setIsDeleting(false);
       setIsModalOpen(false);
     }
-  }, [id]);
+  }, [id, baseUrl]);
 
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">

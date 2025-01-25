@@ -16,7 +16,9 @@ function PostContent({ id, title, url, views, createdAt, subtitle }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -35,16 +37,8 @@ function PostContent({ id, title, url, views, createdAt, subtitle }) {
     });
 
     try {
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        toast.error("Authentication token not found");
-        return;
-      }
-
       await axios.delete(`${baseUrl}/post/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
 
       await action("posts");

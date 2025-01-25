@@ -1,10 +1,11 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Loader2, Upload } from "lucide-react";
+import action from "@/app/actions";
 
 // Constants remain the same
 const MAX_FILE_SIZE = 500 * 1024 * 1024;
@@ -91,19 +92,11 @@ const AddArtists = () => {
       form.append("bio", formData.bio);
       if (thumbnail) form.append("file", thumbnail);
 
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        toast.error("Authentication token not found");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -122,7 +115,7 @@ const AddArtists = () => {
       };
 
       const response = await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/artist/create",
+        "https://xclusive.onrender.com/api/v1/artist/create",
         form,
         config
       );
@@ -130,14 +123,16 @@ const AddArtists = () => {
       await action("artists");
       toast.success(response.data.message);
     } catch (error) {
-      console.error("Failed to upload post", error);
+      console.error("Failed to upload artist", error);
       if (axios.isAxiosError(error)) {
         if (error.code === "ECONNABORTED") {
           toast.error("Upload timed out. Please try again");
         } else if (error.response?.status === 413) {
           toast.error("File too large for server. Please reduce file size");
         } else {
-          toast.error(error.response?.data?.message || "Failed to update post");
+          toast.error(
+            error.response?.data?.message || "Failed to create artist"
+          );
         }
       } else {
         toast.error("An unexpected error occurred");

@@ -22,7 +22,9 @@ import NoContentDesign from "@/components/NoContent";
 
 function SingleVideo({ video, artistVideos, topArtists }) {
   const [isDownloading, setIsDownloading] = useState(false);
-  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   const handleDownload = async () => {
     try {
@@ -56,11 +58,6 @@ function SingleVideo({ video, artistVideos, topArtists }) {
 
   return (
     <>
-      {/* <SectionHeader
-        title={video?.title}
-        desc={video?.subtitle || "A little about the album goes here"}
-      /> */}
-
       {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}

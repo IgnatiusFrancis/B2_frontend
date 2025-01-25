@@ -9,6 +9,9 @@ import pld from "@/public/pld.jpeg";
 function SingleUser({ params }) {
   const [userData, setUserData] = useState(null);
   const userId = params.userId;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,7 +24,7 @@ function SingleUser({ params }) {
         }
         token = token.replace(/^['"](.*)['"]$/, "$1");
         const response = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/users/singleUser/${userId}`,
+          `${baseUrl}/users/singleUser/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -7,8 +7,7 @@ import { VscLoading } from "react-icons/vsc";
 import {
   FaFacebook,
   FaInstagram,
-  FaLinkedin,
-  FaPinterest,
+  FaWhatsapp,
   FaPlay,
   FaTwitter,
   FaYoutube,
@@ -16,6 +15,7 @@ import {
 import ArtistVideos from "@/components/ArtistVideos";
 import ArtistSongs from "@/components/ArtistSongs";
 import TabContainer from "@/components/TabContainer";
+import Link from "next/link";
 
 export default async function SingleMusics({ params, searchParams }) {
   const { artistId } = params;
@@ -110,13 +110,24 @@ export default async function SingleMusics({ params, searchParams }) {
             <div className="my-8 w-full h-[3px] bg-primarycolor"></div>
             <CategoriesHeading title={"Get Connected"} />
 
-            <div className="flex justify-between p-4 text-gray-200">
-              <FaFacebook className={`text-3xl `} />
-              <FaTwitter className={`text-3xl `} />
-              <FaLinkedin className={`text-3xl `} />
-              <FaYoutube className={`text-3xl `} />
-              <FaInstagram className={`text-3xl `} />
-              <FaPinterest className={`text-3xl `} />
+            <div className="flex justify-around p-4 text-gray-200 text-3xl">
+              <Link
+                href={
+                  "https://www.facebook.com/share/1RNuYmnfbq/?mibextid=wwXIfr"
+                }
+              >
+                <FaFacebook />
+              </Link>
+              <Link href={"https://wa.me/message/DTRMTVSWSEOAP1"}>
+                <FaWhatsapp />
+              </Link>
+              <Link
+                href={
+                  "https://www.instagram.com/b2xclusive?igsh=ZG01eTAxZ2cxaG5p"
+                }
+              >
+                <FaInstagram />
+              </Link>
             </div>
 
             <div className="my-8 w-full h-[3px] bg-primarycolor"></div>

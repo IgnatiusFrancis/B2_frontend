@@ -82,7 +82,7 @@ function AddAlbum() {
       setGettingArtist(true);
       try {
         const response = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/artist/artists`
+          `https://xclusive.onrender.com/api/v1/artist/artists`
         );
         setALlArtist(response?.data?.data);
       } catch (error) {
@@ -134,19 +134,11 @@ function AddAlbum() {
       submitData.append("artistId", event.artistId);
       submitData.append("file", thumbnail);
 
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        toast.error("Authentication token not found");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -165,7 +157,7 @@ function AddAlbum() {
       };
 
       const response = await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/track/create-album",
+        "https://xclusive.onrender.com/api/v1/track/create-album",
         submitData,
         config
       );

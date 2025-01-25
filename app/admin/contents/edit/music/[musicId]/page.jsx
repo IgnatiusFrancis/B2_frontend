@@ -36,12 +36,12 @@ function EditMusic({ params }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/artist/artists`
+          `https://xclusive.onrender.com/api/v1/artist/artists`
         );
         setAllArtist(response?.data?.data);
 
         const musicresponse = await axios.get(
-          `https://b2xclusive.onrender.com/api/v1/track/audio/${musicId}`
+          `https://xclusive.onrender.com/api/v1/track/audio/${musicId}`
         );
         const postData = musicresponse?.data?.data;
         setSingleMusic(postData);
@@ -66,25 +66,17 @@ function EditMusic({ params }) {
     e.preventDefault();
     setUploadingPost(true);
     try {
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-      const token = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!token) {
-        console.error("No token found in the stored user object");
-        return;
-      }
-
       let formData = new FormData(e.target);
       formData.append("description", content);
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       };
 
       const musicResponse = await axios.patch(
-        `https://b2xclusive.onrender.com/api/v1/track/audio/update/${musicId}`,
+        `https://xclusive.onrender.com/api/v1/track/audio/update/${musicId}`,
         formData,
         config
       );

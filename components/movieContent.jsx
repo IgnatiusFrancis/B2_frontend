@@ -13,7 +13,9 @@ function MovieContent({ id, title, url, createdAt, downloads, type }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const dropdownRef = useRef(null);
-  const baseUrl = process.env.B2XCLUSIVE_APP_BASE_URL;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -33,16 +35,8 @@ function MovieContent({ id, title, url, createdAt, downloads, type }) {
     });
 
     try {
-      const token = localStorage
-        .getItem("b2exclusiveadmin")
-        ?.replace(/^['"](.*)['"]$/, "$1");
-
-      if (!token) {
-        throw new Error("Authentication token not found");
-      }
-
       await axios.delete(`${baseUrl}/movie/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
 
       toast.dismiss();

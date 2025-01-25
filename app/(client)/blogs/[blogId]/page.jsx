@@ -1,17 +1,11 @@
 import CategoriesHeading from "@/components/CategoriesHeading";
 import SectionHeader from "@/components/SectionHeader";
 import Image from "next/image";
-import {
-  FaFacebook,
-  FaInstagram,
-  FaLinkedin,
-  FaPinterest,
-  FaTwitter,
-  FaYoutube,
-} from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import pld from "@/public/pld.jpeg";
 import TopMusic from "@/components/TopMusic";
 import { getPost, getTopArtists } from "@/lib/api";
+import Link from "next/link";
 
 export async function SingleBlog({ params }) {
   const { blogId } = params;
@@ -100,13 +94,29 @@ export async function SingleBlog({ params }) {
             {/* Get Connected */}
             <div className="bg-gray-800/50 rounded-xl shadow-lg p-6">
               <CategoriesHeading title="Get Connected" />
-              <div className="flex justify-between mt-4 text-gray-200">
-                <FaFacebook className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaTwitter className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaLinkedin className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaYoutube className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaInstagram className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaPinterest className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+              <div className="flex justify-around mt-4 text-gray-200 text-3xl">
+                <Link
+                  href={
+                    "https://www.facebook.com/share/1RNuYmnfbq/?mibextid=wwXIfr"
+                  }
+                  className="hover:text-primarycolor"
+                >
+                  <FaFacebook />
+                </Link>
+                <Link
+                  href={"https://wa.me/message/DTRMTVSWSEOAP1"}
+                  className="hover:text-primarycolor"
+                >
+                  <FaWhatsapp />
+                </Link>
+                <Link
+                  href={
+                    "https://www.instagram.com/b2xclusive?igsh=ZG01eTAxZ2cxaG5p"
+                  }
+                  className="hover:text-primarycolor"
+                >
+                  <FaInstagram />
+                </Link>
               </div>
             </div>
           </aside>

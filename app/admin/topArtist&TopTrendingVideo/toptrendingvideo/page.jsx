@@ -35,25 +35,16 @@ const TrendingVideos = () => {
     };
 
     try {
-      const storedUser = localStorage.getItem("b2xclusiveadmin");
-
-      // Parse the stored JSON and extract the token
-      const token = storedUser ? JSON.parse(storedUser) : null;
-      if (!token) {
-        console.error("No token found in the stored user object");
-        return;
-      }
-
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
       };
 
       await axios.put(
-        "https://b2xclusive.onrender.com/api/v1/track/trending/videos",
+        "https://xclusive.onrender.com/api/v1/track/trending/videos",
         formData,
         config
       );
@@ -90,7 +81,7 @@ const TrendingVideos = () => {
       setIsLoadingVideos(true);
       try {
         const response = await axios.get(
-          "https://b2xclusive.onrender.com/api/v1/track/videos"
+          "https://xclusive.onrender.com/api/v1/track/videos"
         );
 
         setVideos(response?.data?.data.videos || []);
