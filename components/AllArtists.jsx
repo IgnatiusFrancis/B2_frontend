@@ -1,6 +1,6 @@
 "use client";
 
-import {  useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Artist from "./Artist";
 import NoContentAvailable from "./NoAvailableContent";
 
@@ -30,8 +30,8 @@ function AllArtists({ data: artists = [] }) {
       <section className="md:w-5/6 p-8 mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
         {currentArtists.map((artist) => (
           <Artist
-            key={artist.id} 
-            id={artist.id} 
+            key={artist.id}
+            id={artist.id}
             name={artist.name}
             url={artist.url}
             bio={artist.bio}
@@ -39,12 +39,12 @@ function AllArtists({ data: artists = [] }) {
         ))}
       </section>
 
-      {totalPages > 1 && ( 
+      {totalPages > 1 && (
         <div className="flex justify-center py-8">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="border border-gray-500 text-gray-500 px-4 py-2 rounded-md mr-2"
+            className="border border-gray-500 text-gray-200 px-4 py-2 rounded-md mr-2"
           >
             Previous
           </button>
@@ -60,7 +60,9 @@ function AllArtists({ data: artists = [] }) {
             </button>
           ))}
           <button
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
             disabled={currentPage === totalPages}
             className="bg-primarycolor text-white px-4 py-2 rounded-md ml-2"
           >

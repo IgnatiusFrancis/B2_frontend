@@ -34,7 +34,7 @@ const TopList = ({ topArtists }) => {
   const { theme } = useContext(ThemeContext);
   const audioRef = useRef(null);
   const baseUrl =
-    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
   useEffect(() => {

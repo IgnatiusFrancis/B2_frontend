@@ -42,8 +42,8 @@ const B2XclusiveAnimation = () => {
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primarycolor to-blue-400 animate-pulse">
               B2
-              <span className="inline-block animate-bounce">X</span>
-              clusive
+              <span className="inline-block animate-bounce text-black">T</span>
+              rends
             </h1>
             <div className="mt-2 text-sm text-gray-500">
               Music & Entertainment

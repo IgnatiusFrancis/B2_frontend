@@ -17,7 +17,7 @@ function ArtistSong({
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState(null);
   const baseUrl =
-    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
   const handlePlayPause = () => {

@@ -1,5 +1,5 @@
 "use client";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -20,12 +20,14 @@ import {
   LucideTrendingUp,
 } from "lucide-react";
 import axios from "axios";
+import { ThemeContext } from "@/context/ThemeContext";
 
 const Sidebar = () => {
+  const { setUser } = useContext(ThemeContext);
   const router = useRouter();
   const pathname = usePathname();
   const baseUrl =
-    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
   const navigationItems = useMemo(

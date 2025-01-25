@@ -5,7 +5,7 @@ import { FaSearch } from "react-icons/fa";
 const SearchMovies = ({ onSearch, onClearSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const baseUrl =
-    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
   const fetchSearchResults = async () => {

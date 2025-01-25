@@ -16,6 +16,7 @@ import {
   FaSearch,
   FaTwitter,
   FaYoutube,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 import HomePost from "@/components/HomePosts";
@@ -64,7 +65,7 @@ export default async function Home() {
             <HomePost videos={videos} />
             <Link
               href={"/videoshome"}
-              className="text-primarycolor font-bold text-center cursor-pointer"
+              className="text-gray-200 font-bold text-center cursor-pointer"
             >
               Read More
             </Link>
@@ -96,13 +97,24 @@ export default async function Home() {
             {/* Get Connected */}
             <div className="bg-gray-800/50 rounded-xl shadow-lg p-6 ">
               <CategoriesHeading title="Get Connected" />
-              <div className="flex justify-between mt-4 text-gray-200">
-                <FaFacebook className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaTwitter className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaLinkedin className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaYoutube className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaInstagram className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
-                <FaPinterest className="text-2xl hover:text-primarycolor transition-all cursor-pointer" />
+              <div className="flex justify-around mt-4 text-gray-200 text-3xl">
+                <Link
+                  href={
+                    "https://www.facebook.com/share/1RNuYmnfbq/?mibextid=wwXIfr"
+                  }
+                >
+                  <FaFacebook />
+                </Link>
+                <Link href={"https://wa.me/message/DTRMTVSWSEOAP1"}>
+                  <FaWhatsapp />
+                </Link>
+                <Link
+                  href={
+                    "https://www.instagram.com/b2xclusive?igsh=ZG01eTAxZ2cxaG5p"
+                  }
+                >
+                  <FaInstagram />
+                </Link>
               </div>
             </div>
           </aside>

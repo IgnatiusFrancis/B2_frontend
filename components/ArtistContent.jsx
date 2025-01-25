@@ -10,8 +10,9 @@ import ConfirmationModal from "./confirmationModal";
 
 const ArtistCard = ({ id, name, url, bio, createdAt }) => {
   const baseUrl =
-    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

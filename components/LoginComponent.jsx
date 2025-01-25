@@ -10,7 +10,7 @@ function AuthComponent() {
   const { theme, setUser } = useContext(ThemeContext);
   const router = useRouter();
   const baseUrl =
-    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
   const [isLogin, setIsLogin] = useState(false);
@@ -75,7 +75,7 @@ function AuthComponent() {
   };
 
   return (
-    <div className="md:flex md:w-5/6 w-full transition-all duration-500 rounded-xl md:p-4 mx-auto my-auto relative bg-white">
+    <div className="md:flex md:w-[60%] w-[90%] transition-all duration-500 rounded-xl md:p-4 mx-auto  relative bg-white">
       <div className={`${theme}-bg ${theme}-text p-10 w-full`}>
         {/* Tab Buttons */}
         <div className="py-4 flex justify-between">
@@ -104,7 +104,7 @@ function AuthComponent() {
         >
           {isLogin ? (
             <>
-              <p>Welcome back to b2xclusive</p>
+              <p>Welcome back to B2Trends</p>
               <input
                 value={signInUser.email}
                 onChange={(e) =>
@@ -126,7 +126,7 @@ function AuthComponent() {
             </>
           ) : (
             <>
-              <p>Create your b2xclusive account</p>
+              <p>Create your B2Trends account</p>
               <input
                 value={signUpUser.userName}
                 onChange={(e) =>

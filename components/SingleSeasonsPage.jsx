@@ -11,7 +11,7 @@ import { Play } from "lucide-react";
 export const SingleSeasonsPage = ({ series }) => {
   const [downloadingEpisodeId, setDownloadingEpisodeId] = useState(null);
   const baseUrl =
-    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
   const handleDownload = async (episodeId, key) => {

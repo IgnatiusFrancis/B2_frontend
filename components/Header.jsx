@@ -11,6 +11,8 @@ import {
   FaLinkedin,
   FaYoutube,
   FaSoundcloud,
+  FaWhatsapp,
+  FaInstagram,
   FaUser,
   FaLock,
 } from "react-icons/fa";
@@ -26,7 +28,7 @@ const B2XLogo = () => {
 
   return (
     <div
-      className="md:w-20 md:h-20 w-10 h-10 relative cursor-pointer transition-transform duration-300 hover:scale-105"
+      className="md:w-20 md:h-20 w-16 h-16 relative cursor-pointer transition-transform duration-300 hover:scale-105"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -116,7 +118,7 @@ function Header() {
   const [userId] = useState(null);
   const { user, signin, profileOptions, setUser } = useContext(ThemeContext);
   const baseUrl =
-    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
   useEffect(() => {
@@ -179,10 +181,10 @@ function Header() {
   const breakingNews = useMemo(
     () => [
       "Welcome to B2xclusive..",
-      "Again, police invite NLC president...",
-      "Female travellers' tales of sexual assault...",
-      "Why Lagos constructions keep crashing...",
-      "Victor Osimhen humiliated by Chelsea transfer...",
+      "Breaking: Tech giant announces groundbreaking innovation.",
+      "Nigeria celebrates major economic milestone.",
+      "Global leaders gather for climate action summit.",
+      "Local hero saves family from house fire.......",
     ],
     []
   );
@@ -224,21 +226,33 @@ function Header() {
       {/* Header Section */}
       <div className="bg-gradient-to-b from-gray-50 to-white shadow-sm">
         <div className="w-full md:w-3/4 mx-auto p-4">
-          <div className="flex flex-col gap-6 md:flex-row md:gap-0 md:justify-between items-center">
+          <div className="flex flex-col gap-6 md:flex-row md:gap-6 md:justify-center items-center">
             {/* Social Links */}
             <div className="flex items-center gap-4">
               <p className="text-sm font-bold text-gray-600">Follow us</p>
-              <div className="flex gap-3">
+              <div className="flex gap-3 text-lg">
                 {[
-                  { icon: FaFacebook, color: "text-blue-600" },
-                  { icon: FaTwitter, color: "text-blue-400" },
-                  { icon: FaLinkedin, color: "text-blue-700" },
-                  { icon: FaYoutube, color: "text-red-600" },
-                  { icon: FaSoundcloud, color: "text-orange-500" },
+                  {
+                    icon: FaFacebook,
+                    color: "text-blue-600",
+                    link: "https://www.facebook.com/share/1RNuYmnfbq/?mibextid=wwXIfr",
+                  },
+                  {
+                    icon: FaWhatsapp,
+                    color: "text-green-400",
+                    link: "https://wa.me/message/DTRMTVSWSEOAP1",
+                  },
+                  {
+                    icon: FaInstagram,
+                    color: "text-pink-500",
+                    link: "https://www.instagram.com/b2xclusive?igsh=ZG01eTAxZ2cxaG5p",
+                  },
                 ].map((social, index) => (
                   <Link
                     key={index}
-                    href="#"
+                    href={social.link}
+                    target="_blank" // Opens in a new tab
+                    rel="noopener noreferrer" // Improves security for external links
                     className={`${social.color} hover:scale-125 transition-transform duration-300`}
                   >
                     <social.icon />
@@ -252,23 +266,23 @@ function Header() {
               <B2XLogo />
               {/* <B2XMicDropLogo /> */}
               <h1 className="md:text-4xl text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-transparent bg-clip-text">
-                XCLUSIVE
+                TRENDS
               </h1>
             </div>
 
             {/* User Options */}
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               {user ? (
                 <div onClick={profileOptions} className="relative">
                   {signin && (
-                    <div className="absolute top-8 right-0 bg-white w-48 border flex flex-col z-30 shadow-lg rounded-lg overflow-hidden">
-                      {/* <Link
+                    <div className="absolute top-8 right-0 bg-white w-48 border flex flex-col z-30 shadow-lg rounded-lg overflow-hidden"> */}
+            {/* <Link
                         href={`/${userId}`}
                         className="p-3 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white transition-colors duration-300"
                       >
                         Account
                       </Link> */}
-                      <div
+            {/* <div
                         onClick={handleLogout}
                         className="p-3 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white transition-colors duration-300 cursor-pointer"
                       >
@@ -294,11 +308,11 @@ function Header() {
                 className="md:hidden w-10 h-10 p-2 text-gray-600 hover:text-purple-600 transition-colors duration-300"
                 onClick={() => setShowMenu(!showMenu)}
               />
-            </div>
+            </div> */}
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex md:flex-wrap mt-6 p-4 justify-center bg-white rounded-lg shadow-md">
+          <nav className="hidden md:flex md:flex-wrap mt-6 p-4 justify-between bg-white rounded-lg shadow-md">
             {navlinks.map((link) => (
               <Link
                 key={link.id}

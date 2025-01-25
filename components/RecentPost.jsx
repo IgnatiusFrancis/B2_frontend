@@ -35,14 +35,14 @@ function RecentPost({ id, title, updatedAt, url }) {
 
       {/* Date Label */}
       {updatedAt && (
-        <div className="absolute bottom-2 right-2 bg-primarycolor text-white text-xs px-3 py-1 rounded-full shadow-md">
+        <div className="absolute bottom-2 right-2  bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white text-xs px-3 py-1 rounded-full shadow-md">
           {new Date(updatedAt).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
           })}
         </div>
-      )} 
+      )}
     </Link>
   );
 }

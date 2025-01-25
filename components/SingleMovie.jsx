@@ -6,7 +6,7 @@ import { Play, Info, Download } from "lucide-react";
 const SingleMovie = ({ movie }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const baseUrl =
-    process.env.B2XCLUSIVE_APP_BASE_URL ||
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
   if (!movie) {
@@ -67,7 +67,9 @@ const SingleMovie = ({ movie }) => {
           <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/40 to-transparent" />
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">{data.title}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-2 text-gray-200">
+            {data.title}
+          </h1>
           <p className="text-gray-300 text-lg">Official Trailer</p>
         </div>
       </div>

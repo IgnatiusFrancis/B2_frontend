@@ -30,7 +30,7 @@ async function HomeEvents({ events }) {
           </div>
           <Link
             href="/upcomingevents"
-            className="text-primarycolor font-bold text-center cursor-pointer"
+            className="text-gray-200 font-bold text-center cursor-pointer"
           >
             Read More
           </Link>

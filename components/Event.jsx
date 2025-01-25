@@ -4,7 +4,6 @@ import Button from "./Button";
 import pld from "@/public/pld.jpeg";
 import Link from "next/link";
 function Event({ id, title, url, location, date }) {
-
   return (
     <>
       <div
@@ -29,15 +28,15 @@ function Event({ id, title, url, location, date }) {
           <div className="hidden md:block">
             {/* <p className="font-bold ">{date?.split("T")[0]}</p> */}
             {new Date(date).toLocaleDateString("en-US", {
-                      weekday: "long", // Example: Monday
-                      year: "numeric",
-                      month: "long", // Example: January
-                      day: "numeric",
-                    })}
+              weekday: "long", // Example: Monday
+              year: "numeric",
+              month: "long", // Example: January
+              day: "numeric",
+            })}
           </div>
           <Link
             href={`/upcomingevents/${id}`}
-            className="text-[14px] px-3 py-2 md:py-2 md:px-8 bg-primarycolor text-white"
+            className="text-[14px] px-3 py-2 md:py-2 md:px-8  bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white"
           >
             View Event
           </Link>
