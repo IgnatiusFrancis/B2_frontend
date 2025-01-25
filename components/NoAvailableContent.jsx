@@ -2,7 +2,7 @@ import React from "react";
 
 function NoContentAvailable({ title, message }) {
   return (
-    <div className="flex flex-col items-center justify-center h-96 bg-gray-100 rounded-lg shadow-md">
+    <div className="flex flex-col items-center justify-center h-96 bg-gray-100 rounded-lg shadow-md w-full">
       {/* Icon or Illustration */}
       <div className="relative w-24 h-24 mb-4">
         <div className="absolute inset-0 animate-pulse bg-blue-200 rounded-full"></div>
