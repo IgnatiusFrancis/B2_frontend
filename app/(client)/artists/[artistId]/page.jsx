@@ -35,7 +35,7 @@ export default async function SingleMusics({ params, searchParams }) {
   }
 
   return (
-    <>
+    <section className="w-full">
       {/* Artist Header Section */}
       <div className="relative">
         <div className="relative">
@@ -71,7 +71,7 @@ export default async function SingleMusics({ params, searchParams }) {
       {/* Main Content */}
       <div className="bg-gradient-to-b from-gray-900 to-black">
         <section className="w-full md:w-5/6 md:mx-auto flex flex-col md:flex-row md:gap-10 gap-2 py-8">
-          <div className="w-4/6">
+          <div className="md:w-4/6 w-[90%]">
             {activeTab === "songs" && (
               <div className="ml-5">
                 <CategoriesHeading title="Artist Songs" />
@@ -134,6 +134,6 @@ export default async function SingleMusics({ params, searchParams }) {
           </div>
         </section>
       </div>
-    </>
+    </section>
   );
 }
