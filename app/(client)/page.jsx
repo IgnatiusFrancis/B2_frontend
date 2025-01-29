@@ -25,6 +25,7 @@ import HomeRecentPost from "@/components/HomeRecentPost";
 import {
   getAlbums,
   getEvents,
+  getHeroSection,
   getPosts,
   getTopArtists,
   getTrendingVideos,
@@ -34,17 +35,18 @@ import TopList from "@/components/TopList";
 import NoContentDesign from "@/components/NoContent";
 
 export default async function Home() {
-  const [posts, events, albums, topArtists, videos] = await Promise.all([
+  const [posts, events, albums, topArtists, videos, hero] = await Promise.all([
     getPosts(3),
     getEvents(2),
     getAlbums(3),
     getTopArtists(),
     getTrendingVideos(),
+    getHeroSection(),
   ]);
 
   return (
     <main className="bg-gradient-to-b from-gray-900 to-black">
-      <HeroSection />
+      <HeroSection hero={hero} />
       <section className="w-full lg:w-[80%] md:w-[90%] mx-auto md:flex mt-8 gap-6">
         <div className="w-full md:w-[80%] mx-auto p-3">
           {/* NEW ALBUM SECTION */}

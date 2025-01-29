@@ -120,6 +120,7 @@ const AddMusic = () => {
       );
 
       await action("audios");
+
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error?.response?.data?.message || "Failed to create music");

@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'b2xclusive-bucket.s3.eu-north-1.amazonaws.com',
         // pathname: '/public/**',
+
+        protocol: "https",
+        hostname: "**", 
+        
       },
       {
         protocol: 'https',

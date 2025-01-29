@@ -66,6 +66,7 @@ function EditArtist({ params }) {
       );
 
       await action("artists");
+
       router.push("/admin/events");
       toast.success(response.data.message, { position: "top-center" });
     } catch (error) {
