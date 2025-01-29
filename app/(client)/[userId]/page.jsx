@@ -40,7 +40,7 @@ function SingleUser({ params }) {
     };
 
     fetchUserData();
-  }, [userId]);
+  }, [userId, baseUrl]);
 
   return (
     <>
