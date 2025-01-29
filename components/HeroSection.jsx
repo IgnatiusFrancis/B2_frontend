@@ -58,7 +58,7 @@ function HeroSection() {
         <Slider {...settings}>
           {slideshow.map((each) => (
             <div className="relative" key={each.id}>
-              <div className="bg-black w-full h-[600px] relative">
+              <div className="bg-black w-full h-[400px] relative">
                 <Image
                   src={each.img}
                   width={1000}

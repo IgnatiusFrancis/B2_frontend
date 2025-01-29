@@ -77,6 +77,17 @@ export default async function Home() {
             </Link>
           </div>
 
+          <CategoriesHeading title={"Trending Movies"} />
+          <div className="w-full flex flex-col">
+            <HomePost videos={videos} />
+            <Link
+              href={"/videoshome"}
+              className="text-gray-200 font-bold text-center cursor-pointer"
+            >
+              Read More
+            </Link>
+          </div>
+
           {/* TOP 40 section */}
           <CategoriesHeading title={"Top Trending Artist Songs"} />
 
@@ -92,7 +103,7 @@ export default async function Home() {
           <aside className="grid grid-cols-1 md:flex md:flex-col gap-2 py-2">
             {/* Top Artists */}
             <div className="bg-gray-800/50 rounded-xl shadow-lg p-6">
-              <CategoriesHeading title="Top 5 Artists" />
+              <CategoriesHeading title="Artist of the week" />
               <div className="grid grid-cols-1 gap-4 mt-6">
                 {topArtists?.map((artist, index) => (
                   <TopMusic key={artist.id} topArtists={artist} index={index} />
