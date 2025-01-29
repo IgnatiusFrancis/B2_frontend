@@ -305,15 +305,15 @@ function Header() {
                   <p>Login</p>
                 </button>
               )} */}
-              <RiMenu4Fill
+              {/* <RiMenu4Fill
                 className="md:hidden w-14 h-14 p-2 text-gray-600 hover:text-purple-600 transition-colors duration-300"
                 onClick={() => setShowMenu(!showMenu)}
-              />
+              /> */}
             </div>
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex md:flex-wrap mt-6 p-4 justify-between bg-white rounded-lg shadow-md">
+          <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-white rounded-lg shadow-md">
             {navlinks.map((link) => (
               <Link
                 key={link.id}

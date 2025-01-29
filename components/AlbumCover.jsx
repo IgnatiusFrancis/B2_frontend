@@ -12,10 +12,9 @@ const AlbumCover = ({ album }) => {
       {/* Album Image */}
       <Image
         src={url || "/albumcover.jpeg"}
-        width={1000}
-        height={1000}
+        fill
         alt={title}
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        className="object-contain transition-transform duration-500 group-hover:scale-110"
       />
 
       {/* Gradient Overlay */}
