@@ -28,7 +28,7 @@ const B2XLogo = () => {
 
   return (
     <div
-      className="md:w-20 md:h-20 w-16 h-16 relative cursor-pointer transition-transform duration-300 hover:scale-105"
+      className="md:w-24 md:h-24 w-20 h-20 relative cursor-pointer transition-transform duration-300 hover:scale-105"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -58,7 +58,7 @@ const B2XLogo = () => {
           dominantBaseline="middle"
           fill="url(#gradientFill)"
           style={{
-            fontSize: "52px",
+            fontSize: "75px",
             fontFamily: "Arial Black, Arial, sans-serif",
             fontWeight: "900",
             letterSpacing: "-2px",

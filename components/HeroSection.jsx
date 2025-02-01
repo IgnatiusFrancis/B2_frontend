@@ -42,7 +42,7 @@ function HeroSection({ hero = [] }) {
                     "We provide you the latest music videos as they come in HD quality. Available to watch and download."}
                 </p>
                 <Link
-                  className="py-2 px-4 text-sm text-primarycolor rounded-full border border-primarycolor"
+                  className="py-2 px-4 text-sm text-gray-200 rounded-full border border-primarycolor"
                   href={each.link || "/videoshome"}
                 >
                   EXPLORE

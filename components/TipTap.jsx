@@ -18,11 +18,11 @@ const Tiptap = ({ content, onChange }) => {
       },
     },
     onUpdate: ({ editor }) => {
-      handleChange(editor.getHTML());
+      handleChange(editor.getText());
     },
   });
   useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
+    if (editor && content !== editor.getText()) {
       editor.commands.setContent(content);
     }
   }, [editor, content]);
