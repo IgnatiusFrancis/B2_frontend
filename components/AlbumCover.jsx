@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Play, Heart } from "lucide-react";
 
 const AlbumCover = ({ album }) => {
-  console.log("Album Data:", album);
   const { title, url, description } = album[0];
 
   return (

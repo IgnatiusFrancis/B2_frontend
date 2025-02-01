@@ -286,7 +286,7 @@ function AddAlbum() {
             ) : (
               <>
                 <Upload className="w-5 h-5" />
-                <span>Create Album</span>
+                <span>Create Advert</span>
               </>
             )}
           </button>
