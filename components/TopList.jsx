@@ -8,7 +8,7 @@ import { ThemeContext } from "@/context/ThemeContext";
 
 // Waveform Component
 const Waveform = ({ isPlaying }) => {
-  const bars = 50;
+  const bars = 200;
 
   return (
     <div className="flex items-center justify-center gap-[2px] h-4 mx-2">
