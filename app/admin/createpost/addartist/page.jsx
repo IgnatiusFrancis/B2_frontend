@@ -14,6 +14,9 @@ const UPLOAD_TIMEOUT = 3600000;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 const AddArtists = () => {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const router = useRouter();
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
@@ -115,7 +118,7 @@ const AddArtists = () => {
       };
 
       const response = await axios.put(
-        "https://xclusive.onrender.com/api/v1/artist/create",
+        `${baseUrl}/artist/create`,
         form,
         config
       );

@@ -15,6 +15,9 @@ const UPLOAD_TIMEOUT = 3600000;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function AddEvent() {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const router = useRouter();
   const [uploadingEvent, setUploadingEvent] = useState(false);
   const [file, setFile] = useState(null);
@@ -72,7 +75,7 @@ function AddEvent() {
       };
 
       const response = await axios.put(
-        "https://xclusive.onrender.com/api/v1/event/create",
+        `${baseUrl}/event/create`,
         formData,
         config
       );

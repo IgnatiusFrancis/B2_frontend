@@ -15,7 +15,7 @@ function Layout({ children }) {
         <div
           className={`${
             showSideBar ? "w-10/12" : "w-full"
-          } grid grid-cols-6 border-b border-gray-200 `}
+          } grid md:grid-cols-8 grid-cols-4 md:gap-0 gap-5 border-b border-gray-200 `}
         >
           <CreatePostLinks title={"Blog"} href={"/admin/createpost"} />
           <CreatePostLinks
@@ -32,7 +32,7 @@ function Layout({ children }) {
             href={"/admin/createpost/addvideo"}
           />
           <CreatePostLinks
-            title={"Album"}
+            title={"Advert"}
             href={"/admin/createpost/addalbum"}
           />
 
@@ -40,6 +40,12 @@ function Layout({ children }) {
             title={"Events"}
             href={"/admin/createpost/addevent"}
           />
+
+          <CreatePostLinks
+            title={"Hero Section"}
+            href={"/admin/createpost/updatehero"}
+          />
+          <CreatePostLinks title={"News"} href={"/admin/createpost/addnews"} />
         </div>
 
         <div className={`w-full p-4`}>{children}</div>

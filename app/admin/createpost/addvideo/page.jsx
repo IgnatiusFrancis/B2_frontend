@@ -16,6 +16,9 @@ const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function AddVideos() {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const router = useRouter();
   const [allArtist, setALlArtist] = useState([]);
   const [gettingArtist, setGettingArtist] = useState(false);
@@ -94,9 +97,7 @@ function AddVideos() {
     const fetchData = async () => {
       setGettingArtist(true);
       try {
-        const response = await axios.get(
-          `https://xclusive.onrender.com/api/v1/artist/artists`
-        );
+        const response = await axios.get(`${baseUrl}/artist/artists`);
         setALlArtist(response?.data?.data);
       } catch (error) {
         console.log(error, "Unable to fetch artists");
@@ -164,7 +165,7 @@ function AddVideos() {
       };
 
       const response = await axios.put(
-        "https://xclusive.onrender.com/api/v1/track/createVideo",
+        `${baseUrl}/track/createVideo`,
         submitData,
         config
       );

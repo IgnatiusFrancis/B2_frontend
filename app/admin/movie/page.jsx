@@ -27,6 +27,9 @@ const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function AddMovies() {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -165,7 +168,7 @@ function AddMovies() {
       };
 
       const response = await axios.put(
-        "https://xclusive.onrender.com/api/v1/track/createMovie",
+        `${baseUrl}/track/createMovie`,
         formData,
         config
       );

@@ -9,16 +9,16 @@ export default function AdminLayout({ children }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await axios.get(
-          "https://xclusive.onrender.com/api/v1/auth/user/me",
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${baseUrl}/auth/user/me`, {
+          withCredentials: true,
+        });
 
         const user = response.data;
         //console.log("Authenticated user:", user);

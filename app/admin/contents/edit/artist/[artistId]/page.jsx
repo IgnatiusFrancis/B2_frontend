@@ -9,6 +9,9 @@ import { useRouter } from "next/navigation";
 import action from "@/app/actions";
 
 function EditArtist({ params }) {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const { artistId } = params;
   const router = useRouter();
   const [file, setFile] = useState(null);
@@ -22,9 +25,7 @@ function EditArtist({ params }) {
   useEffect(() => {
     const fetchSingleArtist = async () => {
       try {
-        const response = await axios.get(
-          `https://xclusive.onrender.com/api/v1/artist/${artistId}`
-        );
+        const response = await axios.get(`${baseUrl}/artist/${artistId}`);
         const postData = response?.data?.data;
         setSingleArtist({
           ...postData,
@@ -60,12 +61,13 @@ function EditArtist({ params }) {
       };
 
       const response = await axios.patch(
-        `https://xclusive.onrender.com/api/v1/artist/update/${artistId}`,
+        `${baseUrl}/artist/update/${artistId}`,
         formData,
         config
       );
 
       await action("artists");
+
       router.push("/admin/events");
       toast.success(response.data.message, { position: "top-center" });
     } catch (error) {

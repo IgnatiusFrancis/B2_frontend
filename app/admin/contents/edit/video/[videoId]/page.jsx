@@ -10,6 +10,9 @@ import Image from "next/image";
 import action from "@/app/actions";
 
 function EditVideo({ params }) {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const { videoId } = params;
   const router = useRouter();
   const { showSideBar } = useContext(ThemeContext);
@@ -34,13 +37,11 @@ function EditVideo({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://xclusive.onrender.com/api/v1/artist/artists`
-        );
+        const response = await axios.get(`${baseUrl}/artist/artists`);
         setAllArtist(response?.data?.data);
 
         const videoResponse = await axios.get(
-          `https://xclusive.onrender.com/api/v1/track/video/${videoId}`
+          `${baseUrl}/track/video/${videoId}`
         );
         const postData = videoResponse?.data?.data;
         setSingleVideo(postData);
@@ -71,7 +72,7 @@ function EditVideo({ params }) {
       };
 
       const videoResponse = await axios.patch(
-        `https://xclusive.onrender.com/api/v1/track/video/update/${videoId}`,
+        `${baseUrl}/track/video/update/${videoId}`,
         formData,
         config
       );

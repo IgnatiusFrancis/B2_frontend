@@ -13,9 +13,9 @@ function TopMusic({ topArtists, index }) {
     <div className="relative bg-white rounded-xl shadow-lg p-6 transition duration-300 hover:shadow-xl">
       <div className="flex flex-col items-center space-y-4">
         {/* Index Badge */}
-        <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold text-2xl w-12 h-12 rounded-full flex justify-center items-center shadow-lg">
+        {/* <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold text-xl w-12 h-12 rounded-full flex justify-center items-center shadow-lg">
           {index + 1}
-        </div>
+        </div> */}
 
         {/* Main Image - Centered and Larger */}
         <div className="w-48 h-48 relative mx-auto mb-4">

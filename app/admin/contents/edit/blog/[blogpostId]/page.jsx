@@ -15,6 +15,9 @@ const UPLOAD_TIMEOUT = 3600000;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function EditBlog({ params }) {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const { blogpostId } = params;
   const router = useRouter();
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -55,9 +58,7 @@ function EditBlog({ params }) {
   useEffect(() => {
     const fetchSinglePost = async () => {
       try {
-        const response = await axios.get(
-          `https://xclusive.onrender.com/api/v1/post/${blogpostId}`
-        );
+        const response = await axios.get(`${baseUrl}/post/${blogpostId}`);
         const postData = response?.data?.data;
         setSinglePost(postData);
       } catch (error) {
@@ -137,7 +138,7 @@ function EditBlog({ params }) {
       };
 
       const response = await axios.patch(
-        `https://xclusive.onrender.com/api/v1/post/update/${blogpostId}`,
+        `${baseUrl}/post/update/${blogpostId}`,
         formData,
         config
       );

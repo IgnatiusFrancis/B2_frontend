@@ -111,12 +111,12 @@ const B2XLogo = () => {
   );
 };
 
-function Header() {
+function Header({ breakingNews }) {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [userId] = useState(null);
-  const { user, signin, profileOptions, setUser } = useContext(ThemeContext);
+  //const { user, signin, profileOptions, setUser } = useContext(ThemeContext);
   const baseUrl =
     process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
@@ -143,25 +143,25 @@ function Header() {
   //   }
   // }, [baseUrl, setUser, user]);
 
-  const handleLogout = async () => {
-    try {
-      await axios.post(
-        `${baseUrl}/auth/user/logout`,
-        {},
-        { withCredentials: true }
-      );
+  // const handleLogout = async () => {
+  //   try {
+  //     await axios.post(
+  //       `${baseUrl}/auth/user/logout`,
+  //       {},
+  //       { withCredentials: true }
+  //     );
 
-      localStorage.removeItem("userName");
-      setUser(null);
+  //     localStorage.removeItem("userName");
+  //     setUser(null);
 
-      window.location.href = "/";
+  //     window.location.href = "/";
 
-      toast.success("Logout Successful", { position: "top-center" });
-    } catch (error) {
-      console.error("Error signing out:", error.message);
-      toast.error("Unable to logout user", { position: "top-center" });
-    }
-  };
+  //     toast.success("Logout Successful", { position: "top-center" });
+  //   } catch (error) {
+  //     console.error("Error signing out:", error.message);
+  //     toast.error("Unable to logout user", { position: "top-center" });
+  //   }
+  // };
 
   const navlinks = useMemo(
     () => [
@@ -178,16 +178,16 @@ function Header() {
     []
   );
 
-  const breakingNews = useMemo(
-    () => [
-      "Welcome to B2xclusive..",
-      "Breaking: Tech giant announces groundbreaking innovation.",
-      "Nigeria celebrates major economic milestone.",
-      "Global leaders gather for climate action summit.",
-      "Local hero saves family from house fire.......",
-    ],
-    []
-  );
+  // const breakingNews = useMemo(
+  //   () => [
+  //     "Welcome to B2xclusive..",
+  //     "Breaking: Tech giant announces groundbreaking innovation.",
+  //     "Nigeria celebrates major economic milestone.",
+  //     "Global leaders gather for climate action summit.",
+  //     "Local hero saves family from house fire.......",
+  //   ],
+  //   []
+  // );
 
   return (
     <>
@@ -213,9 +213,9 @@ function Header() {
           </div>
           <div className="flex-1">
             <Marquee pauseOnHover={true} speed={50}>
-              {breakingNews.map((news, idx) => (
-                <p key={idx} className="text-sm text-white font-medium">
-                  {news}
+              {breakingNews?.map((news, idx) => (
+                <p key={idx} className="text-sm text-white font-medium p-2">
+                  {news.title}
                 </p>
               ))}
             </Marquee>

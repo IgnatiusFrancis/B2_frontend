@@ -20,6 +20,10 @@ const TrendingVideos = () => {
   // Array to store selected artist IDs
   const [selectedVideos, setselectedVideos] = useState([]);
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -43,11 +47,7 @@ const TrendingVideos = () => {
         timeout: UPLOAD_TIMEOUT,
       };
 
-      await axios.put(
-        "https://xclusive.onrender.com/api/v1/track/trending/videos",
-        formData,
-        config
-      );
+      await axios.put(`${baseUrl}/track/trending/videos`, formData, config);
 
       await action("trendingVideos");
       toast.success("Successfully updated trending videos");
@@ -80,9 +80,7 @@ const TrendingVideos = () => {
     const fetchData = async () => {
       setIsLoadingVideos(true);
       try {
-        const response = await axios.get(
-          "https://xclusive.onrender.com/api/v1/track/videos"
-        );
+        const response = await axios.get(`${baseUrl}/track/videos`);
 
         setVideos(response?.data?.data.videos || []);
       } catch (error) {

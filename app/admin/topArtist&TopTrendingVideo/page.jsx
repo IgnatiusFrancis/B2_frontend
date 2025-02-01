@@ -7,6 +7,7 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import pld from "@/public/pld.jpeg";
 import Image from "next/image";
+import action from "@/app/actions";
 
 const UPLOAD_TIMEOUT = 10000;
 
@@ -16,6 +17,9 @@ const TopArtists = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [artists, setArtists] = useState([]);
   const [isLoadingArtists, setIsLoadingArtists] = useState(false);
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   // Array to store selected artist IDs
   const [selectedArtists, setSelectedArtists] = useState([]);
@@ -44,11 +48,7 @@ const TopArtists = () => {
         timeout: UPLOAD_TIMEOUT,
       };
 
-      await axios.put(
-        "https://xclusive.onrender.com/api/v1/artist/top/artists",
-        formData,
-        config
-      );
+      await axios.put(`${baseUrl}/artist/top/artists`, formData, config);
 
       await action("topArtists");
       toast.success("Successfully updated top artists");
@@ -82,9 +82,7 @@ const TopArtists = () => {
     const fetchData = async () => {
       setIsLoadingArtists(true);
       try {
-        const response = await axios.get(
-          "https://xclusive.onrender.com/api/v1/artist/artists"
-        );
+        const response = await axios.get(`${baseUrl}/artist/artists`);
 
         setArtists(response?.data?.data || []);
       } catch (error) {
@@ -98,13 +96,17 @@ const TopArtists = () => {
     fetchData();
   }, []);
 
+  // const handleArtistSelect = (artistId) => {
+  //   setSelectedArtists(
+  //     (prev) =>
+  //       prev.includes(artistId)
+  //         ? prev.filter((id) => id !== artistId) // Remove artist if already selected
+  //         : [...prev, artistId] // Add artist if not already selected
+  //   );
+  // };
+
   const handleArtistSelect = (artistId) => {
-    setSelectedArtists(
-      (prev) =>
-        prev.includes(artistId)
-          ? prev.filter((id) => id !== artistId) // Remove artist if already selected
-          : [...prev, artistId] // Add artist if not already selected
-    );
+    setSelectedArtists([artistId]); // Only allow one selection
   };
 
   return (

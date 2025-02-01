@@ -25,26 +25,69 @@ import HomeRecentPost from "@/components/HomeRecentPost";
 import {
   getAlbums,
   getEvents,
+  getHeroSection,
+  getMovies,
   getPosts,
   getTopArtists,
+  getTopTrendingSongs,
   getTrendingVideos,
 } from "@/lib/api";
 import HeroSection from "@/components/HeroSection";
 import TopList from "@/components/TopList";
 import NoContentDesign from "@/components/NoContent";
+import HomeMovie from "@/components/HomeMovie";
 
 export default async function Home() {
-  const [posts, events, albums, topArtists, videos] = await Promise.all([
+  const [
+    posts,
+    events,
+    albums,
+    topArtists,
+    videos,
+    hero,
+    movies,
+    topTrendingSongs,
+  ] = await Promise.all([
     getPosts(3),
     getEvents(2),
     getAlbums(1),
     getTopArtists(),
     getTrendingVideos(),
+    getHeroSection(),
+    getMovies(),
+    getTopTrendingSongs(),
   ]);
+
+  // Transform `topTrendingSongs` to group tracks by artist
+  const transformData = (tracks) => {
+    const artistsMap = new Map();
+
+    tracks.forEach((track) => {
+      if (!track.artist) return; // Ensure track has an artist
+
+      const { id, name, bio, url } = track.artist;
+
+      if (!artistsMap.has(id)) {
+        artistsMap.set(id, {
+          id,
+          name,
+          bio,
+          url,
+          track: [], // Initialize track array
+        });
+      }
+
+      artistsMap.get(id).track.push(track);
+    });
+
+    return Array.from(artistsMap.values());
+  };
+
+  const transformedArtists = transformData(topTrendingSongs);
 
   return (
     <main className="bg-gradient-to-b from-gray-900 to-black">
-      <HeroSection />
+      <HeroSection hero={hero} />
       <section className="w-full lg:w-[80%] md:w-[90%] mx-auto md:flex mt-8 gap-6">
         <div className="w-full md:w-[80%] mx-auto p-3">
           {/* NEW ALBUM SECTION */}
@@ -73,18 +116,18 @@ export default async function Home() {
               href={"/videoshome"}
               className="text-gray-200 font-bold text-center cursor-pointer"
             >
-              Read More
+              See More
             </Link>
           </div>
 
           <CategoriesHeading title={"Trending Movies"} />
           <div className="w-full flex flex-col">
-            <HomePost videos={videos} />
+            <HomeMovie movies={movies} />
             <Link
-              href={"/videoshome"}
+              href={"/movieshome"}
               className="text-gray-200 font-bold text-center cursor-pointer"
             >
-              Read More
+              See More
             </Link>
           </div>
 
@@ -92,8 +135,8 @@ export default async function Home() {
           <CategoriesHeading title={"Top Trending Artist Songs"} />
 
           <div className="w-full py-4">
-            <div className="grid gap-4 md:grid-cols-1">
-              <TopList topArtists={topArtists} />
+            <div className="grid gap-4 grid-cols-1">
+              <TopList topArtists={transformedArtists} />
             </div>
           </div>
         </div>

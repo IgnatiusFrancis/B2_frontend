@@ -17,6 +17,9 @@ const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 const AddMusic = () => {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const router = useRouter();
   const [artists, setArtists] = useState([]);
   const [isLoadingArtists, setIsLoadingArtists] = useState(false);
@@ -38,9 +41,7 @@ const AddMusic = () => {
     const fetchData = async () => {
       setIsLoadingArtists(true);
       try {
-        const response = await axios.get(
-          "https://xclusive.onrender.com/api/v1/artist/artists"
-        );
+        const response = await axios.get(`${baseUrl}/artist/artists`);
 
         setArtists(response.data.data);
       } catch (error) {
@@ -114,12 +115,13 @@ const AddMusic = () => {
       };
 
       const response = await axios.put(
-        "https://xclusive.onrender.com/api/v1/track/createAudio",
+        `${baseUrl}/track/createAudio`,
         submitData,
         config
       );
 
       await action("audios");
+
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error?.response?.data?.message || "Failed to create music");
