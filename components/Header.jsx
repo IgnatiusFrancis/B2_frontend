@@ -214,7 +214,7 @@ function Header({ breakingNews }) {
           <div className="flex-1">
             <Marquee pauseOnHover={true} speed={50}>
               {breakingNews?.map((news, idx) => (
-                <p key={idx} className="text-sm text-white font-medium">
+                <p key={idx} className="text-sm text-white font-medium p-2">
                   {news.title}
                 </p>
               ))}
@@ -305,15 +305,15 @@ function Header({ breakingNews }) {
                   <p>Login</p>
                 </button>
               )} */}
-              <RiMenu4Fill
+              {/* <RiMenu4Fill
                 className="md:hidden w-14 h-14 p-2 text-gray-600 hover:text-purple-600 transition-colors duration-300"
                 onClick={() => setShowMenu(!showMenu)}
-              />
+              /> */}
             </div>
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex md:flex-wrap mt-6 p-4 justify-between bg-white rounded-lg shadow-md">
+          <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-white rounded-lg shadow-md">
             {navlinks.map((link) => (
               <Link
                 key={link.id}

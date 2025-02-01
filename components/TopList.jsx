@@ -8,10 +8,10 @@ import { ThemeContext } from "@/context/ThemeContext";
 
 // Waveform Component
 const Waveform = ({ isPlaying }) => {
-  const bars = 200;
+  const bars = 50;
 
   return (
-    <div className="flex items-center gap-[2px] h-4 mx-2">
+    <div className="flex items-center justify-center gap-[2px] h-4 mx-2">
       {[...Array(bars)].map((_, i) => (
         <div
           key={i}
@@ -190,7 +190,7 @@ const TopList = ({ topArtists }) => {
   );
 
   return (
-    <div className="py-4 grid grid-cols-2 md:flex md:flex-col gap-4">
+    <div className="py-4 grid grid-cols-1 md:flex md:flex-col gap-4">
       {topArtists?.map((artist) => (
         <SongCard key={artist?.id} artist={artist} />
       ))}

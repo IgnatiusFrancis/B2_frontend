@@ -7,47 +7,50 @@ import Link from "next/link";
 
 function TopMusic({ topArtists, index }) {
   const { theme } = useContext(ThemeContext);
-  const { name, url, track, id } = topArtists || {};
+  const { name, url, track, id, bio } = topArtists || {};
 
   return (
-    <div
-      className={`${theme}-bgg p-4 md:p-2 flex items-center gap-4 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl`}
-    >
-      {/* Index with animation */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold text-2xl md:text-3xl w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center shadow-lg transition-transform duration-300 hover:scale-110">
-        {index + 1}
-      </div>
+    <div className="relative bg-white rounded-xl shadow-lg p-6 transition duration-300 hover:shadow-xl">
+      <div className="flex flex-col items-center space-y-4">
+        {/* Index Badge */}
+        {/* <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold text-xl w-12 h-12 rounded-full flex justify-center items-center shadow-lg">
+          {index + 1}
+        </div> */}
 
-      {/* Clickable image */}
-      <Link href="#Trending-Songs" passHref>
-        <div className="w-16 h-16 md:w-20 md:h-20 cursor-pointer">
-          <Image
+        {/* Main Image - Centered and Larger */}
+        <div className="w-48 h-48 relative mx-auto mb-4">
+          <img
             src={url || "/albumcover.jpeg"}
-            width={1000}
-            height={1000}
             alt={name}
-            className="w-full h-full object-cover rounded-lg transition-transform duration-300 hover:scale-105"
+            className="rounded-xl object-cover w-full h-full transition-transform duration-300 hover:scale-105"
           />
         </div>
-      </Link>
 
-      {/* Artist Details */}
-      <div className="flex-1">
-        {/* Artist Name */}
-        <Link
+        {/* Artist Name - Centered */}
+        <a
           href={`/artists/${id}`}
-          className={`font-bold text-wrap text-[16px] md:text-lg text-gray-900 ${theme}-text hover:text-blue-500 transition-colors duration-300`}
+          className={`text-xl font-bold text-center ${theme}-text hover:text-blue-500 transition-colors duration-300 no-underline`}
         >
           {name}
-        </Link>
-        {/* Tracks */}
-        <div className={`text-[14px] md:text-sm text-gray-600 ${theme}-text`}>
-          {track.map((trackItem, idx) => (
-            <p key={trackItem?.id}>
-              {trackItem?.title}
-              {idx < track?.length - 1 && ", "}
-            </p>
-          ))}
+        </a>
+
+        {/* Bio - Limited to 2 lines */}
+        <p
+          className={`text-sm text-gray-600 ${theme}-text text-center line-clamp-2 mb-2`}
+        >
+          {bio}
+        </p>
+
+        {/* Tracks List */}
+        <div className={`text-sm text-gray-600 ${theme}-text text-center`}>
+          <h3 className="font-semibold mb-1">Featured Track:</h3>
+          <div className="flex flex-wrap justify-center gap-2">
+            {track?.[0] && (
+              <span key={track[0]?.id} className="inline-block">
+                {track[0]?.title}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

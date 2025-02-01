@@ -16,19 +16,21 @@ const UPLOAD_TIMEOUT = 3600000;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function AddAlbum() {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const router = useRouter();
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [fileErrors, setFileErrors] = useState([]);
-  const [allArtist, setALlArtist] = useState([]);
+
   const [content, setContent] = useState("");
-  const [gettingArtist, setGettingArtist] = useState(false);
+
   const [event, setEvent] = useState({
     title: "",
-    releaseDate: "",
-    artistId: "",
+
     description: content,
   });
 
@@ -78,24 +80,6 @@ function AddAlbum() {
   }, [thumbnailPreview]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setGettingArtist(true);
-      try {
-        const response = await axios.get(
-          `https://xclusive.onrender.com/api/v1/artist/artists`
-        );
-        setALlArtist(response?.data?.data);
-      } catch (error) {
-        console.log(error, "Unable to fetch artists");
-      } finally {
-        setGettingArtist(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     setEvent((prevEvent) => ({
       ...prevEvent,
       description: content,
@@ -130,8 +114,7 @@ function AddAlbum() {
       const submitData = new FormData();
       submitData.append("title", event.title);
       submitData.append("description", content);
-      submitData.append("releaseDate", event.releaseDate);
-      submitData.append("artistId", event.artistId);
+
       submitData.append("file", thumbnail);
 
       const config = {
@@ -157,7 +140,7 @@ function AddAlbum() {
       };
 
       const response = await axios.put(
-        "https://xclusive.onrender.com/api/v1/track/create-album",
+        `${baseUrl}/track/create-album`,
         submitData,
         config
       );
@@ -192,7 +175,7 @@ function AddAlbum() {
       setUploadProgress(0);
       setEvent({
         title: "",
-        releaseDate: "",
+
         description: "",
       });
       setContent("");
@@ -207,7 +190,7 @@ function AddAlbum() {
       <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-8">
         <form className="flex flex-col gap-8 items-start" onSubmit={onSubmit}>
           <div className="flex flex-col gap-2 w-full">
-            <label>Album Title</label>
+            <label>Advert Title</label>
             <input
               value={event.title}
               onChange={(e) => setEvent({ ...event, title: e.target.value })}
@@ -219,47 +202,8 @@ function AddAlbum() {
             />
           </div>
 
-          <div className="flex w-full gap-4 md:flex-row flex-col">
-            <div className="flex flex-col md:w-6/12">
-              <label>Artist</label>
-              <select
-                value={event.artistId}
-                // onChange={(e) =>
-                //   setEvent((prev) => ({ ...prev, artistId: e.target.value }))
-                // }
-                onChange={(e) =>
-                  setEvent({ ...event, artistId: e.target.value })
-                }
-                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                required
-                disabled={gettingArtist}
-              >
-                <option value="">Select an artist</option>
-                {allArtist.map((artist) => (
-                  <option key={artist.id} value={artist.id}>
-                    {artist.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex flex-col md:w-6/12">
-              <label>Release Date</label>
-              <input
-                value={event.releaseDate}
-                name="releaseDate"
-                onChange={(e) =>
-                  setEvent({ ...event, releaseDate: e.target.value })
-                }
-                type="date"
-                className="p-4 w-full bg-transparent rounded-lg border-gray-200 border outline-none"
-                required
-              />
-            </div>
-          </div>
-
           <div className="flex w-full flex-col gap-2">
-            <label>Blog header Image</label>
+            <label>Advert Image</label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
               <input
                 type="file"
@@ -303,7 +247,7 @@ function AddAlbum() {
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <label>Album Description</label>
+            <label>Advert Description</label>
             <Tiptap content={content} onChange={handleContentChange} />
           </div>
 

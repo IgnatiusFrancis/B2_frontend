@@ -4,18 +4,17 @@ import Image from "next/image";
 import { Play, Heart } from "lucide-react";
 
 const AlbumCover = ({ album }) => {
-  const { title, url } = album;
-  const artist = album?.artist?.name;
+  console.log("Album Data:", album);
+  const { title, url, description } = album[0];
 
   return (
     <div className="group relative h-[250px] md:h-[400px] overflow-hidden rounded-xl">
       {/* Album Image */}
       <Image
         src={url || "/albumcover.jpeg"}
-        width={1000}
-        height={1000}
+        fill
         alt={title}
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        className="object-contain transition-transform duration-500 group-hover:scale-110"
       />
 
       {/* Gradient Overlay */}
@@ -25,8 +24,10 @@ const AlbumCover = ({ album }) => {
       <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
         <div className="flex justify-between items-end">
           <div className="text-white">
-            <h1 className="text-lg font-bold mb-1 text-gray-200">{title}</h1>
-            <p className="text-sm text-gray-300">{artist}</p>
+            <h1 className="text-lg font-bold mb-1 text-gray-200">
+              {title || "title"}
+            </h1>
+            <p className="text-sm text-gray-300 line-clamp-2">{description}</p>
           </div>
           <button className="text-white hover:scale-110 transition-transform duration-200">
             <Heart className="w-5 h-5" />

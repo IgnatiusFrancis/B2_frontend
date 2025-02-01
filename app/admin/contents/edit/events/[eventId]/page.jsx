@@ -18,6 +18,9 @@ const UPLOAD_TIMEOUT = 3600000;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function EditEvent({ params }) {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const { eventId } = params;
   const [eventData, setEventData] = useState({
     title: "",
@@ -39,9 +42,7 @@ function EditEvent({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const eventResponse = await axios.get(
-          `https://xclusive.onrender.com/api/v1/event/${eventId}`
-        );
+        const eventResponse = await axios.get(`${baseUrl}/event/${eventId}`);
 
         setEventData(eventResponse?.data?.data);
       } catch (error) {
@@ -142,7 +143,7 @@ function EditEvent({ params }) {
       };
 
       const response = await axios.patch(
-        `https://xclusive.onrender.com/api/v1/event/update/${eventId}`,
+        `${baseUrl}/event/update/${eventId}`,
         formData,
         config
       );

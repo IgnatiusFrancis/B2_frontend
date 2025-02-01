@@ -10,6 +10,9 @@ import { ThemeContext } from "@/context/ThemeContext";
 import action from "@/app/actions";
 
 function EditMusic({ params }) {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
   const { musicId } = params;
   const router = useRouter();
   const { showSideBar } = useContext(ThemeContext);
@@ -35,13 +38,11 @@ function EditMusic({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://xclusive.onrender.com/api/v1/artist/artists`
-        );
+        const response = await axios.get(`${baseUrl}/artist/artists`);
         setAllArtist(response?.data?.data);
 
         const musicresponse = await axios.get(
-          `https://xclusive.onrender.com/api/v1/track/audio/${musicId}`
+          `${baseUrl}/track/audio/${musicId}`
         );
         const postData = musicresponse?.data?.data;
         setSingleMusic(postData);
@@ -76,7 +77,7 @@ function EditMusic({ params }) {
       };
 
       const musicResponse = await axios.patch(
-        `https://xclusive.onrender.com/api/v1/track/audio/update/${musicId}`,
+        `${baseUrl}/track/audio/update/${musicId}`,
         formData,
         config
       );

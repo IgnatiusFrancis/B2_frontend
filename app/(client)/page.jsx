@@ -26,23 +26,64 @@ import {
   getAlbums,
   getEvents,
   getHeroSection,
+  getMovies,
   getPosts,
   getTopArtists,
+  getTopTrendingSongs,
   getTrendingVideos,
 } from "@/lib/api";
 import HeroSection from "@/components/HeroSection";
 import TopList from "@/components/TopList";
 import NoContentDesign from "@/components/NoContent";
+import HomeMovie from "@/components/HomeMovie";
 
 export default async function Home() {
-  const [posts, events, albums, topArtists, videos, hero] = await Promise.all([
+  const [
+    posts,
+    events,
+    albums,
+    topArtists,
+    videos,
+    hero,
+    movies,
+    topTrendingSongs,
+  ] = await Promise.all([
     getPosts(3),
     getEvents(2),
-    getAlbums(3),
+    getAlbums(1),
     getTopArtists(),
     getTrendingVideos(),
     getHeroSection(),
+    getMovies(),
+    getTopTrendingSongs(),
   ]);
+
+  // Transform `topTrendingSongs` to group tracks by artist
+  const transformData = (tracks) => {
+    const artistsMap = new Map();
+
+    tracks.forEach((track) => {
+      if (!track.artist) return; // Ensure track has an artist
+
+      const { id, name, bio, url } = track.artist;
+
+      if (!artistsMap.has(id)) {
+        artistsMap.set(id, {
+          id,
+          name,
+          bio,
+          url,
+          track: [], // Initialize track array
+        });
+      }
+
+      artistsMap.get(id).track.push(track);
+    });
+
+    return Array.from(artistsMap.values());
+  };
+
+  const transformedArtists = transformData(topTrendingSongs);
 
   return (
     <main className="bg-gradient-to-b from-gray-900 to-black">
@@ -50,12 +91,18 @@ export default async function Home() {
       <section className="w-full lg:w-[80%] md:w-[90%] mx-auto md:flex mt-8 gap-6">
         <div className="w-full md:w-[80%] mx-auto p-3">
           {/* NEW ALBUM SECTION */}
-          <CategoriesHeading title={"New Album releases"} />
+          {/* <CategoriesHeading title={"New Album releases"} /> */}
+          <CategoriesHeading title={"Adverts"} />
 
-          <div className="grid gap-4 grid-cols-2 md:py-4 md:flex md:gap-4">
+          {/* <div className="grid gap-4 grid-cols-2 md:py-4 md:flex md:gap-4">
             {albums.map((album) => (
               <AlbumCover key={album.id} album={album} />
             ))}
+           
+          </div> */}
+
+          <div className="grid  grid-cols-1 md:py-4 ">
+            <AlbumCover key={albums.id} album={albums} />
           </div>
 
           {/* UPCOMING EVENTS SECTION*/}
@@ -69,7 +116,18 @@ export default async function Home() {
               href={"/videoshome"}
               className="text-gray-200 font-bold text-center cursor-pointer"
             >
-              Read More
+              See More
+            </Link>
+          </div>
+
+          <CategoriesHeading title={"Trending Movies"} />
+          <div className="w-full flex flex-col">
+            <HomeMovie movies={movies} />
+            <Link
+              href={"/movieshome"}
+              className="text-gray-200 font-bold text-center cursor-pointer"
+            >
+              See More
             </Link>
           </div>
 
@@ -77,8 +135,8 @@ export default async function Home() {
           <CategoriesHeading title={"Top Trending Artist Songs"} />
 
           <div className="w-full py-4">
-            <div className="grid gap-4 md:grid-cols-1">
-              <TopList topArtists={topArtists} />
+            <div className="grid gap-4 grid-cols-1">
+              <TopList topArtists={transformedArtists} />
             </div>
           </div>
         </div>
@@ -88,7 +146,7 @@ export default async function Home() {
           <aside className="grid grid-cols-1 md:flex md:flex-col gap-2 py-2">
             {/* Top Artists */}
             <div className="bg-gray-800/50 rounded-xl shadow-lg p-6">
-              <CategoriesHeading title="Top 5 Artists" />
+              <CategoriesHeading title="Artist of the week" />
               <div className="grid grid-cols-1 gap-4 mt-6">
                 {topArtists?.map((artist, index) => (
                   <TopMusic key={artist.id} topArtists={artist} index={index} />

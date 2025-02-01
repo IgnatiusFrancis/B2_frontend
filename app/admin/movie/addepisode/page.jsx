@@ -34,6 +34,9 @@ function AddEpisode() {
   const [fileErrors, setFileErrors] = useState([]);
   const [getMovies, setMovies] = useState(false);
   const [allMovies, setAllMovies] = useState([]);
+  const baseUrl =
+    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
+    "https://xclusive.onrender.com/api/v1";
 
   const [seasonData, setSeasonData] = useState({
     movieId: "",
@@ -162,7 +165,7 @@ function AddEpisode() {
       };
 
       const response = await axios.put(
-        "https://xclusive.onrender.com/api/v1/track/episode",
+        `${baseUrl}/track/episode`,
         formData,
         config
       );
@@ -200,9 +203,7 @@ function AddEpisode() {
     const fetchData = async () => {
       setMovies(true);
       try {
-        const response = await axios.get(
-          `https://xclusive.onrender.com/api/v1/track/seasons`
-        );
+        const response = await axios.get(`${baseUrl}/track/seasons`);
 
         setAllMovies(response?.data?.data.seasons);
       } catch (error) {
