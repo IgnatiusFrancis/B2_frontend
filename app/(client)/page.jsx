@@ -91,7 +91,6 @@ export default async function Home() {
       <section className="w-full lg:w-[80%] md:w-[90%] mx-auto md:flex mt-8 gap-6">
         <div className="w-full md:w-[80%] mx-auto p-3">
           {/* NEW ALBUM SECTION */}
-          {/* <CategoriesHeading title={"New Album releases"} /> */}
           <CategoriesHeading title={"Adverts"} />
 
           {/* <div className="grid gap-4 grid-cols-2 md:py-4 md:flex md:gap-4">
@@ -114,7 +113,7 @@ export default async function Home() {
             <HomePost videos={videos} />
             <Link
               href={"/videoshome"}
-              className="text-gray-200 font-bold text-center cursor-pointer"
+              className="font-bold text-center cursor-pointer bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text"
             >
               See More
             </Link>
@@ -125,18 +124,31 @@ export default async function Home() {
             <HomeMovie movies={movies} />
             <Link
               href={"/movieshome"}
-              className="text-gray-200 font-bold text-center cursor-pointer"
+              // className="text-gray-200 font-bold text-center cursor-pointer"
+              className="font-bold text-center cursor-pointer bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text"
             >
               See More
             </Link>
           </div>
 
           {/* TOP 40 section */}
-          <CategoriesHeading title={"Top Trending Artist Songs"} />
+          <CategoriesHeading title={"Latest Musics"} />
 
           <div className="w-full py-4">
             <div className="grid gap-4 grid-cols-1">
               <TopList topArtists={transformedArtists} />
+              {/* <Link
+                href={"/musics"}
+                className="text-gray-200 font-bold text-center cursor-pointer "
+              >
+                See More
+              </Link> */}
+              <Link
+                href="/musics"
+                className="font-bold text-center cursor-pointer bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text"
+              >
+                See More
+              </Link>
             </div>
           </div>
         </div>

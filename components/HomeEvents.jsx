@@ -4,11 +4,12 @@ import Link from "next/link";
 
 async function HomeEvents({ events }) {
   if (!events || events?.length === 0) {
-    return (
-      <div>
-        <p className="text-gray-500 font-bold">No Events Available</p>
-      </div>
-    );
+    // return (
+    //   <div>
+    //     <p className="text-gray-500 font-bold">No Events Available</p>
+    //   </div>
+    // );
+    return null;
   }
 
   return (
@@ -30,7 +31,7 @@ async function HomeEvents({ events }) {
           </div>
           <Link
             href="/upcomingevents"
-            className="text-gray-200 font-bold text-center cursor-pointer"
+            className="font-bold text-center cursor-pointer bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text"
           >
             Read More
           </Link>

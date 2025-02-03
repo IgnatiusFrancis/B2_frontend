@@ -2,7 +2,7 @@
 
 import { ThemeContext } from "@/context/ThemeContext";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useMemo, useState } from "react";
 import Marquee from "react-fast-marquee";
 import {
@@ -116,52 +116,10 @@ function Header({ breakingNews }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [userId] = useState(null);
-  //const { user, signin, profileOptions, setUser } = useContext(ThemeContext);
+  const pathname = usePathname();
   const baseUrl =
     process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
-
-  // useEffect(() => {
-  //   const initializeUser = async () => {
-  //     try {
-  //       const response = await axios.get(`${baseUrl}/auth/user/me`, {
-  //         withCredentials: true,
-  //       });
-
-  //       if (response.data) {
-  //         setUser(response.data.data.user.userName);
-  //       }
-  //     } catch (error) {
-  //       //console.error("Error fetching user data:", error);
-  //       setUser(null);
-  //     }
-  //   };
-
-  //   // Call initializeUser only if the user is not already logged in
-  //   if (!user) {
-  //     initializeUser();
-  //   }
-  // }, [baseUrl, setUser, user]);
-
-  // const handleLogout = async () => {
-  //   try {
-  //     await axios.post(
-  //       `${baseUrl}/auth/user/logout`,
-  //       {},
-  //       { withCredentials: true }
-  //     );
-
-  //     localStorage.removeItem("userName");
-  //     setUser(null);
-
-  //     window.location.href = "/";
-
-  //     toast.success("Logout Successful", { position: "top-center" });
-  //   } catch (error) {
-  //     console.error("Error signing out:", error.message);
-  //     toast.error("Unable to logout user", { position: "top-center" });
-  //   }
-  // };
 
   const navlinks = useMemo(
     () => [
@@ -177,17 +135,6 @@ function Header({ breakingNews }) {
     ],
     []
   );
-
-  // const breakingNews = useMemo(
-  //   () => [
-  //     "Welcome to B2xclusive..",
-  //     "Breaking: Tech giant announces groundbreaking innovation.",
-  //     "Nigeria celebrates major economic milestone.",
-  //     "Global leaders gather for climate action summit.",
-  //     "Local hero saves family from house fire.......",
-  //   ],
-  //   []
-  // );
 
   return (
     <>
@@ -271,65 +218,31 @@ function Header({ breakingNews }) {
             </div>
 
             {/* User Options */}
-            <div className="flex items-center gap-4">
-              {/* {user ? (
-                <div onClick={profileOptions} className="relative">
-                  {signin && (
-                    <div className="absolute top-8 right-0 bg-white w-48 border flex flex-col z-30 shadow-lg rounded-lg overflow-hidden">
-                      {" "}
-                      <Link
-                        href={`/${userId}`}
-                        className="p-3 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white transition-colors duration-300"
-                      >
-                        Account
-                      </Link>
-                      <div
-                        onClick={handleLogout}
-                        className="p-3 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white transition-colors duration-300 cursor-pointer"
-                      >
-                        Logout
-                      </div>
-                    </div>
-                  )}
-                  <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:shadow-lg transition-shadow duration-300">
-                    <FaUser />
-                    <p>My Profile</p>
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setShowLogin(true)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:shadow-lg transition-shadow duration-300"
-                >
-                  <FaLock />
-                  <p>Login</p>
-                </button>
-              )} */}
-              {/* <RiMenu4Fill
-                className="md:hidden w-14 h-14 p-2 text-gray-600 hover:text-purple-600 transition-colors duration-300"
-                onClick={() => setShowMenu(!showMenu)}
-              /> */}
-            </div>
+            <div className="flex items-center gap-4"></div>
           </div>
 
           {/* Navigation */}
-          {/* <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-white rounded-lg shadow-md">
-            {navlinks.map((link) => (
-              <Link
-                key={link.id}
-                href={link.link}
-                className="text-gray-600 text-sm font-medium py-2 px-4 rounded-full hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white transition-all duration-300"
-              >
-                {link.nav}
-              </Link>
-            ))}
-          </nav> */}
           <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg shadow-md">
             {navlinks.map((link) => (
               <Link
                 key={link.id}
                 href={link.link}
-                className="text-gray-300 text-sm font-medium py-2 px-4 rounded-full hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white transition-all duration-300"
+                className={`
+            text-gray-300 
+            text-sm 
+            font-medium 
+            py-2 
+            px-4 
+            rounded-full 
+            transition-all 
+            duration-300
+            ${
+              pathname === link.link ||
+              (pathname === "/" && link.nav === "Home")
+                ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+                : "hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white"
+            }
+          `}
               >
                 {link.nav}
               </Link>
