@@ -41,8 +41,8 @@ const Sidebar = () => {
         icon: PenTool,
       },
       {
-        title: "Top Artist & Top Videos",
-        href: "/admin/topArtist&TopTrendingVideo",
+        title: "Top Trending",
+        href: "/admin/topTrending",
         icon: LucideTrendingUp,
       },
       { title: "Users", href: "/admin/users", icon: Users },

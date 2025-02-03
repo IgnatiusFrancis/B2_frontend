@@ -8,7 +8,7 @@ import action from "@/app/actions";
 const SECTIONS = [
   { label: "Blogs", value: "BLOGS" },
   { label: "Events", value: "EVENTS" },
-  { label: "Musics", value: "MUSICS" },
+  { label: "MUSIC", value: "MUSIC" },
   { label: "Videos", value: "VIDEOS" },
 ];
 

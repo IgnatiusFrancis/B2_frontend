@@ -14,15 +14,16 @@ function Layout({ children }) {
         <div
           className={`${
             showSideBar ? "w-10/12" : "w-full"
-          } grid grid-cols-2 border-b border-gray-200 `}
+          } grid grid-cols-3 border-b border-gray-200 `}
         >
-          <CreatePostLinks
-            title={"Top Artists"}
-            href={"/admin/topArtist&TopTrendingVideo"}
-          />
+          <CreatePostLinks title={"Top Artists"} href={"/admin/topTrending"} />
           <CreatePostLinks
             title={"Top Trending Videos"}
-            href={"/admin/topArtist&TopTrendingVideo/toptrendingvideo"}
+            href={"/admin/topTrending/toptrendingvideo"}
+          />
+          <CreatePostLinks
+            title={"Latest Musics"}
+            href={"/admin/topTrending/latestMusic"}
           />
         </div>
 

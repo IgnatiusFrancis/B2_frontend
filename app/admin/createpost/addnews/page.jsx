@@ -20,7 +20,7 @@ function AddNews() {
     "https://xclusive.onrender.com/api/v1";
   const [uploading, setUploading] = useState(false);
   const [title, setTitle] = useState("");
-  const [section, setSection] = useState("BLOGS");
+  const [section, setSection] = useState("HEADER_1");
 
   const onSubmit = async (e) => {
     e.preventDefault();
