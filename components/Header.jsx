@@ -262,7 +262,7 @@ function Header({ breakingNews }) {
             </div>
 
             {/* Logo */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center ">
               <B2XLogo />
               {/* <B2XMicDropLogo /> */}
               <h1 className="md:text-4xl text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-transparent bg-clip-text">
