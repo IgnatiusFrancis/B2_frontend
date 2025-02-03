@@ -313,12 +313,23 @@ function Header({ breakingNews }) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-white rounded-lg shadow-md">
+          {/* <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-white rounded-lg shadow-md">
             {navlinks.map((link) => (
               <Link
                 key={link.id}
                 href={link.link}
                 className="text-gray-600 text-sm font-medium py-2 px-4 rounded-full hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white transition-all duration-300"
+              >
+                {link.nav}
+              </Link>
+            ))}
+          </nav> */}
+          <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg shadow-md">
+            {navlinks.map((link) => (
+              <Link
+                key={link.id}
+                href={link.link}
+                className="text-gray-300 text-sm font-medium py-2 px-4 rounded-full hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white transition-all duration-300"
               >
                 {link.nav}
               </Link>
