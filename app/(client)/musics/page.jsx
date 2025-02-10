@@ -33,7 +33,7 @@ async function Musics() {
         <SearchComponent
           data={audios}
           ContentContainer={AllMusic}
-          searchFields={["title", "description", "subTitle"]}
+          searchFields={["title", "subTitle"]}
         />
       </div>
     </>
