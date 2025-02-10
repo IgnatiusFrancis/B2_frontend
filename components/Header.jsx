@@ -1,34 +1,15 @@
 "use client";
 
-import { ThemeContext } from "@/context/ThemeContext";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useContext, useEffect, useMemo, useState } from "react";
 import Marquee from "react-fast-marquee";
-import {
-  FaFacebook,
-  FaTwitter,
-  FaLinkedin,
-  FaYoutube,
-  FaSoundcloud,
-  FaWhatsapp,
-  FaInstagram,
-  FaUser,
-  FaLock,
-} from "react-icons/fa";
-import { RiMenu4Fill } from "react-icons/ri";
-import { toast } from "react-toastify";
-import LoginComponent from "./LoginComponent";
-import { MdCancel } from "react-icons/md";
-import B2XMicDropLogo from "./Logo2";
-import axios from "axios";
 
 const B2XLogo = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
-      className="md:w-24 md:h-24 w-20 h-20 relative cursor-pointer transition-transform duration-300 hover:scale-105"
+      className="md:w-16 md:h-16 w-14 h-14 relative cursor-pointer transition-transform duration-300 hover:scale-105"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -42,7 +23,6 @@ const B2XLogo = () => {
           strokeWidth="6"
           className="animate-pulse"
         />
-
         <circle
           cx="100"
           cy="100"
@@ -50,7 +30,6 @@ const B2XLogo = () => {
           fill="url(#gradientBg)"
           opacity="0.1"
         />
-
         <text
           x="100"
           y="108"
@@ -62,26 +41,12 @@ const B2XLogo = () => {
             fontFamily: "Arial Black, Arial, sans-serif",
             fontWeight: "900",
             letterSpacing: "-2px",
+            // Increased text opacity and brightness
+            fillOpacity: "0.9",
           }}
         >
           B2
         </text>
-
-        <g
-          transform="translate(85, 40) scale(0.8)"
-          className={`transition-transform duration-1000 ${
-            isHovered ? "translate-y-20" : ""
-          }`}
-        >
-          <path
-            d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
-            fill="url(#gradientFill)"
-            className={`transform origin-bottom transition-transform duration-1000 ${
-              isHovered ? "rotate-45" : ""
-            }`}
-          />
-        </g>
-
         <defs>
           <linearGradient
             id="gradientStroke"
@@ -94,13 +59,11 @@ const B2XLogo = () => {
             <stop offset="50%" stopColor="#7C3AED" />
             <stop offset="100%" stopColor="#EC4899" />
           </linearGradient>
-
           <linearGradient id="gradientFill">
-            <stop offset="0%" stopColor="#6366F1" />
-            <stop offset="50%" stopColor="#8B5CF6" />
-            <stop offset="100%" stopColor="#F472B6" />
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="50%" stopColor="#F0F0FF" />
+            <stop offset="100%" stopColor="#E6E6FA" />
           </linearGradient>
-
           <linearGradient id="gradientBg">
             <stop offset="0%" stopColor="#4B5563" />
             <stop offset="100%" stopColor="#1F2937" />
@@ -111,52 +74,47 @@ const B2XLogo = () => {
   );
 };
 
-function Header({ breakingNews }) {
-  const router = useRouter();
-  const [showMenu, setShowMenu] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
-  const [userId] = useState(null);
-  const pathname = usePathname();
-  const baseUrl =
-    process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
-    "https://xclusive.onrender.com/api/v1";
+function StickyHeader({ breakingNews }) {
+  const [scrolled, setScrolled] = useState(false);
 
-  const navlinks = useMemo(
-    () => [
-      { id: 1, nav: "Home", link: "/" },
-      { id: 2, nav: "Blogs", link: "/blogs" },
-      { id: 3, nav: "Events", link: "/upcomingevents" },
-      { id: 4, nav: "Artists", link: "/artists" },
-      { id: 5, nav: "Musics", link: "/musics" },
-      { id: 6, nav: "Videos", link: "/videoshome" },
-      { id: 7, nav: "Movies", link: "/movieshome" },
-      { id: 8, nav: "About Us", link: "/about" },
-      { id: 9, nav: "Contact Us", link: "/contact" },
-    ],
-    []
-  );
+  const navlinks = [
+    { id: 1, nav: "Home", link: "/" },
+    { id: 2, nav: "Blogs", link: "/blogs" },
+    { id: 3, nav: "Events", link: "/upcomingevents" },
+    { id: 4, nav: "Artists", link: "/artists" },
+    { id: 5, nav: "Musics", link: "/musics" },
+    { id: 6, nav: "Videos", link: "/videoshome" },
+    { id: 7, nav: "Movies", link: "/movieshome" },
+    { id: 8, nav: "About Us", link: "/about" },
+    { id: 9, nav: "Contact Us", link: "/contact" },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <>
-      {showLogin && (
-        <div className="bg-[#00000090] backdrop-blur-sm z-[99] flex items-center fixed left-0 right-0 top-0 bottom-0">
-          <div className="relative w-3/6 mx-auto">
-            <MdCancel
-              onClick={() => setShowLogin(false)}
-              className="absolute right-32 top-10 z-[50] text-2xl cursor-pointer"
-            />
-            <LoginComponent />
-          </div>
-        </div>
-      )}
-
-      {/* Breaking News Section */}
-      <div className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 overflow-hidden">
-        <div className="md:w-3/4 w-full mx-auto flex items-center gap-2 p-3">
-          <div className="bg-white/20 backdrop-blur-sm p-2 md:w-3/12 w-full flex justify-center rounded-full">
-            <p className="text-[10px] text-white font-bold uppercase animate-pulse">
-              Breaking News
-            </p>
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* Breaking News Section with Logo */}
+      <div
+        className={`
+          bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 
+          overflow-hidden 
+          transition-all duration-300
+          ${scrolled ? "opacity-0 h-0" : "opacity-100 h-auto"}
+        `}
+      >
+        <div className="md:w-3/4 w-full mx-auto flex items-center gap-4 p-3">
+          <div className="flex items-center gap-2">
+            <B2XLogo />
+            <h1 className="md:text-3xl text-xl font-black text-white">
+              TRENDS
+            </h1>
           </div>
           <div className="flex-1">
             <Marquee pauseOnHover={true} speed={50}>
@@ -170,79 +128,22 @@ function Header({ breakingNews }) {
         </div>
       </div>
 
-      {/* Header Section */}
-      <div className="bg-gradient-to-b from-gray-50 to-white shadow-sm">
+      {/* Header Section with Sticky Navigation */}
+      <div
+        className={`
+          bg-white/90 backdrop-blur-md shadow-md 
+          transition-all duration-300 
+          ${scrolled ? "sticky top-0" : ""}
+        `}
+      >
         <div className="w-full md:w-3/4 mx-auto p-4">
-          <div className="flex  gap-2 flex-col sm:flex-row md:gap-6 md:justify-center sm:justify-between items-center">
-            {/* Social Links */}
-            <div className="flex items-center gap-4">
-              <p className="text-sm font-bold text-gray-600">Follow us</p>
-              <div className="flex gap-3 text-lg">
-                {[
-                  {
-                    icon: FaFacebook,
-                    color: "text-blue-600",
-                    link: "https://www.facebook.com/share/1RNuYmnfbq/?mibextid=wwXIfr",
-                  },
-                  {
-                    icon: FaWhatsapp,
-                    color: "text-green-400",
-                    link: "https://wa.me/message/DTRMTVSWSEOAP1",
-                  },
-                  {
-                    icon: FaInstagram,
-                    color: "text-pink-500",
-                    link: "https://www.instagram.com/b2xclusive?igsh=ZG01eTAxZ2cxaG5p",
-                  },
-                ].map((social, index) => (
-                  <Link
-                    key={index}
-                    href={social.link}
-                    target="_blank" // Opens in a new tab
-                    rel="noopener noreferrer" // Improves security for external links
-                    className={`${social.color} hover:scale-125 transition-transform duration-300`}
-                  >
-                    <social.icon />
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Logo */}
-            <div className="flex items-center ">
-              <B2XLogo />
-              {/* <B2XMicDropLogo /> */}
-              <h1 className="md:text-4xl text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-transparent bg-clip-text">
-                TRENDS
-              </h1>
-            </div>
-
-            {/* User Options */}
-            <div className="flex items-center gap-4"></div>
-          </div>
-
           {/* Navigation */}
           <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg shadow-md">
             {navlinks.map((link) => (
               <Link
                 key={link.id}
                 href={link.link}
-                className={`
-            text-gray-300 
-            text-sm 
-            font-medium 
-            py-2 
-            px-4 
-            rounded-full 
-            transition-all 
-            duration-300
-            ${
-              pathname === link.link ||
-              (pathname === "/" && link.nav === "Home")
-                ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white"
-                : "hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white"
-            }
-          `}
+                className="text-gray-300 text-sm font-medium py-2 px-4 rounded-full transition-all duration-300 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white"
               >
                 {link.nav}
               </Link>
@@ -250,33 +151,8 @@ function Header({ breakingNews }) {
           </nav>
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      {showMenu && (
-        <div className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50">
-          <div className="bg-white w-64 h-full p-6 flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <B2XLogo />
-              <MdCancel
-                onClick={() => setShowMenu(false)}
-                className="text-2xl cursor-pointer"
-              />
-            </div>
-            {navlinks.map((link) => (
-              <Link
-                key={link.id}
-                href={link.link}
-                className="text-gray-600 hover:text-purple-600 transition-colors duration-300"
-                onClick={() => setShowMenu(false)}
-              >
-                {link.nav}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </>
+    </header>
   );
 }
 
-export default Header;
+export default StickyHeader;
