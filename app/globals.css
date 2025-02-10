@@ -6,6 +6,13 @@ body {
   background-color: #f4f7fa;
 }
 
+:root {
+  --header-height: 181px; /* Adjust according to your header height */
+}
+
+.main-content {
+  padding-top: var(--header-height);
+}
 .dark-head-bg {
   background-color: #ffffff22;
   backdrop-filter: 10px;
