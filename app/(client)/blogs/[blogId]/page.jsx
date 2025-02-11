@@ -7,7 +7,7 @@ import TopMusic from "@/components/TopMusic";
 import { getPost, getTopArtists } from "@/lib/api";
 import Link from "next/link";
 
-export async function SingleBlog({ params }) {
+export default async function SingleBlog({ params }) {
   const { blogId } = params;
 
   const [post, topArtists] = await Promise.all([
@@ -125,5 +125,3 @@ export async function SingleBlog({ params }) {
     </>
   );
 }
-
-export default SingleBlog;
