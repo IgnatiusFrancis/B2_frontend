@@ -2,7 +2,28 @@
 import Image from "next/image";
 import { FaDownload, FaPlay, FaPause } from "react-icons/fa";
 import pld from "@/public/pld.jpeg";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+// Waveform Component
+const Waveform = ({ isPlaying }) => {
+  const bars = 200;
+
+  return (
+    <div className="flex items-center justify-center gap-[2px] h-4 mx-2">
+      {[...Array(bars)].map((_, i) => (
+        <div
+          key={i}
+          className={`w-[2px] bg-blue-500 rounded-full transition-all duration-150 ${
+            isPlaying ? "animate-waveform" : "h-1"
+          }`}
+          style={{
+            animationDelay: `${i * 0.05}s`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 function ArtistSong({
   id,
@@ -15,25 +36,74 @@ function ArtistSong({
   publicId,
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audio, setAudio] = useState(null);
+  const [currentTrackId, setCurrentTrackId] = useState(null);
+  const audioRef = useRef(null);
   const baseUrl =
     process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
 
+  // const handlePlayPause = () => {
+  //   if (!audio) {
+  //     const newAudio = new Audio(audioUrl.replace("http://", "https://"));
+  //     setAudio(newAudio);
+
+  //     newAudio.addEventListener("ended", () => setIsPlaying(false));
+  //     newAudio.play();
+  //   } else if (isPlaying) {
+  //     audio.pause();
+  //   } else {
+  //     audio.play();
+  //   }
+
+  //   setIsPlaying(!isPlaying);
+  // };
+
+  useEffect(() => {
+    // Cleanup function to handle component unmount
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
   const handlePlayPause = () => {
-    if (!audio) {
-      const newAudio = new Audio(audioUrl.replace("http://", "https://"));
-      setAudio(newAudio);
+    const url = audioUrl.replace("http://", "https://");
 
-      newAudio.addEventListener("ended", () => setIsPlaying(false));
-      newAudio.play();
-    } else if (isPlaying) {
-      audio.pause();
+    if (audioRef.current) {
+      if (currentTrackId === id) {
+        // Same track - toggle play/pause
+        if (isPlaying) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        } else {
+          audioRef.current.play();
+          setIsPlaying(true);
+        }
+      } else {
+        // Different track - switch to new track
+        audioRef.current.pause();
+        audioRef.current = new Audio(url);
+        audioRef.current.addEventListener("ended", () => {
+          setIsPlaying(false);
+          setCurrentTrackId(null);
+        });
+        audioRef.current.play();
+        setIsPlaying(true);
+        setCurrentTrackId(id);
+      }
     } else {
-      audio.play();
+      // First time playing - create new audio
+      audioRef.current = new Audio(url);
+      audioRef.current.addEventListener("ended", () => {
+        setIsPlaying(false);
+        setCurrentTrackId(null);
+      });
+      audioRef.current.play();
+      setIsPlaying(true);
+      setCurrentTrackId(id);
     }
-
-    setIsPlaying(!isPlaying);
   };
 
   return (
@@ -64,11 +134,22 @@ function ArtistSong({
 
         {/* Play/Pause & Download Controls */}
         <div className="flex gap-2 items-center">
-          <button
+          {/* <button
             onClick={handlePlayPause}
             className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-all transform hover:scale-110"
           >
             {isPlaying ? <FaPause /> : <FaPlay />}
+          </button> */}
+          {/* Play/Pause Button */}
+          <button
+            onClick={() => handlePlayPause()}
+            className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-all duration-300"
+          >
+            {isPlaying && currentTrackId === id ? (
+              <FaPause className="w-3 h-3" />
+            ) : (
+              <FaPlay className="w-3 h-3" />
+            )}
           </button>
 
           <a
@@ -80,6 +161,9 @@ function ArtistSong({
           </a>
         </div>
       </div>
+
+      {/* Waveform visualization */}
+      {currentTrackId === id && <Waveform isPlaying={isPlaying} />}
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
+import { usePathname } from "next/navigation";
 
 const B2XLogo = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -76,6 +77,7 @@ const B2XLogo = () => {
 
 function StickyHeader({ breakingNews }) {
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   const navlinks = [
     { id: 1, nav: "Home", link: "/" },
@@ -138,12 +140,40 @@ function StickyHeader({ breakingNews }) {
       >
         <div className="w-full md:w-3/4 mx-auto p-4">
           {/* Navigation */}
-          <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg shadow-md">
+          {/* <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg shadow-md">
             {navlinks.map((link) => (
               <Link
                 key={link.id}
                 href={link.link}
                 className="text-gray-300 text-sm font-medium py-2 px-4 rounded-full transition-all duration-300 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white"
+              >
+                {link.nav}
+              </Link>
+            ))}
+          </nav> */}
+
+          {/* Navigation */}
+          <nav className="flex flex-wrap mt-6 p-4 md:justify-between justify-center bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg shadow-md">
+            {navlinks.map((link) => (
+              <Link
+                key={link.id}
+                href={link.link}
+                className={`
+            text-gray-300 
+            text-sm 
+            font-medium 
+            py-2 
+            px-4 
+            rounded-full 
+            transition-all 
+            duration-300
+            ${
+              pathname === link.link ||
+              (pathname === "/" && link.nav === "Home")
+                ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+                : "hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white"
+            }
+          `}
               >
                 {link.nav}
               </Link>

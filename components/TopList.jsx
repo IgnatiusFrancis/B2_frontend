@@ -5,6 +5,7 @@ import { FaPlay, FaPause, FaDownload } from "react-icons/fa";
 import { MoreVertical } from "lucide-react";
 import Image from "next/image";
 import { ThemeContext } from "@/context/ThemeContext";
+import Link from "next/link";
 
 // Waveform Component
 const Waveform = ({ isPlaying }) => {
@@ -111,7 +112,12 @@ const TopList = ({ topArtists }) => {
           {/* Artist Info */}
           <div>
             <h1 className={`font-bold text-xl ${theme}-text`}>
-              {artist?.name}
+              <Link
+                href={`/artists/${artist.id}`}
+                className="text-lg md:text-xl text-gray-700 hover:text-blue-400 transition-colors"
+              >
+                {artist?.name}
+              </Link>
             </h1>
             <p
               className="text-xs text-gray-500 overflow-hidden text-ellipsis whitespace-normal max-h-[3rem]"

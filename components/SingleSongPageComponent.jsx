@@ -53,7 +53,6 @@ const SingleSongPageComponent = ({ audio, topArtists }) => {
   }, []);
 
   const handlePlayPause = (audio) => {
-    console.log(audio);
     if (!audio?.audioUrl) return;
 
     const audioUrl = audio.audioUrl.replace("http://", "https://");
