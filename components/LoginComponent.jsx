@@ -35,11 +35,13 @@ function AuthComponent() {
 
       const userData = response?.data;
       const user = userData.data.user;
+      const token = userData.data.token;
+      localStorage.setItem("token", token);
 
       toast.success(userData.message, { position: "top-center" });
 
-      const { role, userName } = user || {};
-      //setUser(userName);
+      const { role } = user || {};
+
       role === "admin" ? router.push("/admin") : router.push("/");
     } catch (error) {
       console.error(error);
