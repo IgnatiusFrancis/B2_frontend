@@ -115,12 +115,14 @@ function CreatePost() {
       formData.append("description", content);
 
       if (thumbnail) formData.append("file", thumbnail);
+      const token = localStorage.getItem("token");
 
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
+        //withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(

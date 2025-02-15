@@ -37,8 +37,12 @@ function PostContent({ id, title, url, views, createdAt, subtitle }) {
     });
 
     try {
+      const token = localStorage.getItem("token");
       await axios.delete(`${baseUrl}/post/delete/${id}`, {
-        withCredentials: true,
+        //  withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       await action("posts");

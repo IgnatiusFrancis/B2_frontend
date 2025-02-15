@@ -16,19 +16,18 @@ export default function AdminLayout({ children }) {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const token = localStorage.getItem("token"); // Retrieve token from localStorage
-
-        if (!token) {
-          router.push("/"); // Redirect if no token
-          return;
-        }
-
         // const response = await axios.get(`${baseUrl}/auth/user/me`, {
         //   withCredentials: true,
         // });
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          router.push("/");
+          return;
+        }
 
         const response = await axios.get(`${baseUrl}/auth/user/me`, {
-          headers: { Authorization: `Bearer ${token}` }, // Set Bearer token
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         const user = response.data;

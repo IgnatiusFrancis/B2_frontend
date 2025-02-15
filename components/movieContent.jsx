@@ -35,8 +35,11 @@ function MovieContent({ id, title, url, createdAt, downloads, type }) {
     });
 
     try {
+      const token = localStorage.getItem("token");
       await axios.delete(`${baseUrl}/movie/delete/${id}`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       toast.dismiss();

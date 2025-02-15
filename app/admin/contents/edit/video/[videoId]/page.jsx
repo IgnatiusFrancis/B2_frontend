@@ -64,11 +64,20 @@ function EditVideo({ params }) {
     try {
       let formData = new FormData(e.target);
       formData.append("description", singleVideo.description);
+      // const config = {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      //   withCredentials: true,
+      // };
+
+      const token = localStorage.getItem("token");
+
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
       };
 
       const videoResponse = await axios.patch(

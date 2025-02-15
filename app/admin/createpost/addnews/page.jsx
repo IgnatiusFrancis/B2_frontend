@@ -30,13 +30,24 @@ function AddNews() {
       const newsData = {
         title: title,
       };
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
       const response = await axios.put(
         `${baseUrl}/hero-section/breaking-news/${section}`,
         newsData,
-        { withCredentials: true }
+        config
       );
-
+      // const response = await axios.patch(
+      //   `${baseUrl}/hero-section/${section}`,
+      //   heroSectionData,
+      //   config
+      // );
       await action("heroSection");
       toast.success(response.data?.message || "News added successfully!");
       setTitle("");

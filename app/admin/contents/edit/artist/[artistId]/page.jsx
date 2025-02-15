@@ -52,13 +52,20 @@ function EditArtist({ params }) {
     setUploadingPost(true);
     try {
       const formData = new FormData(e.target);
+      const token = localStorage.getItem("token");
 
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
       };
+      // const config = {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      //   withCredentials: true,
+      // };
 
       const response = await axios.patch(
         `${baseUrl}/artist/update/${artistId}`,

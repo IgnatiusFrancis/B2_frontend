@@ -40,12 +40,16 @@ const TrendingMusics = () => {
     setUploading(true);
 
     try {
+      const token = localStorage.getItem("token");
       await axios.put(
         `${baseUrl}/track/trending/audios`,
         { trendingAudiosIds: selectedVideos },
         {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          // withCredentials: true,
           timeout: UPLOAD_TIMEOUT,
         }
       );

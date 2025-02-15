@@ -23,8 +23,11 @@ const ArtistCard = ({ id, name, url, bio, createdAt }) => {
     });
 
     try {
+      const token = localStorage.getItem("token");
       await axios.delete(`${baseUrl}/artist/delete/${id}`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       toast.update(toastId, {

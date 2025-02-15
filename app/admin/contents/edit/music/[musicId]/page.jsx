@@ -69,12 +69,20 @@ function EditMusic({ params }) {
     try {
       let formData = new FormData(e.target);
       formData.append("description", content);
+      const token = localStorage.getItem("token");
+
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
       };
+      // const config = {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      //   withCredentials: true,
+      // };
 
       const musicResponse = await axios.patch(
         `${baseUrl}/track/audio/update/${musicId}`,

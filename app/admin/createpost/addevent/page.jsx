@@ -52,11 +52,12 @@ function AddEvent() {
       let formData = new FormData(e.target);
       formData.append("description", event.description);
 
+      const token = localStorage.getItem("token");
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(

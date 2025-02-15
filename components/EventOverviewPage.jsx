@@ -36,8 +36,11 @@ function EventOverviewPage({ id, title, url, location, date, subtitle }) {
     });
 
     try {
+      const token = localStorage.getItem("token");
       await axios.delete(`${baseUrl}/event/delete/${id}`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`, // Add Bearer token
+        },
       });
 
       await action("events");

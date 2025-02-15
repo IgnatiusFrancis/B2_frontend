@@ -113,6 +113,7 @@ function EditEvent({ params }) {
     try {
       const formData = new FormData(e.target);
       formData.append("description", content || eventData.description);
+      const token = localStorage.getItem("token");
 
       if (thumbnail) {
         formData.append("files", thumbnail);
@@ -123,8 +124,10 @@ function EditEvent({ params }) {
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
+
+        //withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(

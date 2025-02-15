@@ -44,8 +44,11 @@ function VideoOverview({
     });
 
     try {
+      const token = localStorage.getItem("token");
       await axios.delete(`${baseUrl}/track/video/delete/${id}`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       await action("videos");

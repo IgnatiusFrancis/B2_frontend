@@ -150,11 +150,12 @@ function AddVideos() {
 
       formData.videoFile.forEach((video) => submitData.append("videos", video));
 
+      const token = localStorage.getItem("token");
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(

@@ -56,10 +56,15 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
+      const token = localStorage.getItem("token");
       await axios.post(
         `${baseUrl}/auth/user/logout`,
         {},
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       localStorage.removeItem("userName");

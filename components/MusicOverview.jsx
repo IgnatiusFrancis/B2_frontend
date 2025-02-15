@@ -43,8 +43,11 @@ function MusicOverview({
     });
 
     try {
+      const token = localStorage.getItem("token");
       await axios.delete(`${baseUrl}/track/audio/delete/${id}`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`, // Add Bearer token
+        },
       });
 
       await action("audios");

@@ -40,12 +40,17 @@ const TopArtists = () => {
     setUploading(true);
 
     try {
+      const token = localStorage.getItem("token");
+
       await axios.put(
         `${baseUrl}/artist/top/artists`,
         { topArtistIds: selectedVideos },
         {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          // withCredentials: true,
           timeout: UPLOAD_TIMEOUT,
         }
       );
