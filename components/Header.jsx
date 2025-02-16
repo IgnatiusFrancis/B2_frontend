@@ -8,6 +8,71 @@ import { usePathname } from "next/navigation";
 const B2XLogo = () => {
   const [isHovered, setIsHovered] = useState(false);
 
+  // return (
+  //   <div
+  //     className="md:w-16 md:h-16 w-14 h-14 relative cursor-pointer transition-transform duration-300 hover:scale-105"
+  //     onMouseEnter={() => setIsHovered(true)}
+  //     onMouseLeave={() => setIsHovered(false)}
+  //   >
+  //     <svg viewBox="0 0 200 200" className="w-full h-full animate-spin-slow">
+  //       <circle
+  //         cx="100"
+  //         cy="100"
+  //         r="90"
+  //         fill="none"
+  //         stroke="url(#gradientStroke)"
+  //         strokeWidth="6"
+  //         className="animate-pulse"
+  //       />
+  //       <circle
+  //         cx="100"
+  //         cy="100"
+  //         r="70"
+  //         fill="url(#gradientBg)"
+  //         opacity="0.1"
+  //       />
+  //       <text
+  //         x="100"
+  //         y="108"
+  //         textAnchor="middle"
+  //         dominantBaseline="middle"
+  //         fill="url(#gradientFill)"
+  //         style={{
+  //           fontSize: "75px",
+  //           fontFamily: "Arial Black, Arial, sans-serif",
+  //           fontWeight: "900",
+  //           letterSpacing: "-2px",
+  //           // Increased text opacity and brightness
+  //           fillOpacity: "0.9",
+  //         }}
+  //       >
+  //         B2
+  //       </text>
+  //       <defs>
+  //         <linearGradient
+  //           id="gradientStroke"
+  //           x1="0%"
+  //           y1="0%"
+  //           x2="100%"
+  //           y2="100%"
+  //         >
+  //           <stop offset="0%" stopColor="#4F46E5" />
+  //           <stop offset="50%" stopColor="#7C3AED" />
+  //           <stop offset="100%" stopColor="#EC4899" />
+  //         </linearGradient>
+  //         <linearGradient id="gradientFill">
+  //           <stop offset="0%" stopColor="#FFFFFF" />
+  //           <stop offset="50%" stopColor="#F0F0FF" />
+  //           <stop offset="100%" stopColor="#E6E6FA" />
+  //         </linearGradient>
+  //         <linearGradient id="gradientBg">
+  //           <stop offset="0%" stopColor="#4B5563" />
+  //           <stop offset="100%" stopColor="#1F2937" />
+  //         </linearGradient>
+  //       </defs>
+  //     </svg>
+  //   </div>
+  // );
   return (
     <div
       className="md:w-16 md:h-16 w-14 h-14 relative cursor-pointer transition-transform duration-300 hover:scale-105"
@@ -33,16 +98,15 @@ const B2XLogo = () => {
         />
         <text
           x="100"
-          y="108"
+          y="115"
           textAnchor="middle"
           dominantBaseline="middle"
           fill="url(#gradientFill)"
           style={{
-            fontSize: "75px",
+            fontSize: "100px", // Increased from 75px
             fontFamily: "Arial Black, Arial, sans-serif",
             fontWeight: "900",
-            letterSpacing: "-2px",
-            // Increased text opacity and brightness
+            letterSpacing: "-3px", // Adjusted for better spacing
             fillOpacity: "0.9",
           }}
         >
@@ -102,7 +166,6 @@ function StickyHeader({ breakingNews }) {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      {/* Breaking News Section with Logo */}
       <div
         className={`
           bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 
@@ -111,8 +174,12 @@ function StickyHeader({ breakingNews }) {
           ${scrolled ? "opacity-0 h-0" : "opacity-100 h-auto"}
         `}
       >
-        <div className="md:w-3/4 w-full mx-auto flex items-center gap-4 p-3">
-          <div className="flex items-center gap-2">
+        <div className="md:w-3/4 w-full mx-auto flex items-center gap-2 p-3">
+          {" "}
+          {/* Reduced gap-4 to gap-2 */}
+          <div className="flex items-center gap-1">
+            {" "}
+            {/* Reduced gap-2 to gap-1 */}
             <B2XLogo />
             <h1 className="md:text-3xl text-xl font-black text-white">
               TRENDS

@@ -44,7 +44,7 @@ const Music = ({ audios }) => {
           <div>
             <h1 className={`font-bold text-xl ${theme}-text`}>
               <Link
-                href={`/artists/${audio.id}`}
+                href={`/musics/${audio.id}`}
                 className="text-lg md:text-xl text-gray-700 hover:text-blue-400 transition-colors"
               >
                 {audio.title}
