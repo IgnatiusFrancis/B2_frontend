@@ -43,7 +43,7 @@ function TrendingVideos({ id, title, date, url, artist }) {
 
         {/* Bio Section */}
         <div className="mt-3 text-sm text-gray-700">
-          {artist.bio?.split(" ").slice(0, 20).join(" ") || "No bio available"}
+          {artist.bio?.split(" ").slice(0, 15).join(" ") || "No bio available"}
           ...
         </div>
       </div>

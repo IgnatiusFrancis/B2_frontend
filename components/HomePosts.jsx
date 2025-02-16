@@ -11,7 +11,7 @@ async function HomePost({ videos }) {
 
   return (
     <>
-      <div className="grid md:grid-cols-2 gap-4 py-4 w-full">
+      <div className="grid md:grid-cols-1 gap-4 py-4 w-full">
         {videos?.slice(0, 4)?.map((video) => (
           <TrendingVideos
             key={video?.id}

@@ -24,6 +24,7 @@ import HomeEvents from "@/components/HomeEvents";
 import HomeRecentPost from "@/components/HomeRecentPost";
 import {
   getAlbums,
+  getAudios,
   getEvents,
   getHeroSection,
   getMovies,
@@ -36,6 +37,7 @@ import HeroSection from "@/components/HeroSection";
 import TopList from "@/components/TopList";
 import NoContentDesign from "@/components/NoContent";
 import HomeMovie from "@/components/HomeMovie";
+import Music from "@/components/Music";
 
 export default async function Home() {
   const [
@@ -47,6 +49,7 @@ export default async function Home() {
     hero,
     movies,
     topTrendingSongs,
+    audios,
   ] = await Promise.all([
     getPosts(3),
     getEvents(2),
@@ -56,6 +59,7 @@ export default async function Home() {
     getHeroSection(),
     getMovies(),
     getTopTrendingSongs(),
+    getAudios(),
   ]);
 
   // Transform `topTrendingSongs` to group tracks by artist
@@ -100,25 +104,24 @@ export default async function Home() {
            
           </div> */}
 
-          <div className="grid  grid-cols-1 md:py-4 ">
+          <div className="grid  grid-cols-1 md:py-2 ">
             <AlbumCover key={albums.id} album={albums} />
           </div>
 
           {/* UPCOMING EVENTS SECTION*/}
           <HomeEvents events={events} />
 
-          {/* RECENT POST SECTION */}
-          <CategoriesHeading title={"Trending Videos"} />
-          <div className="w-full flex flex-col">
-            <HomePost videos={videos} />
+          {/* MUSIC SECTION */}
+          <CategoriesHeading title={"Musics"} />
+          <div className="w-full flex flex-col py-4">
+            <Music audios={audios} />
             <Link
-              href={"/videoshome"}
+              href="/musics"
               className="font-bold text-center cursor-pointer bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text"
             >
               See More
             </Link>
           </div>
-
           <CategoriesHeading title={"Trending Movies"} />
           <div className="w-full flex flex-col">
             <HomeMovie movies={movies} />
@@ -168,8 +171,8 @@ export default async function Home() {
 
             {/* Get Connected */}
             <div className="bg-gray-800/50 rounded-xl shadow-lg p-6 ">
-              <CategoriesHeading title="Get Connected" />
-              <div className="flex justify-around mt-4 text-gray-200 text-3xl">
+              <CategoriesHeading title="Trending Videos" />
+              {/* <div className="flex justify-around mt-4 text-gray-200 text-3xl">
                 <Link
                   href={
                     "https://www.facebook.com/share/1RNuYmnfbq/?mibextid=wwXIfr"
@@ -187,17 +190,34 @@ export default async function Home() {
                 >
                   <FaInstagram />
                 </Link>
+              </div> */}
+              <div className="w-full flex flex-col">
+                <HomePost videos={videos} />
+                <Link
+                  href={"/videoshome"}
+                  className="font-bold text-center cursor-pointer bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text"
+                >
+                  See More
+                </Link>
               </div>
             </div>
           </aside>
-
+          {/* Get Connected */}
+          <div className="bg-gray-800/50 rounded-xl shadow-lg p-6 ">
+            <div className="hidden md:block">
+              <CategoriesHeading title={"Recent Posts"} />
+              <div className="w-full">
+                <HomeRecentPost posts={posts} />
+              </div>
+            </div>
+          </div>
           {/* Recent post section */}
-          <div className="hidden md:block">
+          {/* <div className="hidden md:block">
             <CategoriesHeading title={"Recent Posts"} />
             <div className="w-full">
               <HomeRecentPost posts={posts} />
             </div>
-          </div>
+          </div> */}
 
           {/*Animated section */}
           <div className="hidden md:block">
