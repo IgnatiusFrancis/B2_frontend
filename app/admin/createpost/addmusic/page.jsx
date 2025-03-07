@@ -92,11 +92,12 @@ const AddMusic = () => {
         }
       });
 
+      const token = localStorage.getItem("token");
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
         timeout: UPLOAD_TIMEOUT,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -124,8 +125,24 @@ const AddMusic = () => {
 
       toast.success(response.data.message);
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Failed to create music");
-      console.error("Submission error:", error);
+      console.log(error);
+      if (axios.isAxiosError(error)) {
+        if (error.code === "ECONNABORTED") {
+          toast.error(
+            "Upload timed out. Please try with smaller files or check your connection"
+          );
+        } else if (error.response?.status === 413) {
+          toast.error("Files too large for server. Please reduce file sizes");
+        } else if (error.response) {
+          toast.error(error.response.data?.message || "Server error occurred");
+        } else if (error.request) {
+          toast.error("Network error. Please check your connection");
+        } else {
+          toast.error("An unexpected error occurred");
+        }
+      } else {
+        toast.error("Failed to create audio");
+      }
     } finally {
       setUploading(false);
       setUploadProgress(0);
@@ -275,7 +292,8 @@ const AddMusic = () => {
                 }
                 className="hidden"
                 id="audio-upload"
-                accept="audio/*"
+                // accept="audio/*"
+                accept="audio/mp3,audio/wav,audio/mpeg,audio/aac,audio/ogg,audio/m4a,  audio/flac,"
               />
               <label htmlFor="audio-upload" className="cursor-pointer">
                 <div className="flex flex-col items-center py-8">
