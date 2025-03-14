@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { Film, Loader2, Upload } from "lucide-react";
 import action from "@/app/actions";
 
-// Constants remain the same
+// Constants remain the same.
 const MAX_FILE_SIZE = 500 * 1024 * 1024;
 const MAX_THUMBNAIL_SIZE = 5 * 1024 * 1024;
 const UPLOAD_TIMEOUT = 3600000;
