@@ -86,7 +86,7 @@ const TrendingMusics = () => {
     };
 
     fetchVideos();
-  }, []);
+  }, [baseUrl]);
 
   useEffect(() => {
     const filtered = videos.filter(

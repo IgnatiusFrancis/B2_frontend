@@ -67,7 +67,7 @@ function EditBlog({ params }) {
       }
     };
     fetchSinglePost();
-  }, [blogpostId]);
+  }, [blogpostId, baseUrl]);
 
   const handleContentChange = (cont) => {
     setContent(cont);

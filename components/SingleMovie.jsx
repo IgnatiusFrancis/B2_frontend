@@ -147,11 +147,17 @@ import { Play, Info, Download } from "lucide-react";
 const SingleMovie = ({ movie }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [selectedLink, setSelectedLink] = useState(null);
+  // Automatically set first link if only one exists
+  useState(() => {
+    if (downloadLinks.length === 1) {
+      setSelectedLink(downloadLinks[0].url);
+    }
+  }, [downloadLinks]);
 
   const baseUrl =
     process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
     "https://xclusive.onrender.com/api/v1";
-  // console.log("env:", process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL);
+
   if (!movie) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -174,13 +180,6 @@ const SingleMovie = ({ movie }) => {
   const data = movie.movie;
   const episode = data.episode?.[0] || null;
   const downloadLinks = episode?.externalDownloadLink || [];
-
-  // Automatically set first link if only one exists
-  useState(() => {
-    if (downloadLinks.length === 1) {
-      setSelectedLink(downloadLinks[0].url);
-    }
-  }, [downloadLinks]);
 
   const handleDownload = async () => {
     try {

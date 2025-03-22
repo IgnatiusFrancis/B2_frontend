@@ -53,7 +53,7 @@ const AddMusic = () => {
     };
 
     fetchData();
-  }, []);
+  }, [baseUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -52,7 +52,7 @@ function EditMusic({ params }) {
     };
 
     fetchData();
-  }, [musicId]);
+  }, [musicId, baseUrl]);
 
   useEffect(() => {
     setSingleMusic((prevPost) => ({
@@ -77,12 +77,6 @@ function EditMusic({ params }) {
           Authorization: `Bearer ${token}`,
         },
       };
-      // const config = {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      //   withCredentials: true,
-      // };
 
       const musicResponse = await axios.patch(
         `${baseUrl}/track/audio/update/${musicId}`,

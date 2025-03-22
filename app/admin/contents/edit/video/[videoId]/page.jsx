@@ -52,7 +52,7 @@ function EditVideo({ params }) {
     };
 
     fetchData();
-  }, [videoId]);
+  }, [videoId, baseUrl]);
 
   const handleContentChange = (cont) => {
     setContent(cont);
@@ -64,12 +64,6 @@ function EditVideo({ params }) {
     try {
       let formData = new FormData(e.target);
       formData.append("description", singleVideo.description);
-      // const config = {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      //   withCredentials: true,
-      // };
 
       const token = localStorage.getItem("token");
 

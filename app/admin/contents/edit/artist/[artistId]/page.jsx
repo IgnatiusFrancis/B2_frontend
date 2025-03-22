@@ -38,7 +38,7 @@ function EditArtist({ params }) {
       }
     };
     fetchSingleArtist();
-  }, [artistId]);
+  }, [artistId, baseUrl]);
 
   useEffect(() => {
     setSingleArtist((prevArtist) => ({
@@ -60,12 +60,6 @@ function EditArtist({ params }) {
           Authorization: `Bearer ${token}`,
         },
       };
-      // const config = {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      //   withCredentials: true,
-      // };
 
       const response = await axios.patch(
         `${baseUrl}/artist/update/${artistId}`,

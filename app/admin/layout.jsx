@@ -31,7 +31,6 @@ export default function AdminLayout({ children }) {
         });
 
         const user = response.data;
-        console.log("Authenticated user:", user);
 
         // Check if user exists and has the admin role
         if (user && user.role === "admin") {
@@ -48,7 +47,7 @@ export default function AdminLayout({ children }) {
     };
 
     checkAuthentication();
-  }, [router]);
+  }, [router, baseUrl]);
 
   if (loading) {
     return (

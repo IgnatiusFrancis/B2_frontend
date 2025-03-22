@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { motion } from "framer-motion";
 import { PlayCircle, Music2, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const TopMusic = ({ topArtists, index }) => {
   const { theme } = useContext(ThemeContext);
@@ -47,7 +48,7 @@ const TopMusic = ({ topArtists, index }) => {
           </div>
 
           {/* Main image with blur loading */}
-          <img
+          <Image
             src={url || "/albumcover.jpeg"}
             alt={name}
             className="absolute inset-0 w-full h-full object-cover z-10 

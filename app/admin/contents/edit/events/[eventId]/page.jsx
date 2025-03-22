@@ -51,7 +51,7 @@ function EditEvent({ params }) {
     };
 
     fetchData();
-  }, [eventId]);
+  }, [eventId, baseUrl]);
 
   const handleContentChange = (newContent) => setContent(newContent);
 

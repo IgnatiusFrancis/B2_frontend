@@ -108,7 +108,7 @@ function AddVideos() {
     };
 
     fetchData();
-  }, []);
+  }, [baseUrl]);
 
   const [formData, setFormData] = useState({
     title: "",
