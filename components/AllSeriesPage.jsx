@@ -65,7 +65,7 @@ const AllSeriesPage = ({ movie }) => {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {(movie.seasons || []).map((season, index) => (
-            <Link href={`/season-menu/${season.id}`} key={season.id}>
+            <Link href={`/series-episodes/${season.id}`} key={season.id}>
               <div
                 className="group relative bg-gray-800/50 rounded-xl overflow-hidden hover:scale-105 
                             transition-all duration-300 backdrop-blur-sm shadow-xl animate-fadeIn"

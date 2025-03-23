@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import pld from "@/public/pld.jpeg";
-import NoContentAvailable from "./NoAvailableContent";
 
 export default function AllMoviesHome({ movies }) {
   if (!movies || movies.length === 0) {
@@ -16,26 +15,30 @@ export default function AllMoviesHome({ movies }) {
     <section>
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-          Featured Movies
+          MOVIES
         </h2>
-        <Link
-          href="/featured-movies"
-          className="group flex items-center gap-2 px-4 py-2 rounded-lg  bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 hover:bg-gray-700/50 
-                     transition-all duration-300 backdrop-blur-sm border border-transparent"
-        >
-          <span className="text-gray-200  group-hover:text-purple-400 transition-colors">
-            Load More
-          </span>
-          <ArrowRight
-            className="w-4 h-4 text-gray-200 group-hover:text-purple-400 transition-colors 
-                                transform group-hover:translate-x-1 duration-300"
-          />
-        </Link>
       </div>
+
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {movies.slice(0, 10).map((movie, index) => (
           <MovieCard key={movie.id} movie={movie} index={index} />
         ))}
+      </div>
+
+      <div className="flex justify-end mt-6">
+        <Link
+          href="/featured-movies"
+          className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 hover:bg-gray-700/50 
+                 transition-all duration-300 backdrop-blur-sm border border-transparent"
+        >
+          <span className="text-gray-200 group-hover:text-purple-400 transition-colors">
+            Load More
+          </span>
+          <ArrowRight
+            className="w-4 h-4 text-gray-200 group-hover:text-purple-400 transition-colors 
+                           transform group-hover:translate-x-1 duration-300"
+          />
+        </Link>
       </div>
     </section>
   );

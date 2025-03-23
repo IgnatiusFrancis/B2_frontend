@@ -35,7 +35,7 @@ export default function AllMoviesPage({ data: movies = [] }) {
           </span>
         </Link>
         <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-          FEATURED MOVIES
+          MOVIES
         </h1>
       </div>
 

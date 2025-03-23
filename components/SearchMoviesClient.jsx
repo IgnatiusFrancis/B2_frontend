@@ -3,13 +3,13 @@
 
 import { useState, useTransition } from "react";
 import AllMoviesHome from "./MoviesHome";
-import AllSeriesHome from "./SeriesHome";
+//import AllSeriesHome from "./SeriesHome";
 import Image from "next/image";
 import { Search, Loader2 } from "lucide-react";
 import AllSeasonalHome from "./AllSeasonalHome";
 import pld from "@/public/pld.jpeg";
 
-export default function SearchMoviesClient({ movies, series, seasonal }) {
+export default function SearchMoviesClient({ movies, seasonal }) {
   const [searchResults, setSearchResults] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -26,9 +26,9 @@ export default function SearchMoviesClient({ movies, series, seasonal }) {
         ...movies.filter((movie) =>
           movie.title.toLowerCase().includes(query.toLowerCase())
         ),
-        ...series.filter((serie) =>
-          serie.title.toLowerCase().includes(query.toLowerCase())
-        ),
+        // ...series.filter((serie) =>
+        //   serie.title.toLowerCase().includes(query.toLowerCase())
+        // ),
         ...seasonal.filter((seasonal) =>
           seasonal.title.toLowerCase().includes(query.toLowerCase())
         ),
@@ -79,7 +79,7 @@ export default function SearchMoviesClient({ movies, series, seasonal }) {
         ) : (
           <div className="space-y-16 animate-fadeIn">
             <AllMoviesHome movies={movies} />
-            <AllSeriesHome series={series} />
+            {/* <AllSeriesHome series={series} /> */}
             <AllSeasonalHome seasonal={seasonal} />
           </div>
         )}

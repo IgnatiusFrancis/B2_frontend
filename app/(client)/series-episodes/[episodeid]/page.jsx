@@ -1,11 +1,11 @@
-import { SingleSeasonsPage } from "@/components/SingleSeasonsPage";
 import SectionHeader from "@/components/SectionHeader";
-import { fetchMovie, fetchSeriesData } from "@/lib/api";
+import { fetchSeriesData } from "@/lib/api";
+import SeriesEpisodesPage from "@/components/SeriesEpisodesPage";
 
-export default async function SinglePageSeries({ params }) {
-  const { seasonid } = params;
+export default async function SeriesEpisode({ params }) {
+  const { episodeid } = params;
 
-  const series = await fetchMovie(seasonid);
+  const series = await fetchSeriesData(episodeid);
 
   return (
     <>
@@ -16,7 +16,7 @@ export default async function SinglePageSeries({ params }) {
         }
         bgWallpaper="/moviesWallpaper.webp"
       />
-      <SingleSeasonsPage series={series} />
+      <SeriesEpisodesPage series={series} />
     </>
   );
 }

@@ -6,6 +6,7 @@ export default async function SingleSeasonPageSeries({ params }) {
   const { seriesseason } = params;
 
   const movie = await fetchMovie(seriesseason);
+
   return (
     <>
       <SectionHeader

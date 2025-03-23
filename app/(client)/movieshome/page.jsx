@@ -6,7 +6,7 @@ import { fetchMovies } from "@/lib/api";
 export default async function MoviesHome() {
   const allMovies = await fetchMovies();
   const seasonal = allMovies.SEASONAL;
-  const series = allMovies.SERIES;
+  // const series = allMovies.SERIES;
   const single = allMovies.SINGLE;
 
   return (
@@ -29,7 +29,7 @@ export default async function MoviesHome() {
         </div>
       </section>
 
-      <SearchMoviesClient movies={single} series={series} seasonal={seasonal} />
+      <SearchMoviesClient movies={single} seasonal={seasonal} />
     </div>
   );
 }

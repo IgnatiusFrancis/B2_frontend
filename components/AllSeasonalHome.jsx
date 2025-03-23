@@ -15,9 +15,9 @@ export default function AllSeasonalHome({ seasonal: seasonal }) {
     <section>
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-          SEASONALS
+          SERIES
         </h2>
-        <Link
+        {/* <Link
           href="/seasonal-movies"
           className="group flex items-center gap-2 px-4 py-2 rounded-lg  bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 hover:bg-gray-700/50 
                      transition-all duration-300 backdrop-blur-sm border border-gray-700/50"
@@ -29,12 +29,28 @@ export default function AllSeasonalHome({ seasonal: seasonal }) {
             className="w-4 h-4 text-gray-200 group-hover:text-purple-400 transition-colors 
                                 transform group-hover:translate-x-1 duration-300"
           />
-        </Link>
+        </Link> */}
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {seasonal.slice(0, 10).map((movie, index) => (
           <MovieCard key={movie.id} movie={movie} index={index} />
         ))}
+      </div>
+
+      <div className="flex justify-end mt-6">
+        <Link
+          href="/seasonal-movies"
+          className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 hover:bg-gray-700/50 
+                 transition-all duration-300 backdrop-blur-sm border border-transparent"
+        >
+          <span className="text-gray-200 group-hover:text-purple-400 transition-colors">
+            Load More
+          </span>
+          <ArrowRight
+            className="w-4 h-4 text-gray-200 group-hover:text-purple-400 transition-colors 
+                           transform group-hover:translate-x-1 duration-300"
+          />
+        </Link>
       </div>
     </section>
   );
@@ -49,7 +65,7 @@ function MovieCard({ movie, index }) {
                 shadow-xl animate-fadeIn"
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      <Link href={`/movies-menu/${movie.id}`}>
+      <Link href={`/series-menu/${movie.id}`}>
         <div className="aspect-[2/3] relative overflow-hidden">
           <Image
             src={movie.imageUrl || pld}

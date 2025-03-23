@@ -51,6 +51,8 @@ const TopMusic = ({ topArtists, index }) => {
           <Image
             src={url || "/albumcover.jpeg"}
             alt={name}
+            width={200}
+            height={200}
             className="absolute inset-0 w-full h-full object-cover z-10 
               transition-transform duration-700 group-hover/image:scale-110"
             loading="lazy"

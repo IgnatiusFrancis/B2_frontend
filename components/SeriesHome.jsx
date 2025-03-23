@@ -49,7 +49,7 @@ function MovieCard({ movie, index }) {
                 shadow-xl animate-fadeIn"
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      <Link href={`/movies-menu/${movie.id}`}>
+      <Link href={`/series-menu/${movie.id}`}>
         <div className="aspect-[2/3] relative overflow-hidden">
           <Image
             src={movie.imageUrl || pld}
