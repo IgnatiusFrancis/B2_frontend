@@ -101,7 +101,7 @@ const Sidebar = () => {
     <div className="w-64 h-screen bg-white border-r border-gray-200 flex flex-col">
       <div className="p-6">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-blue-600">B2Trends</span>
+          <span className="text-xl font-bold text-blue-600">B2Trendz</span>
         </Link>
       </div>
 

@@ -15,7 +15,7 @@ function Footer() {
         {/* Top Section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 border-b border-gray-700 pb-8">
           <div className="text-center md:text-left">
-            <p className="text-lg font-semibold">© 2024 B2TRENDS</p>
+            <p className="text-lg font-semibold">© 2025 B2TRENDZ</p>
             <p className="text-sm">All Rights Reserved</p>
           </div>
           <div className="flex gap-6 text-xl">

@@ -8,7 +8,6 @@ async function Layout({ children }) {
   return (
     <>
       <Header breakingNews={breakingNews} />
-      {/* {children} */}
       <div className="pt-40 md:pt-48">{children}</div>
       <Footer />
     </>

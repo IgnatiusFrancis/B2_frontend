@@ -180,9 +180,9 @@ function StickyHeader({ breakingNews }) {
           <div className="flex items-center gap-1">
             {" "}
             {/* Reduced gap-2 to gap-1 */}
-            <B2XLogo />
+            {/* <B2XLogo /> */}
             <h1 className="md:text-3xl text-xl font-black text-white">
-              TRENDS
+              B2TRENDZ
             </h1>
           </div>
           <div className="flex-1">

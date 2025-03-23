@@ -1,22 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import {
-  Download,
-  ChevronLeft,
-  Play,
-  Clock,
-  Calendar,
-  Info,
-} from "lucide-react";
+import { Play, Clock, Info } from "lucide-react";
 import { FaFileDownload } from "react-icons/fa";
 
 const SeriesEpisodesPage = ({ series }) => {
   const [activeEpisode, setActiveEpisode] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [selectedLink, setSelectedLink] = useState(null);
+  const [showLinks, setShowLinks] = useState(false);
 
   const baseUrl =
     process.env.NEXT_PUBLIC_B2XCLUSIVE_APP_BASE_URL ||
@@ -45,32 +37,40 @@ const SeriesEpisodesPage = ({ series }) => {
     );
   }
 
-  const handleDownload = async (episodeId, key, externalDownloadLink) => {
+  const handleDownload = async (episodeId, key, externalDownloadLinks) => {
     try {
-      console.log(episodeId, key, externalDownloadLink);
       setIsDownloading(true);
-      const downloadLinks = externalDownloadLink || [];
-      //   useState(() => {
-      //     if (downloadLinks.length === 1) {
-      //       setSelectedLink(downloadLinks[0].url);
-      //     }
-      //   }, [downloadLinks]);
-      return;
-      if (selectedLink && selectedLink.length > 0) {
-        window.open(selectedLink, "_blank");
-      } else {
-        const downloadUrl = `${baseUrl}/track/download?type=episode&key=${key}&id=${episodeId}`;
 
-        const link = document.createElement("a");
-        link.href = downloadUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      // If there are external download links, show link selection UI
+      if (externalDownloadLinks && externalDownloadLinks.length > 0) {
+        setShowLinks(true);
+        return;
       }
+
+      // Otherwise proceed with regular download
+      const downloadUrl = `${baseUrl}/track/download?type=episode&key=${key}&id=${episodeId}`;
+
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Download failed:", error);
     } finally {
       setIsDownloading(false);
+    }
+  };
+
+  const handleExternalLinkDownload = (url) => {
+    setIsDownloading(true);
+    try {
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("External link download failed:", error);
+    } finally {
+      setIsDownloading(false);
+      setShowLinks(false);
     }
   };
 
@@ -202,6 +202,41 @@ const SeriesEpisodesPage = ({ series }) => {
                     </p>
                   </div>
 
+                  {/* External Links Selection UI */}
+                  {showLinks &&
+                    currentEpisode?.externalDownloadLink &&
+                    currentEpisode.externalDownloadLink.length > 0 && (
+                      <div className="mb-6 bg-gray-700/50 p-4 rounded-xl">
+                        <h4 className="text-lg font-medium mb-3 text-gray-200">
+                          Select Download Option
+                        </h4>
+                        <div className="grid grid-cols-1 gap-2">
+                          {currentEpisode.externalDownloadLink.map(
+                            (link, index) => (
+                              <button
+                                key={index}
+                                onClick={() =>
+                                  handleExternalLinkDownload(link.url)
+                                }
+                                className="bg-gray-600/50 hover:bg-gray-600 p-3 rounded-lg text-left flex justify-between items-center transition-colors duration-200"
+                              >
+                                <span>
+                                  {link.label || `Option ${index + 1}`}
+                                </span>
+                                <FaFileDownload className="text-gray-300" />
+                              </button>
+                            )
+                          )}
+                        </div>
+                        <button
+                          onClick={() => setShowLinks(false)}
+                          className="mt-3 text-sm text-gray-400 hover:text-white"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+
                   <div className="flex justify-center md:justify-end">
                     <button
                       onClick={() =>
@@ -230,6 +265,9 @@ const SeriesEpisodesPage = ({ series }) => {
                       <span className="relative font-medium">
                         {isDownloading
                           ? "Initiating Download..."
+                          : currentEpisode?.externalDownloadLink &&
+                            currentEpisode.externalDownloadLink.length > 0
+                          ? "Select Download Option"
                           : "Download Movie"}
                       </span>
                     </button>

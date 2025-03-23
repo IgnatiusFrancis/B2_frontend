@@ -57,7 +57,7 @@ function AuthComponent() {
     <div className="md:flex md:w-[60%] w-[90%] transition-all duration-500 rounded-xl md:p-4 mx-auto relative bg-white">
       <div className={`${theme}-bg ${theme}-text p-10 w-full`}>
         <p className="py-4 text-center text-2xl font-bold">
-          Welcome Back to B2Trends
+          Welcome Back to B2Trendz
         </p>
         {/* Login Form */}
         <form
