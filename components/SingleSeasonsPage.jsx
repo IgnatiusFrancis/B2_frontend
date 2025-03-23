@@ -46,7 +46,7 @@ export const SingleSeasonsPage = ({ series }) => {
   const season = series;
   const episodes = series?.episodes || [];
   const trailerPosterUrl = episodes[0]?.imageUrl || "/placeholder.png";
-  console.log("season", season);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white pb-20">
       {/* Hero Section */}
