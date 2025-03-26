@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Play } from "lucide-react";
-
+// Delete Later
 const AllSeriesPage = ({ movie }) => {
   if (!movie) {
     return (

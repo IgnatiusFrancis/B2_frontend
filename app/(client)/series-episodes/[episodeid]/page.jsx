@@ -1,6 +1,7 @@
 import SectionHeader from "@/components/SectionHeader";
 import { fetchSeriesData } from "@/lib/api";
-import SeriesEpisodesPage from "@/components/SeriesEpisodesPage";
+// import SeriesEpisodesPage from "@/components/SeriesEpisodesPage";
+import EnhancedSeriesEpisodesPage from "@/components/SeriesEpisodesPage";
 
 export default async function SeriesEpisode({ params }) {
   const { episodeid } = params;
@@ -16,7 +17,7 @@ export default async function SeriesEpisode({ params }) {
         }
         bgWallpaper="/moviesWallpaper.webp"
       />
-      <SeriesEpisodesPage series={series} />
+      <EnhancedSeriesEpisodesPage series={series} />
     </>
   );
 }

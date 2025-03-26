@@ -183,7 +183,7 @@ function AddMovies() {
     if (uploadMethod === "link") {
       formData.append("downloadLinks", JSON.stringify(downloadLinks));
     }
-
+    console.log(downloadLinks, formData);
     if (thumbnail) formData.append("thumbnail", thumbnail);
 
     // Only append videos if using file upload method
@@ -292,8 +292,8 @@ function AddMovies() {
             >
               <option value="">Select Season</option>
               {Array.from({ length: 20 }, (_, i) => (
-                <option key={i + 1} value={`Season ${i + 1}`}>
-                  S0{i + 1}
+                <option key={i + 1} value={`S0${i + 1}`}>
+                  Season {i + 1}
                 </option>
               ))}
             </select>
@@ -771,23 +771,9 @@ function AddMovies() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Episode Description (Optional)
                         </label>
-                        {/* <input
-                          type="text"
-                          value={link.episodeDescription}
-                          onChange={(e) =>
-                            handleLinkChange(
-                              index,
-                              "episodeDescription",
-                              e.target.value
-                            )
-                          }
-                          placeholder="Enter episode description"
-                          className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                        /> */}
 
                         <textarea
-                          name="episodeDescription"
-                          value={link.episodeDescription}
+                          value={link.episodeDescription || ""}
                           onChange={(e) =>
                             handleLinkChange(
                               index,

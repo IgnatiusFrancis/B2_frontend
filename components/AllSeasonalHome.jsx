@@ -1,10 +1,11 @@
 // app/components/MoviesHome.jsx
-"use client";
+// "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import pld from "@/public/pld.jpeg";
+import { formatTitleFromSlug } from "@/lib/formatter";
 
 export default function AllSeasonalHome({ seasonal: seasonal }) {
   if (!seasonal || seasonal.length === 0) {
@@ -17,19 +18,6 @@ export default function AllSeasonalHome({ seasonal: seasonal }) {
         <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
           SERIES
         </h2>
-        {/* <Link
-          href="/seasonal-movies"
-          className="group flex items-center gap-2 px-4 py-2 rounded-lg  bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 hover:bg-gray-700/50 
-                     transition-all duration-300 backdrop-blur-sm border border-gray-700/50"
-        >
-          <span className="text-gray-200 group-hover:text-purple-400 transition-colors">
-            Load More
-          </span>
-          <ArrowRight
-            className="w-4 h-4 text-gray-200 group-hover:text-purple-400 transition-colors 
-                                transform group-hover:translate-x-1 duration-300"
-          />
-        </Link> */}
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
         {seasonal.slice(0, 10).map((movie, index) => (
@@ -65,11 +53,11 @@ function MovieCard({ movie, index }) {
                 shadow-xl animate-fadeIn"
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      <Link href={`/series-menu/${movie.id}`}>
+      <Link href={`/series-episodes/${movie.slug}`}>
         <div className="aspect-[2/3] relative overflow-hidden">
           <Image
             src={movie.imageUrl || pld}
-            alt={movie.title}
+            alt={movie.slug}
             fill
             className="object-cover transform group-hover:scale-110 transition-transform duration-500"
           />
@@ -92,7 +80,7 @@ function MovieCard({ movie, index }) {
             className="text-gray-200 font-semibold text-center group-hover:text-purple-400
                        transition-colors duration-300"
           >
-            {movie.title}
+            {formatTitleFromSlug(movie.slug)}
           </h3>
         </div>
       </Link>

@@ -30,7 +30,7 @@ export default function SearchMoviesClient({ movies, seasonal }) {
         //   serie.title.toLowerCase().includes(query.toLowerCase())
         // ),
         ...seasonal.filter((seasonal) =>
-          seasonal.title.toLowerCase().includes(query.toLowerCase())
+          seasonal.movieTitle.toLowerCase().includes(query.toLowerCase())
         ),
       ];
 
