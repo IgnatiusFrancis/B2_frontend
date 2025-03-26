@@ -37,12 +37,14 @@ function AddMovies() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [fileErrors, setFileErrors] = useState([]);
   const [uploadMethod, setUploadMethod] = useState("file"); // "file" or "link"
-  const [downloadLinks, setDownloadLinks] = useState([{ url: "", label: "" }]);
+  const [downloadLinks, setDownloadLinks] = useState([
+    { url: "", episodeDescription: "", episodeTitle: "" },
+  ]);
 
   const [movieData, setMovieData] = useState({
     MovieTitle: "",
     movieDescription: "",
-    duration: "",
+    //duration: "",
     type: "SINGLE",
     genre: "",
     releaseDate: "",
@@ -115,7 +117,10 @@ function AddMovies() {
 
   // Add new download link
   const addDownloadLink = () => {
-    setDownloadLinks([...downloadLinks, { url: "", label: "" }]);
+    setDownloadLinks([
+      ...downloadLinks,
+      { url: "", episodeDescription: "", episodeTitle: "" },
+    ]);
   };
 
   // Remove download link
@@ -260,7 +265,7 @@ function AddMovies() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="md:col-span-2">
+          {/* <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Season Title
             </label>
@@ -273,6 +278,25 @@ function AddMovies() {
               placeholder="Enter season title"
               className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             />
+          </div> */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Season Title
+            </label>
+            <select
+              required
+              name="seasonTitle"
+              value={movieData.seasonTitle}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            >
+              <option value="">Select Season</option>
+              {Array.from({ length: 20 }, (_, i) => (
+                <option key={i + 1} value={`Season ${i + 1}`}>
+                  S0{i + 1}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="md:col-span-2">
@@ -290,7 +314,7 @@ function AddMovies() {
           </div>
         </div>
 
-        {showEpisodeFields && (
+        {/* {showEpisodeFields && (
           <div className="space-y-6 pt-6 border-t border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
               <Type className="w-5 h-5" />
@@ -328,7 +352,7 @@ function AddMovies() {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     );
   };
@@ -401,8 +425,8 @@ function AddMovies() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
+                <div className="grid grid-cols-1 gap-4">
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Duration
                     </label>
@@ -418,7 +442,7 @@ function AddMovies() {
                         required
                       />
                     </div>
-                  </div>
+                  </div> */}
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -668,7 +692,7 @@ function AddMovies() {
             <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-900">
-                  Download Links
+                  Episode Information
                 </h2>
                 <button
                   type="button"
@@ -676,7 +700,7 @@ function AddMovies() {
                   className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add Link</span>
+                  <span>Add More</span>
                 </button>
               </div>
               <div className="space-y-4">
@@ -698,17 +722,81 @@ function AddMovies() {
                           required
                         />
                       </div>
-                      <div>
+                      {/* <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Label (optional)
+                          Episode Title
                         </label>
                         <input
                           type="text"
-                          value={link.label}
+                          required
+                          value={link.episodeTitle}
                           onChange={(e) =>
-                            handleLinkChange(index, "label", e.target.value)
+                            handleLinkChange(
+                              index,
+                              "episodeTitle",
+                              e.target.value
+                            )
                           }
-                          placeholder="720p, 1080p, etc."
+                          placeholder="Enter episode title"
+                          className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        />
+                      </div> */}
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Episode Title
+                        </label>
+                        <select
+                          required
+                          value={link.episodeTitle}
+                          onChange={(e) =>
+                            handleLinkChange(
+                              index,
+                              "episodeTitle",
+                              e.target.value
+                            )
+                          }
+                          className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        >
+                          <option value="">Select Episode</option>
+                          {Array.from({ length: 30 }, (_, i) => (
+                            <option key={i + 1} value={`Episode ${i + 1}`}>
+                              Episode {i + 1}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Episode Description (Optional)
+                        </label>
+                        {/* <input
+                          type="text"
+                          value={link.episodeDescription}
+                          onChange={(e) =>
+                            handleLinkChange(
+                              index,
+                              "episodeDescription",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Enter episode description"
+                          className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        /> */}
+
+                        <textarea
+                          name="episodeDescription"
+                          value={link.episodeDescription}
+                          onChange={(e) =>
+                            handleLinkChange(
+                              index,
+                              "episodeDescription",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Enter episode description"
+                          rows={4}
                           className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
