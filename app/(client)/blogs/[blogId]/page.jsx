@@ -26,7 +26,7 @@ export default async function SingleBlog({ params }) {
 
       {/* Blog Section */}
       <div className="bg-gradient-to-b from-gray-900 to-black">
-        <section className="w-full max-w-7xl mx-auto p-4 flex flex-col md:flex-row gap-10">
+        <section className="w-full max-w-[1400px] mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
           {/* Main Content */}
           <div className="flex-1">
             {/* Blog Content Card */}
