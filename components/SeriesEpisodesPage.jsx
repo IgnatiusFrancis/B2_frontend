@@ -418,81 +418,6 @@ const EnhancedSeriesEpisodesPage = ({ series, recommendedSeries = [] }) => {
       <div className="container mx-auto px-4 py-12 lg:py-16">
         {/* Existing code for episodes and featured episode */}
         <div className="grid lg:grid-cols-[3fr_2fr] gap-8">
-          {/* Episodes List */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-                Episodes
-              </h2>
-              <span className="text-gray-400">
-                {series.episodes?.length || 0} Episodes
-              </span>
-            </div>
-
-            <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-4 custom-scrollbar">
-              {series.episodes?.map((episode, index) => (
-                <div
-                  key={episode.id}
-                  className="bg-gray-800/40 hover:bg-gray-800/60 rounded-2xl p-4 flex items-center justify-between transition-all duration-300 group"
-                  onClick={() =>
-                    setFeaturedEpisode({
-                      ...episode,
-                      trailerUrl: series.trailerUrl,
-                    })
-                  }
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-gray-700 text-gray-300 rounded-full w-10 h-10 flex items-center justify-center font-bold">
-                      {index + 1}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-200 group-hover:text-white transition-colors">
-                        {episode.episodeTitle}
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    {/* Preview Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePreview(episode, series.trailerUrl);
-                      }}
-                      className="rounded-full p-2 bg-gray-700/50 hover:bg-gray-600/50 transition-all"
-                    >
-                      <FaPlay className="w-4 h-4 text-gray-300 hover:text-white" />
-                    </button>
-
-                    {/* Download Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDownload(episode);
-                      }}
-                      className={`
-                        rounded-full p-2 transition-all duration-300
-                        ${
-                          downloadingEpisodes[episode.id]
-                            ? "bg-purple-600/50 cursor-wait"
-                            : "bg-purple-600/30 hover:bg-purple-600/50 hover:scale-105"
-                        }
-                      `}
-                    >
-                      {downloadingEpisodes[episode.id] ? (
-                        <div className="animate-spin">
-                          <Download className="w-5 h-5 text-purple-400" />
-                        </div>
-                      ) : (
-                        <Download className="w-5 h-5 text-purple-300 hover:text-white" />
-                      )}
-                    </button>
-                    <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* Featured Episode Details */}
           {featuredEpisode && (
             <div className="bg-gray-800/40 rounded-3xl overflow-hidden shadow-2xl">
@@ -518,7 +443,7 @@ const EnhancedSeriesEpisodesPage = ({ series, recommendedSeries = [] }) => {
                     Episode Description
                   </h3>
                   <p className="text-gray-300">
-                    {featuredEpisode.description || "No description available."}
+                    {featuredEpisode.description || ""}
                   </p>
                 </div>
 
@@ -533,7 +458,7 @@ const EnhancedSeriesEpisodesPage = ({ series, recommendedSeries = [] }) => {
                       transition-all duration-300 group"
                   >
                     <FaPlay className="w-5 h-5 text-purple-400 group-hover:text-white" />
-                    <span>Preview</span>
+                    <span>Watch Trailer</span>
                   </button>
 
                   {/* Download Button */}
@@ -566,6 +491,94 @@ const EnhancedSeriesEpisodesPage = ({ series, recommendedSeries = [] }) => {
               </div>
             </div>
           )}
+          {/* Episodes List */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                Episodes
+              </h2>
+              <span className="text-gray-400">
+                {series.episodes?.length || 0} Episodes
+              </span>
+            </div>
+
+            <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-4 custom-scrollbar">
+              {series.episodes
+                ?.slice() // Create a shallow copy to avoid mutating original data
+                .sort((a, b) => {
+                  // Extract episode numbers from titles like "Episode 1", "Episode 3"
+                  const numA = parseInt(
+                    a.episodeTitle.match(/\d+/)?.[0] || "0",
+                    10
+                  );
+                  const numB = parseInt(
+                    b.episodeTitle.match(/\d+/)?.[0] || "0",
+                    10
+                  );
+                  return numA - numB;
+                })
+                .map((episode, index) => (
+                  <div
+                    key={episode.id}
+                    className="bg-gray-800/40 hover:bg-gray-800/60 rounded-2xl p-4 flex items-center justify-between transition-all duration-300 group"
+                    onClick={() =>
+                      setFeaturedEpisode({
+                        ...episode,
+                        trailerUrl: series.trailerUrl,
+                      })
+                    }
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className="bg-gray-700 text-gray-300 rounded-full w-10 h-10 flex items-center justify-center font-bold">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-200 group-hover:text-white transition-colors">
+                          {episode.episodeTitle}
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      {/* Preview Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePreview(episode, series.trailerUrl);
+                        }}
+                        className="rounded-full p-2 bg-gray-700/50 hover:bg-gray-600/50 transition-all"
+                      >
+                        <FaPlay className="w-4 h-4 text-gray-300 hover:text-white" />
+                      </button>
+
+                      {/* Download Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDownload(episode);
+                        }}
+                        className={`
+            rounded-full p-2 transition-all duration-300
+            ${
+              downloadingEpisodes[episode.id]
+                ? "bg-purple-600/50 cursor-wait"
+                : "bg-purple-600/30 hover:bg-purple-600/50 hover:scale-105"
+            }
+          `}
+                      >
+                        {downloadingEpisodes[episode.id] ? (
+                          <div className="animate-spin">
+                            <Download className="w-5 h-5 text-purple-400" />
+                          </div>
+                        ) : (
+                          <Download className="w-5 h-5 text-purple-300 hover:text-white" />
+                        )}
+                      </button>
+                      <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors" />
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
         </div>
 
         {/* Series Synopsis */}
@@ -639,7 +652,7 @@ const EnhancedSeriesEpisodesPage = ({ series, recommendedSeries = [] }) => {
                   {previewModal.episodeTitle}
                 </h2>
                 <p className="text-gray-300">
-                  {previewModal.description || "No description available."}
+                  {previewModal.description || ""}
                 </p>
               </div>
             </div>
