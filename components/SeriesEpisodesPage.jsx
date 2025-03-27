@@ -416,6 +416,17 @@ const EnhancedSeriesEpisodesPage = ({ series, recommendedSeries = [] }) => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white">
       <div className="container mx-auto px-4 py-12 lg:py-16">
+        {/* Series Synopsis */}
+        {currentSeries.description && (
+          <div className="mb-12 bg-gray-800/40 rounded-2xl p-6">
+            <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+              Series Synopsis
+            </h3>
+            <p className="text-gray-300 leading-relaxed">
+              {currentSeries.description}
+            </p>
+          </div>
+        )}
         {/* Existing code for episodes and featured episode */}
         <div className="grid lg:grid-cols-[3fr_2fr] gap-8">
           {/* Featured Episode Details */}
@@ -580,18 +591,6 @@ const EnhancedSeriesEpisodesPage = ({ series, recommendedSeries = [] }) => {
             </div>
           </div>
         </div>
-
-        {/* Series Synopsis */}
-        {currentSeries.description && (
-          <div className="mt-12 bg-gray-800/40 rounded-2xl p-6">
-            <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-              Series Synopsis
-            </h3>
-            <p className="text-gray-300 leading-relaxed">
-              {currentSeries.description}
-            </p>
-          </div>
-        )}
 
         {/* Recommended Series Section */}
         {recommendedSeries.length > 0 && (
