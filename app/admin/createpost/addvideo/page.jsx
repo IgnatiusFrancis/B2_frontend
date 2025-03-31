@@ -5,7 +5,7 @@ import Tiptap from "@/components/TipTap";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { Film, Loader2, Upload } from "lucide-react";
+import { Film, Link, Loader2, Upload } from "lucide-react";
 import action from "@/app/actions";
 
 // Constants remain the same
@@ -31,9 +31,13 @@ function AddVideos() {
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [content, setContent] = useState("");
+  const [uploadMethod, setUploadMethod] = useState("file"); // "file" or "link"
+  const [downloadLinks, setDownloadLinks] = useState([{ url: "" }]);
 
-  const handleContentChange = (cont) => {
-    setContent(cont);
+  const handleContentChange = (newContent) => {
+    const sanitizedContent = newContent.replace(/^<p>|<\/p>$/g, "");
+    console.log(sanitizedContent, "new sanitizedContent");
+    setContent(sanitizedContent);
   };
 
   const validateFiles = (files, type) => {
@@ -84,6 +88,13 @@ function AddVideos() {
     }
   };
 
+  // Handle download link changes
+  const handleLinkChange = (index, field, value) => {
+    const updatedLinks = [...downloadLinks];
+    updatedLinks[index][field] = value;
+    setDownloadLinks(updatedLinks);
+  };
+
   // Cleanup preview URLs on unmount
   useEffect(() => {
     return () => {
@@ -114,7 +125,6 @@ function AddVideos() {
     title: "",
     subTitle: "",
     description: "",
-    duration: "",
     artistId: "",
     videoFile: null,
     thumbnailFile: null,
@@ -127,8 +137,21 @@ function AddVideos() {
       return;
     }
 
-    if (!formData.videoFile?.length) {
+    // if (!formData.videoFile?.length) {
+    //   toast.error("Please select at least one video file");
+    //   return;
+    // }
+
+    if (uploadMethod === "file" && !videos.length) {
       toast.error("Please select at least one video file");
+      return;
+    }
+
+    if (
+      uploadMethod === "link" &&
+      (!downloadLinks.length || downloadLinks.some((link) => !link.url))
+    ) {
+      toast.error("Please provide at least one valid download link");
       return;
     }
 
@@ -147,8 +170,17 @@ function AddVideos() {
       submitData.append("duration", formData.duration);
       submitData.append("artistId", formData.artistId);
       submitData.append("thumbnail", formData.thumbnailFile);
+      submitData.append("uploadMethod", uploadMethod);
 
-      formData.videoFile.forEach((video) => submitData.append("videos", video));
+      if (thumbnail) formData.append("thumbnail", thumbnail);
+      if (uploadMethod === "link") {
+        submitData.append("downloadLinks", JSON.stringify(downloadLinks));
+      }
+      if (uploadMethod === "file") {
+        formData.videoFile.forEach((video) =>
+          submitData.append("videos", video)
+        );
+      }
 
       const token = localStorage.getItem("token");
       const config = {
@@ -233,7 +265,7 @@ function AddVideos() {
             />
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium mb-2">Subtitle</label>
               <input
@@ -267,7 +299,7 @@ function AddVideos() {
               </select>
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium mb-2">Duration</label>
               <input
                 type="text"
@@ -278,57 +310,126 @@ function AddVideos() {
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                 placeholder="Optional"
               />
+            </div> */}
+          </div>
+        </div>
+
+        {/* Description Section */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+          <label className="block text-sm font-medium mb-4">Description</label>
+          <Tiptap value={content} onChange={handleContentChange} />
+        </div>
+
+        {/* Upload Method Selection */}
+        <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl p-6 space-y-4">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Content Upload Method
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div
+              className={`w-full sm:w-1/2 cursor-pointer p-4 border-2 rounded-xl flex items-center gap-3 ${
+                uploadMethod === "file"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200"
+              }`}
+              onClick={() => setUploadMethod("file")}
+            >
+              <Upload
+                className={`w-5 h-5 ${
+                  uploadMethod === "file" ? "text-blue-500" : "text-gray-400"
+                }`}
+              />
+              <div>
+                <h3 className="font-medium text-gray-900">File Upload</h3>
+                <p className="text-sm text-gray-500">
+                  Upload video files directly to our server
+                </p>
+              </div>
+            </div>
+            <div
+              className={`w-full sm:w-1/2 cursor-pointer p-4 border-2 rounded-xl flex items-center gap-3 ${
+                uploadMethod === "link"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200"
+              }`}
+              onClick={() => setUploadMethod("link")}
+            >
+              <Link
+                className={`w-5 h-5 ${
+                  uploadMethod === "link" ? "text-blue-500" : "text-gray-400"
+                }`}
+              />
+              <div>
+                <h3 className="font-medium text-gray-900">Download Links</h3>
+                <p className="text-sm text-gray-500">
+                  Provide external download links
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Media Upload Section */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Thumbnail Upload */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <label className="block text-sm font-medium mb-4">
-              Video Thumbnail
-            </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-              <input
-                type="file"
-                onChange={(e) => handleFileChange(e, "thumbnail")}
-                className="hidden"
-                id="thumbnail-upload"
-                accept="image/*"
-              />
-              <label htmlFor="thumbnail-upload" className="cursor-pointer">
-                {thumbnailPreview ? (
-                  <div className="relative w-full h-48 rounded-lg overflow-hidden">
-                    <Image
-                      src={thumbnailPreview}
-                      alt="Thumbnail preview"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center py-8">
-                    <Upload className="w-12 h-12 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600">
-                      Click to upload cover image
+        {/* Thumbnail Upload Card */}
+        <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Video Thumbnail
+          </h2>
+          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileChange(e, "thumbnail")}
+              className="hidden"
+              id="thumbnail-upload"
+            />
+            <label
+              htmlFor="thumbnail-upload"
+              className="cursor-pointer block text-center"
+            >
+              {thumbnailPreview ? (
+                <div className="relative w-full h-64 rounded-lg overflow-hidden">
+                  <Image
+                    src={thumbnailPreview}
+                    alt="Thumbnail preview"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                    <p className="text-white text-sm">
+                      Click to change thumbnail
                     </p>
                   </div>
-                )}
-              </label>
-            </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center">
+                  <Upload className="w-12 h-12 text-gray-400 mb-3" />
+                  <p className="text-sm text-gray-600">
+                    Click to upload thumbnail
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Maximum size: 5MB
+                  </p>
+                </div>
+              )}
+            </label>
           </div>
+        </div>
 
-          {/* Video Upload */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <label className="block text-sm font-medium mb-4">Video File</label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+        {/* Conditional rendering based on upload method */}
+        {uploadMethod === "file" ? (
+          /* Video Upload Card */
+          <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Video Files
+            </h2>
+            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6">
               <input
                 type="file"
-                className="hidden"
-                id="video-upload"
+                multiple
                 accept="video/*"
                 onChange={(e) => handleFileChange(e, "videos")}
+                className="hidden"
+                id="video-upload"
               />
               <label htmlFor="video-upload" className="cursor-pointer block">
                 {videos.length > 0 ? (
@@ -367,13 +468,39 @@ function AddVideos() {
               </label>
             </div>
           </div>
-        </div>
-
-        {/* Description Section */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-          <label className="block text-sm font-medium mb-4">Description</label>
-          <Tiptap value={content} onChange={handleContentChange} />
-        </div>
+        ) : (
+          /* Download Links Card */
+          <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">
+                External Link
+              </h2>
+            </div>
+            <div className="space-y-4">
+              {downloadLinks.map((link, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <div className="flex-grow space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Download URL
+                      </label>
+                      <input
+                        type="url"
+                        value={link.url}
+                        onChange={(e) =>
+                          handleLinkChange(index, "url", e.target.value)
+                        }
+                        placeholder="https://example.com/movie.mp4"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Upload Progress */}
         {uploading && uploadProgress > 0 && (
@@ -410,7 +537,7 @@ function AddVideos() {
           ) : (
             <>
               <Upload className="w-5 h-5" />
-              <span>Create Season</span>
+              <span>Create Video</span>
             </>
           )}
         </button>

@@ -183,7 +183,7 @@ function AddMovies() {
     if (uploadMethod === "link") {
       formData.append("downloadLinks", JSON.stringify(downloadLinks));
     }
-    console.log(downloadLinks, formData);
+
     if (thumbnail) formData.append("thumbnail", thumbnail);
 
     // Only append videos if using file upload method
