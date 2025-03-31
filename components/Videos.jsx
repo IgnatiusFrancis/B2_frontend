@@ -4,12 +4,12 @@ import Link from "next/link";
 import { FaPlayCircle } from "react-icons/fa";
 import pld from "@/public/pld.jpeg";
 
-function Videos({ id, title, artist, subtitle, createdAt, url }) {
+function Videos({ id, slug, title, artist, subtitle, createdAt, url }) {
   return (
     <div className="group transform hover:-translate-y-2 transition-all duration-500">
       <Link
         prefetch={true}
-        href={`/videoshome/${id}`}
+        href={`/videoshome/${slug || id}`}
         className="bg-white rounded-lg shadow-lg overflow-hidden block h-full hover:shadow-xl transition-all duration-500"
       >
         {/* Image Section */}

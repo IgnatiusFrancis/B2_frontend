@@ -26,55 +26,6 @@ const Music = ({ audios }) => {
     </Link>
   );
 
-  // const SongCard = ({ audio }) => (
-  //   <div className="border-b transition-transform duration-300 hover:shadow-md mb-1 w-full">
-  //     <div
-  //       className={`px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center ${theme}-bgg bg-white rounded-lg`}
-  //     >
-  //       <div className="flex w-full sm:w-auto items-center gap-3 sm:gap-4">
-  //         <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-[70px] md:h-[70px] flex-shrink-0 rounded-full overflow-hidden border-2 border-gray-200">
-  //           <Image
-  //             src={audio?.url}
-  //             alt={audio?.title}
-  //             width={70}
-  //             height={70}
-  //             className="w-full h-full object-cover rounded-full"
-  //           />
-  //         </div>
-  //         <div className="flex-1 min-w-0">
-  //           <h1
-  //             className={`font-bold text-base sm:text-lg md:text-xl ${theme}-text truncate`}
-  //           >
-  //             <Link
-  //               href={`/musics/${audio.id}`}
-  //               className="text-gray-700 hover:text-blue-400 transition-colors"
-  //             >
-  //               {audio.artist.name}
-  //             </Link>
-  //           </h1>
-  //           <h2
-  //             className={`font-bold text-base sm:text-lg md:text-xl ${theme}-text truncate`}
-  //           >
-  //             <Link
-  //               href={`/musics/${audio.id}`}
-  //               className="text-gray-700 hover:text-blue-400 transition-colors"
-  //             >
-  //               {audio.title}
-  //             </Link>
-  //           </h2>
-  //           <p className="text-xs text-gray-500 overflow-hidden line-clamp-2">
-  //             {audio?.description}
-  //           </p>
-  //         </div>
-  //       </div>
-
-  //       <div className="mt-3 sm:mt-0 self-end sm:self-auto">
-  //         <GradientPlayButton audioId={audio?.id} />
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
-
   const SongCard = ({ audio }) => (
     <div className="group mb-4 w-full overflow-hidden">
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">

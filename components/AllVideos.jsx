@@ -4,7 +4,7 @@ import Videos from "./Videos";
 import NoContentAvailable from "./NoAvailableContent";
 
 function AllVideos({ data: videos }) {
-  const videosPerPage = 9; // Changed to 9 for 3x3 grid
+  const videosPerPage = 12; // Changed to 9 for 3x3 grid
   const [currentPage, setCurrentPage] = useState(1);
   const [currentVideos, setCurrentVideos] = useState([]);
 
@@ -28,7 +28,7 @@ function AllVideos({ data: videos }) {
 
   return (
     <div className=" mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {currentVideos.map((video) => (
           <Videos
             key={video.id}
@@ -37,6 +37,7 @@ function AllVideos({ data: videos }) {
             url={video.url}
             artist={video.artist}
             subtitle={video.subtitle}
+            slug={video.slug}
             createdAt={video.createdAt}
           />
         ))}
