@@ -4,8 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import { Loader2, Music, Upload } from "lucide-react";
+import { Link, Loader2, Music, Upload } from "lucide-react";
 import Tiptap from "@/components/TipTap";
 import action from "@/app/actions";
 
@@ -26,12 +25,13 @@ const AddMusic = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [fileErrors, setFileErrors] = useState([]);
+  const [uploadMethod, setUploadMethod] = useState("file"); // "file" or "link"
+  const [downloadLinks, setDownloadLinks] = useState([{ url: "" }]);
 
   const [formData, setFormData] = useState({
     title: "",
     subTitle: "",
     description: "",
-    duration: "",
     artistId: "",
     audioFile: null,
     thumbnailFile: null,
@@ -55,6 +55,13 @@ const AddMusic = () => {
     fetchData();
   }, [baseUrl]);
 
+  // Handle download link changes
+  const handleLinkChange = (index, field, value) => {
+    const updatedLinks = [...downloadLinks];
+    updatedLinks[index][field] = value;
+    setDownloadLinks(updatedLinks);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (fileErrors.length > 0) {
@@ -62,10 +69,10 @@ const AddMusic = () => {
       return;
     }
 
-    if (!formData.audioFile) {
-      toast.error("Please select at least one audio file");
-      return;
-    }
+    // if (!formData.audioFile) {
+    //   toast.error("Please select at least one audio file");
+    //   return;
+    // }
 
     if (!formData.thumbnailFile) {
       toast.error("Please select a thumbnail image");
@@ -82,8 +89,19 @@ const AddMusic = () => {
 
     try {
       const submitData = new FormData();
+      // Object.keys(formData).forEach((key) => {
+      //   if (key === "audioFile") {
+      //     submitData.append("audios", formData.audioFile);
+      //   } else if (key === "thumbnailFile") {
+      //     submitData.append("thumbnail", formData.thumbnailFile);
+      //   } else {
+      //     submitData.append(key, formData[key]);
+      //   }
+      // });
+
+      // Append form data dynamically
       Object.keys(formData).forEach((key) => {
-        if (key === "audioFile") {
+        if (key === "audioFile" && uploadMethod === "file") {
           submitData.append("audios", formData.audioFile);
         } else if (key === "thumbnailFile") {
           submitData.append("thumbnail", formData.thumbnailFile);
@@ -91,6 +109,11 @@ const AddMusic = () => {
           submitData.append(key, formData[key]);
         }
       });
+
+      // Append downloadLinks if uploadMethod is 'link'
+      if (uploadMethod === "link") {
+        submitData.append("downloadLinks", JSON.stringify(downloadLinks));
+      }
 
       const token = localStorage.getItem("token");
       const config = {
@@ -151,7 +174,6 @@ const AddMusic = () => {
         title: "",
         subTitle: "",
         description: "",
-        duration: "",
         artistId: "",
         audioFile: null,
         thumbnailFile: null,
@@ -187,7 +209,7 @@ const AddMusic = () => {
             />
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium mb-2">Subtitle</label>
               <input
@@ -220,65 +242,111 @@ const AddMusic = () => {
                 ))}
               </select>
             </div>
+          </div>
+        </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Duration</label>
-              <input
-                type="text"
-                value={formData.duration}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, duration: e.target.value }))
-                }
-                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                placeholder="Optional"
+        {/* Description Section */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+          <label className="block text-sm font-medium mb-4">Description</label>
+          <Tiptap
+            content={formData.description}
+            onChange={(newContent) =>
+              setFormData((prev) => ({ ...prev, description: newContent }))
+            }
+          />
+        </div>
+
+        {/* Upload Method Selection */}
+        <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl p-6 space-y-4">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Content Upload Method
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div
+              className={`w-full sm:w-1/2 cursor-pointer p-4 border-2 rounded-xl flex items-center gap-3 ${
+                uploadMethod === "file"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200"
+              }`}
+              onClick={() => setUploadMethod("file")}
+            >
+              <Upload
+                className={`w-5 h-5 ${
+                  uploadMethod === "file" ? "text-blue-500" : "text-gray-400"
+                }`}
               />
+              <div>
+                <h3 className="font-medium text-gray-900">File Upload</h3>
+                <p className="text-sm text-gray-500">
+                  Upload video files directly to our server
+                </p>
+              </div>
+            </div>
+            <div
+              className={`w-full sm:w-1/2 cursor-pointer p-4 border-2 rounded-xl flex items-center gap-3 ${
+                uploadMethod === "link"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200"
+              }`}
+              onClick={() => setUploadMethod("link")}
+            >
+              <Link
+                className={`w-5 h-5 ${
+                  uploadMethod === "link" ? "text-blue-500" : "text-gray-400"
+                }`}
+              />
+              <div>
+                <h3 className="font-medium text-gray-900">Download Links</h3>
+                <p className="text-sm text-gray-500">
+                  Provide external download links
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Media Upload Section */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Thumbnail Upload */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <label className="block text-sm font-medium mb-4">
-              Cover Image
+        {/* Thumbnail Upload Card */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+          <label className="block text-sm font-medium mb-4">Cover Image</label>
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+            <input
+              type="file"
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  thumbnailFile: e.target.files[0],
+                }))
+              }
+              className="hidden"
+              id="thumbnail-upload"
+              accept="image/*"
+            />
+            <label htmlFor="thumbnail-upload" className="cursor-pointer">
+              {formData.thumbnailFile ? (
+                <div className="relative w-full h-48 rounded-lg overflow-hidden">
+                  <Image
+                    src={URL.createObjectURL(formData.thumbnailFile)}
+                    alt="Cover preview"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col items-center py-8">
+                  <Upload className="w-12 h-12 text-gray-400 mb-2" />
+                  <p className="text-sm text-gray-600">
+                    Click to upload cover image
+                  </p>
+                </div>
+              )}
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-              <input
-                type="file"
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    thumbnailFile: e.target.files[0],
-                  }))
-                }
-                className="hidden"
-                id="thumbnail-upload"
-                accept="image/*"
-              />
-              <label htmlFor="thumbnail-upload" className="cursor-pointer">
-                {formData.thumbnailFile ? (
-                  <div className="relative w-full h-48 rounded-lg overflow-hidden">
-                    <Image
-                      src={URL.createObjectURL(formData.thumbnailFile)}
-                      alt="Cover preview"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center py-8">
-                    <Upload className="w-12 h-12 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600">
-                      Click to upload cover image
-                    </p>
-                  </div>
-                )}
-              </label>
-            </div>
           </div>
+        </div>
 
-          {/* Audio Upload */}
+        {/* Conditional rendering based on upload method */}
+        {uploadMethod === "file" ? (
+          /* Video Upload Card */
+
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
             <label className="block text-sm font-medium mb-4">Audio File</label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
@@ -311,22 +379,39 @@ const AddMusic = () => {
               </label>
             </div>
           </div>
-        </div>
-
-        {/* Description Section */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-          <label className="block text-sm font-medium mb-4">
-            Track Description
-          </label>
-          <Tiptap
-            content={formData.description}
-            onChange={(newContent) =>
-              setFormData((prev) => ({ ...prev, description: newContent }))
-            }
-          />
-        </div>
-
-        {/* Submit Button */}
+        ) : (
+          /* Download Links Card */
+          <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">
+                External Link
+              </h2>
+            </div>
+            <div className="space-y-4">
+              {downloadLinks.map((link, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <div className="flex-grow space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Download URL
+                      </label>
+                      <input
+                        type="url"
+                        value={link.url}
+                        onChange={(e) =>
+                          handleLinkChange(index, "url", e.target.value)
+                        }
+                        placeholder="https://example.com/movie.mp4"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Upload Progress */}
         {uploading && uploadProgress > 0 && (
