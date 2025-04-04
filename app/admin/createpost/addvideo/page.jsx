@@ -36,7 +36,6 @@ function AddVideos() {
 
   const handleContentChange = (newContent) => {
     const sanitizedContent = newContent.replace(/^<p>|<\/p>$/g, "");
-    console.log(sanitizedContent, "new sanitizedContent");
     setContent(sanitizedContent);
   };
 

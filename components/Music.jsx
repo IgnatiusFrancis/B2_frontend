@@ -9,8 +9,8 @@ import Link from "next/link";
 const Music = ({ audios }) => {
   const { theme } = useContext(ThemeContext);
 
-  const GradientPlayButton = ({ audioId }) => (
-    <Link href={`/musics/${audioId}`}>
+  const GradientPlayButton = ({ slug }) => (
+    <Link href={`/musics/${slug}`}>
       <button className="relative group">
         {/* Outer gradient ring with pulse */}
         <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-full opacity-75 group-hover:opacity-100 blur-sm animate-pulse" />
@@ -40,7 +40,7 @@ const Music = ({ audios }) => {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <GradientPlayButton audioId={audio?.id} size="md" />
+              <GradientPlayButton slug={audio?.slug} size="md" />
             </div>
           </div>
 
@@ -50,7 +50,7 @@ const Music = ({ audios }) => {
               <div className="flex-1 min-w-0">
                 <h2 className="font-bold text-lg md:text-xl text-gray-800 dark:text-gray-100 truncate">
                   <Link
-                    href={`/musics/${audio.id}`}
+                    href={`/musics/${audio.slug}`}
                     className="hover:text-blue-500 transition-colors"
                   >
                     {audio.title}
