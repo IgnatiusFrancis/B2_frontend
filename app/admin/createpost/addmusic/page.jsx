@@ -88,25 +88,48 @@ const AddMusic = () => {
     setUploadProgress(0);
 
     try {
-      const submitData = new FormData();
+      // const submitData = new FormData();
+      // // Append form data dynamically
+      // submitData.append("uploadMethod", uploadMethod);
       // Object.keys(formData).forEach((key) => {
-      //   if (key === "audioFile") {
+      //   if (key === "audioFile" && uploadMethod === "file") {
       //     submitData.append("audios", formData.audioFile);
       //   } else if (key === "thumbnailFile") {
       //     submitData.append("thumbnail", formData.thumbnailFile);
-      //   } else {
+      //   } else if (
+      //     key !== "audioFile" &&
+      //     formData[key] !== null &&
+      //     formData[key] !== undefined
+      //   ) {
       //     submitData.append(key, formData[key]);
       //   }
       // });
 
+      const submitData = new FormData();
+
       // Append form data dynamically
+      submitData.append("uploadMethod", uploadMethod);
+
       Object.keys(formData).forEach((key) => {
         if (key === "audioFile" && uploadMethod === "file") {
           submitData.append("audios", formData.audioFile);
         } else if (key === "thumbnailFile") {
           submitData.append("thumbnail", formData.thumbnailFile);
-        } else {
-          submitData.append(key, formData[key]);
+        } else if (
+          key !== "audioFile" &&
+          formData[key] !== null &&
+          formData[key] !== undefined
+        ) {
+          // Remove surrounding <p> tags only for the description field
+          if (key === "description") {
+            const sanitizedDescription = formData[key].replace(
+              /^<p>|<\/p>$/g,
+              ""
+            );
+            submitData.append(key, sanitizedDescription);
+          } else {
+            submitData.append(key, formData[key]);
+          }
         }
       });
 
