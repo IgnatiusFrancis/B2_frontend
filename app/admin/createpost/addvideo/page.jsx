@@ -31,7 +31,7 @@ function AddVideos() {
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [content, setContent] = useState("");
-  const [uploadMethod, setUploadMethod] = useState("file"); // "file" or "link"
+  const [uploadMethod, setUploadMethod] = useState("file");
   const [downloadLinks, setDownloadLinks] = useState([{ url: "" }]);
 
   const handleContentChange = (newContent) => {
