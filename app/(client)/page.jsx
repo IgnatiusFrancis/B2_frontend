@@ -97,13 +97,6 @@ export default async function Home() {
           {/* NEW ALBUM SECTION */}
           <CategoriesHeading title={"Adverts"} />
 
-          {/* <div className="grid gap-4 grid-cols-2 md:py-4 md:flex md:gap-4">
-            {albums.map((album) => (
-              <AlbumCover key={album.id} album={album} />
-            ))}
-           
-          </div> */}
-
           <div className="grid  grid-cols-1 md:py-2 ">
             <AlbumCover key={albums.id} album={albums} />
           </div>
