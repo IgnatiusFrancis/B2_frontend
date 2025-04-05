@@ -133,12 +133,6 @@ export default async function Home() {
           <div className="w-full py-4">
             <div className="grid gap-4 grid-cols-1">
               <TopList topArtists={transformedArtists} />
-              {/* <Link
-                href={"/musics"}
-                className="text-gray-200 font-bold text-center cursor-pointer "
-              >
-                See More
-              </Link> */}
               <Link
                 href="/musics"
                 className="font-bold text-center cursor-pointer bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text"
