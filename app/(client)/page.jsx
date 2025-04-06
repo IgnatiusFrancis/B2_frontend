@@ -198,14 +198,6 @@ export default async function Home() {
               </div>
             </div>
           </div>
-          {/* Recent post section */}
-          {/* <div className="hidden md:block">
-            <CategoriesHeading title={"Recent Posts"} />
-            <div className="w-full">
-              <HomeRecentPost posts={posts} />
-            </div>
-          </div> */}
-
           {/*Animated section */}
           <div className="hidden md:block">
             <CategoriesHeading title={"Feel The Beat"} />
