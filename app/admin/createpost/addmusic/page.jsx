@@ -90,7 +90,7 @@ const AddMusic = () => {
     try {
       const submitData = new FormData();
 
-      // Append form data dynamically
+      // Append form data dynamically.
       submitData.append("uploadMethod", uploadMethod);
 
       Object.keys(formData).forEach((key) => {
